@@ -126,7 +126,7 @@
         );
 
         resultsCount.innerText = filtered.length.toLocaleString();
-        const limit = 400;
+        const limit = 100;
         const toShow = filtered.slice(0, limit);
         document.getElementById('loadMore').style.display = filtered.length > limit ? 'block' : 'none';
 
