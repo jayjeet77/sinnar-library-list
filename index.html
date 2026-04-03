@@ -22,19 +22,41 @@
             --tag-color: #9F9B8A;
         }
 
-        body { background-color: var(--bg-color); font-family: 'Segoe UI', Arial, sans-serif; color: #333; }
+        body { background-color: var(--bg-color); font-family: 'Segoe UI', Arial, sans-serif; color: #333; margin: 0; padding: 0; }
         
-        /* Header */
-        .header-section { background: #ffffff; padding: 25px 15px; text-align: center; border-bottom: 5px solid var(--accent-color); }
-        .header-section h2 { color: var(--title-color); font-weight: bold; margin-bottom: 0; }
-        
-        /* Navigation Bar */
-        .category-nav { background: var(--footer-bg); overflow-x: auto; white-space: nowrap; padding: 10px; position: sticky; top: 0; z-index: 1050; display: flex; align-items: center; justify-content: center; }
-        .category-nav a { color: #f6f2e9; text-decoration: none; padding: 6px 15px; margin: 0 5px; border-radius: 20px; font-size: 0.9em; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; }
-        .category-nav a:hover, .category-nav a.active { background: var(--accent-color); color: white; border-color: var(--accent-color); }
+        /* Header Section */
+        .header-section { background: #ffffff; padding: 20px 10px; text-align: center; border-bottom: 5px solid var(--accent-color); }
+        .header-section img { max-width: 90px; margin-bottom: 8px; }
+        .header-section h2 { color: var(--title-color); font-weight: bold; font-size: 1.5rem; margin-bottom: 2px; }
 
-        /* नोंदणी बटण मेनूमध्ये */
-        .btn-nav-register { background: #ce062b !important; color: white !important; font-weight: bold; border: none !important; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        /* Navigation Bar (Fixed for Mobile Cut issue) */
+        .category-nav { 
+            background: var(--footer-bg); 
+            display: flex; 
+            flex-wrap: nowrap; 
+            overflow-x: auto; 
+            -webkit-overflow-scrolling: touch; 
+            padding: 12px 10px; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1050; 
+            gap: 10px;
+            scrollbar-width: none;
+        }
+        .category-nav::-webkit-scrollbar { display: none; }
+        .category-nav a { 
+            color: #f6f2e9; 
+            text-decoration: none; 
+            padding: 7px 16px; 
+            border-radius: 20px; 
+            font-size: 0.85rem; 
+            border: 1px solid rgba(255,255,255,0.2); 
+            white-space: nowrap; 
+            flex-shrink: 0;
+            transition: 0.3s;
+        }
+        .category-nav a:hover, .category-nav a.active { background: var(--accent-color); color: white; border-color: var(--accent-color); }
+        .btn-nav-register { background: #ce062b !important; color: white !important; font-weight: bold; border: none !important; }
 
         /* Search Section */
         .search-container { padding: 20px 0; background: var(--bg-color); }
@@ -42,20 +64,18 @@
         .search-input { flex: 2; min-width: 200px; border: 2px solid var(--border-color); border-radius: 8px; }
         .filter-select { flex: 1; min-width: 140px; border: 2px solid var(--border-color); border-radius: 8px; }
 
-        /* Book Cards */
-        .book-card { background: #ffffff; border-radius: 10px; padding: 15px; margin-bottom: 12px; border-left: 6px solid var(--accent-color); border: 1px solid var(--border-color); display: flex; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .sno-badge { background: var(--accent-color); color: white; min-width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; margin-right: 15px; font-size: 0.85em; }
-        .book-title { color: var(--title-color); font-weight: bold; font-size: 1.05rem; }
-        .category-tag { font-size: 0.7rem; background: var(--tag-color); color: white; padding: 3px 10px; border-radius: 12px; }
+        /* Book Card List */
+        .book-card { background: #ffffff; border-radius: 10px; padding: 15px; margin-bottom: 12px; border-left: 6px solid var(--accent-color); border: 1px solid var(--border-color); display: flex; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
+        .sno-badge { background: var(--accent-color); color: white; min-width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; margin-right: 12px; font-size: 0.8rem; }
+        .book-title { color: var(--title-color); font-weight: bold; font-size: 1rem; line-height: 1.3; }
+        .category-tag { font-size: 0.7rem; background: var(--tag-color); color: white; padding: 3px 10px; border-radius: 12px; font-weight: bold; }
 
         /* Pagination */
-        .pagination-container { display: flex; justify-content: center; gap: 15px; margin: 30px 0; align-items: center; }
-        .btn-page { background: var(--title-color); color: white; border: none; padding: 8px 20px; border-radius: 6px; font-weight: bold; font-size: 0.9em; }
+        .pagination-container { display: flex; justify-content: center; gap: 15px; margin: 25px 0; align-items: center; }
+        .btn-page { background: var(--title-color); color: white; border: none; padding: 8px 18px; border-radius: 6px; font-weight: bold; font-size: 0.9em; }
         .btn-page:disabled { background: #ccc; cursor: not-allowed; }
 
-        .footer { text-align: center; padding: 30px; background: var(--footer-bg); color: #f6f2e9; margin-top: 50px; }
-        
-        /* Modal & Form */
+        .footer { text-align: center; padding: 25px; background: var(--footer-bg); color: #f6f2e9; margin-top: 40px; font-size: 0.9rem; }
         .modal-header { background: var(--title-color); color: white; }
         .mandatory { color: red; }
     </style>
@@ -63,7 +83,7 @@
 <body>
 
 <div class="header-section">
-    <img src="logo.png" alt="Library Logo" style="max-width: 100px; margin-bottom: 10px;" onerror="this.src='https://via.placeholder.com/100x100?text=Logo';">
+    <img src="logo.png" alt="Library Logo" onerror="this.src='https://via.placeholder.com/90x90?text=Logo';">
     <h2>सिन्नर सार्वजनिक वाचनालय</h2>
     <p class="mb-0 fw-bold small text-muted">डिजिटल ग्रंथसूची पोर्टल</p>
 </div>
@@ -74,7 +94,7 @@
     <a href="#" onclick="filterByCategory('कथा', this)">कथा</a>
     <a href="#" onclick="filterByCategory('कविता', this)">कविता</a>
     <a href="#" onclick="filterByCategory('चरित्र', this)">चरित्र</a>
-    <a href="#" class="btn-nav-register" data-bs-toggle="modal" data-bs-target="#memberModal">📝 वाचक सभासद व्हा</a>
+    <a href="#" class="btn-nav-register" data-bs-toggle="modal" data-bs-target="#memberModal">📝 सभासद व्हा</a>
 </div>
 
 <div class="container search-container">
@@ -115,7 +135,7 @@
                   
                   <div class="col-md-6">
                       <label class="form-label fw-bold">मोबाईल नंबर (१० अंकी) <span class="mandatory">*</span></label>
-                      <input type="tel" id="m_mobile" class="form-control" required pattern="[0-9]{10}" title="कृपया १० अंकी मोबाईल नंबर टाका">
+                      <input type="tel" id="m_mobile" class="form-control" required pattern="[0-9]{10}" title="कृपया अचूक १० अंकी मोबाईल नंबर टाका">
                   </div>
                   
                   <div class="col-md-6">
@@ -125,7 +145,7 @@
 
                   <div class="col-md-6">
                       <label class="form-label fw-bold">आधार क्रमांक (१२ अंकी) <span class="mandatory">*</span></label>
-                      <input type="text" id="m_aadhaar" class="form-control" required pattern="[0-9]{12}" title="कृपया १२ अंकी आधार नंबर टाका">
+                      <input type="text" id="m_aadhaar" class="form-control" required pattern="[0-9]{12}" title="कृपया अचूक १२ अंकी आधार नंबर टाका">
                   </div>
 
                   <div class="col-md-6">
@@ -144,7 +164,7 @@
                           <label class="form-check-label small fw-bold text-primary" for="sameAddress">सध्याचा पत्ता आणि कायमचा पत्ता एकच आहे</label>
                       </div>
                       <label class="form-label fw-bold">कायमचा पत्ता (पिनकोडसह पूर्ण) <span class="mandatory">*</span></label>
-                      <textarea id="m_perm_address" class="form-control" rows="2" required placeholder="कायमचा पत्ता, गाव, तालुका, जिल्हा, पिनकोड"></textarea>
+                      <textarea id="m_perm_address" class="form-control" rows="2" required placeholder="गाव, तालुका, जिल्हा, पिनकोडसह पूर्ण पत्ता"></textarea>
                   </div>
 
                   <div class="col-md-6">
@@ -159,13 +179,11 @@
                           <option value="वर्ग १ (१ पुस्तक)">वर्ग १ (१ पुस्तक - अनामत ३००)</option>
                           <option value="वर्ग २ (२ पुस्तके)">वर्ग २ (२ पुस्तके - अनामत ५००)</option>
                           <option value="वर्ग ३ (१ मासिक)">वर्ग ३ (१ मासिक - अनामत ७५)</option>
-                          <option value="वर्ग ४ (१ पु. + १ मा.)">वर्ग ४ (१ पु. + १ मा. - अनामत ३७५)</option>
                       </select>
                   </div>
               </div>
               <div class="mt-4 text-center">
-                  <p class="text-muted small">सर्व माहिती भरल्याची खात्री करा. 'Submit' केल्यावर तुम्हाला ईमेल येईल.</p>
-                  <button type="submit" id="submitBtn" class="btn btn-success btn-lg px-5 fw-bold">अर्ज सबमिट करा</button>
+                  <button type="submit" id="submitBtn" class="btn btn-success btn-lg px-5 fw-bold shadow">अर्ज सबमिट करा</button>
               </div>
           </form>
         </div>
@@ -179,16 +197,14 @@
 </div>
 
 <script>
-    // तुमची गुगल शीट आणि ॲप्स स्क्रिप्ट लिंक
     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1zskDx0OIbMyzY5Sj_7GBS1iokrZY_5KnPn9jsW3dDNc/gviz/tq?tqx=out:csv';
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby5gOFz_uWLMKbDPc1KImfGM_rkgKA8mDEZHJ2ZTE8RfSgWzvHjaAGUVJDlujrrub-SRQ/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby5w0AOEM8e1dkiwmXdN6-NxqEjrvwQ9fvXODXQOyq7cRUVtTh68WAAn7pvM4ucqCRH8Q/exec';
 
     let allBooks = [];
     let filteredBooks = [];
     let currentPage = 1;
     const pageSize = 50;
 
-    // डेटा लोड करणे
     async function fetchData() {
         try {
             const response = await fetch(SHEET_URL);
@@ -207,7 +223,7 @@
             setupDropdown();
             applyFilters();
         } catch (e) {
-            document.getElementById('bookList').innerText = "नेटवर्क त्रुटी किंवा चुकीची लिंक!";
+            document.getElementById('bookList').innerText = "डेटा लोड करताना तांत्रिक अडचण आली.";
         }
     }
 
@@ -278,18 +294,16 @@
         applyFilters();
     }
 
-    // पत्ता कॉपी करण्याचे लॉजिक
     function copyAddress() {
         if(document.getElementById('sameAddress').checked) {
             document.getElementById('m_perm_address').value = document.getElementById('m_address').value;
         }
     }
 
-    // फॉर्म सबमिट लॉजिक
     document.getElementById('membershipForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const btn = document.getElementById('submitBtn');
-        btn.disabled = true; btn.innerText = "अर्ज पाठवत आहे...";
+        btn.disabled = true; btn.innerText = "पाठवत आहे...";
         
         const payload = {
             name: document.getElementById('m_name').value,
@@ -305,11 +319,11 @@
 
         fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) })
         .then(() => {
-            alert("धन्यवाद! तुमचा अर्ज यशस्वीपणे सादर झाला आहे. आम्ही तुमच्याशी लवकरच संपर्क करू.");
+            alert("धन्यवाद! तुमचा अर्ज यशस्वीपणे सादर झाला आहे.");
             bootstrap.Modal.getInstance(document.getElementById('memberModal')).hide();
             this.reset();
         })
-        .catch(() => alert("त्रुटी! कृपया इंटरनेट कनेक्शन तपासा आणि पुन्हा प्रयत्न करा."))
+        .catch(() => alert("त्रुटी! कृपया इंटरनेट तपासा आणि पुन्हा प्रयत्न करा."))
         .finally(() => { btn.disabled = false; btn.innerText = "अर्ज सबमिट करा"; });
     });
 
