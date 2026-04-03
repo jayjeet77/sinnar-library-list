@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>सिन्नर सार्वजनिक वाचनालय- डिजिटल सूची</title>
+    <title>सिन्नर सार्वजनिक वाचनालय - डिजिटल सूची</title>
     
     <meta name="theme-color" content="#9d4d27">
     <link rel="manifest" href="manifest.json">
@@ -24,35 +24,39 @@
 
         body { background-color: var(--bg-color); font-family: 'Segoe UI', Arial, sans-serif; color: #333; }
         
+        /* Header */
         .header-section { background: #ffffff; padding: 25px 15px; text-align: center; border-bottom: 5px solid var(--accent-color); }
         .header-section h2 { color: var(--title-color); font-weight: bold; margin-bottom: 0; }
         
+        /* Navigation Bar */
         .category-nav { background: var(--footer-bg); overflow-x: auto; white-space: nowrap; padding: 10px; position: sticky; top: 0; z-index: 1050; display: flex; align-items: center; justify-content: center; }
         .category-nav a { color: #f6f2e9; text-decoration: none; padding: 6px 15px; margin: 0 5px; border-radius: 20px; font-size: 0.9em; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; }
         .category-nav a:hover, .category-nav a.active { background: var(--accent-color); color: white; border-color: var(--accent-color); }
 
-        /* नोंदणी बटण मेनूमध्ये हलवले */
-        .btn-nav-register { background: #ce062b !important; color: white !important; font-weight: bold; border: none !important; }
+        /* नोंदणी बटण मेनूमध्ये */
+        .btn-nav-register { background: #ce062b !important; color: white !important; font-weight: bold; border: none !important; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 
+        /* Search Section */
         .search-container { padding: 20px 0; background: var(--bg-color); }
         .search-box-group { max-width: 900px; margin: 0 auto; display: flex; gap: 10px; flex-wrap: wrap; padding: 0 15px; }
         .search-input { flex: 2; min-width: 200px; border: 2px solid var(--border-color); border-radius: 8px; }
         .filter-select { flex: 1; min-width: 140px; border: 2px solid var(--border-color); border-radius: 8px; }
 
+        /* Book Cards */
         .book-card { background: #ffffff; border-radius: 10px; padding: 15px; margin-bottom: 12px; border-left: 6px solid var(--accent-color); border: 1px solid var(--border-color); display: flex; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
         .sno-badge { background: var(--accent-color); color: white; min-width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; margin-right: 15px; font-size: 0.85em; }
         .book-title { color: var(--title-color); font-weight: bold; font-size: 1.05rem; }
         .category-tag { font-size: 0.7rem; background: var(--tag-color); color: white; padding: 3px 10px; border-radius: 12px; }
 
+        /* Pagination */
         .pagination-container { display: flex; justify-content: center; gap: 15px; margin: 30px 0; align-items: center; }
         .btn-page { background: var(--title-color); color: white; border: none; padding: 8px 20px; border-radius: 6px; font-weight: bold; font-size: 0.9em; }
         .btn-page:disabled { background: #ccc; cursor: not-allowed; }
 
         .footer { text-align: center; padding: 30px; background: var(--footer-bg); color: #f6f2e9; margin-top: 50px; }
         
-        /* Form Styling */
+        /* Modal & Form */
         .modal-header { background: var(--title-color); color: white; }
-        .form-label { font-size: 0.9em; margin-bottom: 4px; }
         .mandatory { color: red; }
     </style>
 </head>
@@ -61,7 +65,7 @@
 <div class="header-section">
     <img src="logo.png" alt="Library Logo" style="max-width: 100px; margin-bottom: 10px;" onerror="this.src='https://via.placeholder.com/100x100?text=Logo';">
     <h2>सिन्नर सार्वजनिक वाचनालय</h2>
-    <p class="mb-0 fw-bold small" style="color: #666;">डिजिटल ग्रंथसूची पोर्टल</p>
+    <p class="mb-0 fw-bold small text-muted">डिजिटल ग्रंथसूची पोर्टल</p>
 </div>
 
 <div class="category-nav" id="topCategoryNav">
@@ -70,7 +74,7 @@
     <a href="#" onclick="filterByCategory('कथा', this)">कथा</a>
     <a href="#" onclick="filterByCategory('कविता', this)">कविता</a>
     <a href="#" onclick="filterByCategory('चरित्र', this)">चरित्र</a>
-    <a href="#" class="btn-nav-register shadow-sm" data-bs-toggle="modal" data-bs-target="#memberModal">📝 सभासद व्हा</a>
+    <a href="#" class="btn-nav-register" data-bs-toggle="modal" data-bs-target="#memberModal">📝 सभासद व्हा</a>
 </div>
 
 <div class="container search-container">
@@ -98,21 +102,215 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">वाचक सभासद नोंदणी अर्ज</h5>
+          <h5 class="modal-title">नवीन सभासद नोंदणी अर्ज</h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body p-4">
           <form id="membershipForm">
               <div class="row g-3">
                   <div class="col-12">
-                      <label class="form-label fw-bold">संपूर्ण नाव (नाव वडिलांचे नाव आडनाव) <span class="mandatory">*</span></label>
-                      <input type="text" id="m_name" class="form-control" required placeholder="उदा. गणेश विठ्ठल जगताप">
+                      <label class="form-label fw-bold">संपूर्ण नाव <span class="mandatory">*</span></label>
+                      <input type="text" id="m_name" class="form-control" required placeholder="नाव - वडिलांचे नाव - आडनाव">
                   </div>
                   
                   <div class="col-md-6">
                       <label class="form-label fw-bold">मोबाईल नंबर (१० अंकी) <span class="mandatory">*</span></label>
-                      <input type="tel" id="m_mobile" class="form-control" required pattern="[0-9]{10}" title="कृपया अचूक १० अंकी मोबाईल नंबर टाका">
+                      <input type="tel" id="m_mobile" class="form-control" required pattern="[0-9]{10}" title="कृपया १० अंकी मोबाईल नंबर टाका">
                   </div>
                   
                   <div class="col-md-6">
-                      <label class="form-label fw
+                      <label class="form-label fw-bold">ईमेल आयडी <span class="mandatory">*</span></label>
+                      <input type="email" id="m_email" class="form-control" required placeholder="example@mail.com">
+                  </div>
+
+                  <div class="col-md-6">
+                      <label class="form-label fw-bold">आधार क्रमांक (१२ अंकी) <span class="mandatory">*</span></label>
+                      <input type="text" id="m_aadhaar" class="form-control" required pattern="[0-9]{12}" title="कृपया १२ अंकी आधार नंबर टाका">
+                  </div>
+
+                  <div class="col-md-6">
+                      <label class="form-label fw-bold">वय <span class="mandatory">*</span></label>
+                      <input type="number" id="m_age" class="form-control" required min="5" max="100">
+                  </div>
+
+                  <div class="col-12">
+                      <label class="form-label fw-bold">सध्याचा पत्ता (पिनकोडसह पूर्ण) <span class="mandatory">*</span></label>
+                      <textarea id="m_address" class="form-control" rows="2" required placeholder="घर क्र, गल्ली/नगर, सिन्नर, ४२२१०३"></textarea>
+                  </div>
+
+                  <div class="col-12">
+                      <div class="form-check mb-2">
+                          <input class="form-check-input" type="checkbox" id="sameAddress" onclick="copyAddress()">
+                          <label class="form-check-label small fw-bold text-primary" for="sameAddress">सध्याचा पत्ता आणि कायमचा पत्ता एकच आहे</label>
+                      </div>
+                      <label class="form-label fw-bold">कायमचा पत्ता (पिनकोडसह पूर्ण) <span class="mandatory">*</span></label>
+                      <textarea id="m_perm_address" class="form-control" rows="2" required placeholder="कायमचा पत्ता, गाव, तालुका, जिल्हा, पिनकोड"></textarea>
+                  </div>
+
+                  <div class="col-md-6">
+                      <label class="form-label fw-bold">व्यवसाय / नोकरी</label>
+                      <input type="text" id="m_job" class="form-control" placeholder="उदा. शिक्षक, शेती, व्यवसाय">
+                  </div>
+
+                  <div class="col-md-6">
+                      <label class="form-label fw-bold">निवडलेला सभासद वर्ग <span class="mandatory">*</span></label>
+                      <select id="m_class" class="form-select" required>
+                          <option value="">-- वर्ग निवडा --</option>
+                          <option value="वर्ग १ (१ पुस्तक)">वर्ग १ (१ पुस्तक - अनामत ३००)</option>
+                          <option value="वर्ग २ (२ पुस्तके)">वर्ग २ (२ पुस्तके - अनामत ५००)</option>
+                          <option value="वर्ग ३ (१ मासिक)">वर्ग ३ (१ मासिक - अनामत ७५)</option>
+                          <option value="वर्ग ४ (१ पु. + १ मा.)">वर्ग ४ (१ पु. + १ मा. - अनामत ३७५)</option>
+                      </select>
+                  </div>
+              </div>
+              <div class="mt-4 text-center">
+                  <p class="text-muted small">सर्व माहिती भरल्याची खात्री करा. 'Submit' केल्यावर तुम्हाला ईमेल येईल.</p>
+                  <button type="submit" id="submitBtn" class="btn btn-success btn-lg px-5 fw-bold">अर्ज सबमिट करा</button>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="footer">
+    <h5>© सिन्नर सार्वजनिक वाचनालय, सिन्नर</h5>
+    <p class="mb-0 fw-bold small">संकलन आणि सूचीकरण : जितेंद्र जगताप</p>
+</div>
+
+<script>
+    // तुमची गुगल शीट आणि ॲप्स स्क्रिप्ट लिंक
+    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1zskDx0OIbMyzY5Sj_7GBS1iokrZY_5KnPn9jsW3dDNc/gviz/tq?tqx=out:csv';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby5w0AOEM8e1dkiwmXdN6-NxqEjrvwQ9fvXODXQOyq7cRUVtTh68WAAn7pvM4ucqCRH8Q/exec';
+
+    let allBooks = [];
+    let filteredBooks = [];
+    let currentPage = 1;
+    const pageSize = 50;
+
+    // डेटा लोड करणे
+    async function fetchData() {
+        try {
+            const response = await fetch(SHEET_URL);
+            const data = await response.text();
+            const rows = data.split('\n').slice(1);
+            allBooks = rows.map(row => {
+                const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                return {
+                    SNo: cols[0]?.replace(/"/g, '').trim(),
+                    Class: cols[1]?.replace(/"/g, '').trim(),
+                    Name: cols[2]?.replace(/"/g, '').trim(),
+                    Author: cols[3]?.replace(/"/g, '').trim(),
+                    Pub: cols[4]?.replace(/"/g, '').trim()
+                };
+            }).filter(b => b.Name);
+            setupDropdown();
+            applyFilters();
+        } catch (e) {
+            document.getElementById('bookList').innerText = "नेटवर्क त्रुटी किंवा चुकीची लिंक!";
+        }
+    }
+
+    function setupDropdown() {
+        const select = document.getElementById('categoryFilter');
+        const categories = [...new Set(allBooks.map(b => b.Class))].sort();
+        categories.forEach(cat => { if(cat) { 
+            const opt = document.createElement('option');
+            opt.value = opt.innerText = cat;
+            select.appendChild(opt); 
+        }});
+    }
+
+    function applyFilters() {
+        const search = document.getElementById('searchInput').value.toLowerCase();
+        const cat = document.getElementById('categoryFilter').value;
+        filteredBooks = allBooks.filter(b => {
+            const matchesSearch = (b.Name?.toLowerCase().includes(search) || b.Author?.toLowerCase().includes(search) || b.SNo?.toString().includes(search));
+            const matchesCat = (cat === 'All' || b.Class === cat);
+            return matchesSearch && matchesCat;
+        });
+        currentPage = 1;
+        render();
+    }
+
+    function render() {
+        const list = document.getElementById('bookList');
+        list.innerHTML = '';
+        const start = (currentPage - 1) * pageSize;
+        const items = filteredBooks.slice(start, start + pageSize);
+        const totalPages = Math.ceil(filteredBooks.length / pageSize) || 1;
+
+        document.getElementById('totalMatches').innerText = filteredBooks.length.toLocaleString();
+        document.getElementById('currentPageNum').innerText = currentPage;
+        document.getElementById('pageIndicator').innerText = `${currentPage} / ${totalPages}`;
+        document.getElementById('paginationRow').style.display = filteredBooks.length > pageSize ? 'flex' : 'none';
+        document.getElementById('prevBtn').disabled = (currentPage === 1);
+        document.getElementById('nextBtn').disabled = (currentPage === totalPages);
+
+        if(!items.length) {
+            list.innerHTML = '<div class="text-center p-5">माहिती उपलब्ध नाही.</div>';
+            return;
+        }
+
+        items.forEach(b => {
+            const div = document.createElement('div');
+            div.className = 'book-card';
+            div.innerHTML = `
+                <div class="sno-badge">${b.SNo}</div>
+                <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h6 class="book-title mb-1">${b.Name}</h6>
+                        <span class="category-tag">${b.Class}</span>
+                    </div>
+                    <div class="small text-muted">लेखक: ${b.Author || '-'} | प्रकाशन: ${b.Pub || '-'}</div>
+                </div>
+            `;
+            list.appendChild(div);
+        });
+    }
+
+    function changePage(step) { currentPage += step; render(); window.scrollTo(0,0); }
+    
+    function filterByCategory(cat, el) {
+        document.getElementById('categoryFilter').value = cat;
+        document.querySelectorAll('.category-nav a').forEach(a => a.classList.remove('active'));
+        if(el) el.classList.add('active');
+        applyFilters();
+    }
+
+    // पत्ता कॉपी करण्याचे लॉजिक
+    function copyAddress() {
+        if(document.getElementById('sameAddress').checked) {
+            document.getElementById('m_perm_address').value = document.getElementById('m_address').value;
+        }
+    }
+
+    // फॉर्म सबमिट लॉजिक
+    document.getElementById('membershipForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true; btn.innerText = "अर्ज पाठवत आहे...";
+        
+        const payload = {
+            name: document.getElementById('m_name').value,
+            mobile: document.getElementById('m_mobile').value,
+            email: document.getElementById('m_email').value,
+            aadhaar: document.getElementById('m_aadhaar').value,
+            age: document.getElementById('m_age').value,
+            address: document.getElementById('m_address').value,
+            perm_address: document.getElementById('m_perm_address').value,
+            job: document.getElementById('m_job').value,
+            class_choice: document.getElementById('m_class').value
+        };
+
+        fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) })
+        .then(() => {
+            alert("धन्यवाद! तुमचा अर्ज यशस्वीपणे सादर झाला आहे. आम्ही तुमच्याशी लवकरच संपर्क करू.");
+            bootstrap.Modal.getInstance(document.getElementById('memberModal')).hide();
+            this.reset();
+        })
+        .catch(() => alert("त्रुटी! कृपया इंटरनेट कनेक्शन तपासा आणि पुन्हा प्रयत्न करा."))
+        .finally(() => { btn.disabled = false; btn.innerText = "अर्ज सबमिट करा"; });
+    });
+
+    document.getElementById('searchInput').addEventListener('input', apply
