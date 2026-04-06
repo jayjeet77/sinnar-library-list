@@ -22,46 +22,32 @@
 
         body { background-color: var(--bg-color); font-family: 'Segoe UI', Arial, sans-serif; color: #333; margin: 0; padding: 0; }
         
-        /* Header */
         .header-section { background: #ffffff; padding: 15px 10px; text-align: center; border-bottom: 5px solid var(--accent-color); }
         .header-section img { max-width: 80px; margin-bottom: 5px; }
         .header-section h2 { color: var(--title-color); font-weight: bold; font-size: 1.4rem; margin-bottom: 0px; }
 
-        /* Navigation */
         .main-nav { background: var(--footer-bg); display: flex; align-items: center; justify-content: center; padding: 8px 10px; position: sticky; top: 0; z-index: 1050; gap: 10px; }
         .main-nav a { color: #f6f2e9; text-decoration: none; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; transition: 0.3s; border: 1px solid transparent; cursor: pointer; }
         .main-nav a.active { background: var(--accent-color); border-color: var(--accent-color); color: white; }
         .btn-nav-register { background: #ce062b !important; color: white !important; font-weight: bold; border: none !important; }
         
-        /* Category Nav */
         .category-nav { background: #5a5e4a; display: flex; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 10px; gap: 8px; scrollbar-width: none; }
         .category-nav::-webkit-scrollbar { display: none; }
         .category-nav a { color: #f6f2e9; text-decoration: none; padding: 6px 14px; border-radius: 15px; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.2); white-space: nowrap; flex-shrink: 0; }
         .category-nav a.active { background: var(--accent-color); border-color: var(--accent-color); }
 
-        /* Content Sections */
         .content-section { display: none; padding: 20px 0; }
         .content-section.active { display: block; }
 
-        /* Director Cards (600x800 logic) */
         .director-grid .card { border: 0; box-shadow: 0 4px 8px rgba(0,0,0,0.06); border-radius: 12px; overflow: hidden; background: white; height: 100%; }
-        .director-grid .card img { 
-            width: 100%; 
-            aspect-ratio: 3 / 4; 
-            object-fit: cover; 
-            object-position: top; 
-            border-bottom: 3px solid var(--accent-color);
-        }
+        .director-grid .card img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: top; border-bottom: 3px solid var(--accent-color); }
         .pad-badge { font-size: 0.7rem; font-weight: bold; background: var(--accent-color); color: white; padding: 2px 10px; border-radius: 10px; display: inline-block; margin-top: 10px; }
-        .pad-अध्यक्ष, .pad-कार्यवाह { background: #ce062b; }
-
-        /* Book Card */
+        
         .book-card { background: #ffffff; border-radius: 10px; padding: 15px; margin-bottom: 12px; border-left: 6px solid var(--accent-color); border: 1px solid var(--border-color); display: flex; align-items: center; }
-        .sno-badge { background: var(--accent-color); color: white; min-width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; margin-right: 12px; font-size: 0.8rem; }
+        .sno-badge { background: var(--accent-color); color: white; min-width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; margin-right: 12px; }
 
-        /* Modal Styles */
         .modal-header { background: var(--title-color); color: white; }
-        .form-label { font-weight: bold; font-size: 0.9rem; }
+        .form-label { font-weight: bold; font-size: 0.85rem; margin-bottom: 2px; }
         .mandatory { color: red; }
 
         .footer { text-align: center; padding: 20px; background: var(--footer-bg); color: #f6f2e9; margin-top: 30px; }
@@ -92,21 +78,10 @@
 
     <div class="container mt-3">
         <div class="row g-2 px-2">
-            <div class="col-8">
-                <input type="text" id="searchInput" class="form-control" placeholder="नाव किंवा लेखक शोधा...">
-            </div>
-            <div class="col-4">
-                <select id="categoryFilter" class="form-select">
-                    <option value="All">विभाग</option>
-                </select>
-            </div>
+            <div class="col-8"><input type="text" id="searchInput" class="form-control" placeholder="नाव किंवा लेखक शोधा..."></div>
+            <div class="col-4"><select id="categoryFilter" class="form-select"><option value="All">विभाग</option></select></div>
         </div>
-        <div class="text-center mt-2 small text-muted">
-            निकाल: <span id="totalMatches">0</span> | पान: <span id="currentPageNum">1</span>
-        </div>
-        
         <div id="bookList" class="mt-3"></div>
-        
         <div class="pagination-container d-flex justify-content-center gap-3 mt-4" id="paginationRow">
             <button id="prevBtn" class="btn btn-sm btn-dark" onclick="changePage(-1)">मागे</button>
             <span id="pageIndicator" class="fw-bold mt-1">1 / 1</span>
@@ -117,60 +92,49 @@
 
 <div id="directors-section" class="content-section container director-grid">
     <h4 class="text-center fw-bold mb-4" style="color: var(--title-color);">वाचनालय संचालक मंडळ २०२६-२०३१</h4>
-    
     <div class="row row-cols-2 row-cols-md-4 g-3 text-center">
-        <div class="col"><div class="card shadow-sm"><img src="img_director_1.jpg"><div class="p-2"><div class="pad-badge pad-अध्यक्ष">अध्यक्ष</div><h6 class="mt-1 fw-bold small">श्री. कृष्णाजी भगत</h6></div></div></div>
-        <div class="col"><div class="card shadow-sm"><img src="img_director_2.jpg"><div class="p-2"><div class="pad-badge pad-कार्यवाह">कार्यवाह</div><h6 class="mt-1 fw-bold small">श्री. हेमंत वाजे</h6></div></div></div>
-        <div class="col"><div class="card shadow-sm"><img src="img_director_3.jpg"><div class="p-2"><div class="pad-badge">उपाध्यक्ष</div><h6 class="mt-1 fw-bold small">श्री. नरेंद्र वैद्य</h6></div></div></div>
-        <div class="col"><div class="card shadow-sm"><img src="img_director_4.jpg"><div class="p-2"><div class="pad-badge">उपाध्यक्ष</div><h6 class="mt-1 fw-bold small">श्री. राजेंद्र देशपांडे</h6></div></div></div>
-        <div class="col"><div class="card shadow-sm"><img src="img_director_5.jpg"><div class="p-2"><div class="pad-badge">संचालक</div><h6 class="mt-1 fw-bold small">श्री. मनीष गुजरथी</h6></div></div></div>
-        <div class="col"><div class="card shadow-sm"><img src="img_director_6.jpg"><div class="p-2"><div class="pad-badge">संचालक</div><h6 class="mt-1 fw-bold small">श्री. विलास पाटील</h6></div></div></div>
-        <div class="col"><div class="card shadow-sm"><img src="img_director_7.jpg"><div class="p-2"><div class="pad-badge">संचालक</div><h6 class="mt-1 fw-bold small">श्री. जितेंद्र जगताप</h6></div></div></div>
-        <div class="col"><div class="card shadow-sm"><img src="img_director_8.jpg"><div class="p-2"><div class="pad-badge">संचालक</div><h6 class="mt-1 fw-bold small">श्री. सागर गुजर</h6></div></div></div>
-        <div class="col"><div class="card shadow-sm"><img src="img_director_9.jpg"><div class="p-2"><div class="pad-badge">संचालक</div><h6 class="mt-1 fw-bold small">श्री. सुनील उगले</h6></div></div></div>
-        <div class="col"><div class="card shadow-sm"><img src="img_director_10.jpg"><div class="p-2"><div class="pad-badge">संचालक</div><h6 class="mt-1 fw-bold small">श्री. उज्ज्वल पंडित</h6></div></div></div>
-        <div class="col"><div class="card shadow-sm"><img src="img_director_11.jpg"><div class="p-2"><div class="pad-badge">संचालक</div><h6 class="mt-1 fw-bold small">श्री. मनोजकुमार भंडारी</h6></div></div></div>
-        <div class="col"><div class="card shadow-sm"><img src="img_director_12.jpg"><div class="p-2"><div class="pad-badge">संचालक</div><h6 class="mt-1 fw-bold small">सौ. निर्मल खिंवसरा</h6></div></div></div>
-        <div class="col"><div class="card shadow-sm"><img src="img_director_13.jpg"><div class="p-2"><div class="pad-badge">संचालक</div><h6 class="mt-1 fw-bold small">सौ. माधवी पंडित</h6></div></div></div>
-    </div>
+        <div class="col"><div class="card shadow-sm"><img src="img_director_1.jpg"><div class="p-2"><div class="pad-badge" style="background:#ce062b">अध्यक्ष</div><h6 class="mt-1 fw-bold small">श्री. कृष्णाजी भगत</h6></div></div></div>
+        <div class="col"><div class="card shadow-sm"><img src="img_director_2.jpg"><div class="p-2"><div class="pad-badge" style="background:#ce062b">कार्यवाह</div><h6 class="mt-1 fw-bold small">श्री. हेमंत वाजे</h6></div></div></div>
+        </div>
 </div>
 
 <div class="modal fade" id="memberModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h6 class="modal-title">नवीन वाचक सभासद नोंदणी अर्ज</h6>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
-        <div class="modal-body p-4">
+        <div class="modal-body p-3">
           <form id="membershipForm">
-              <div class="row g-3">
-                  <div class="col-12">
-                      <label class="form-label">संपूर्ण नाव (आडनाव-नाव-वडील/पती) <span class="mandatory">*</span></label>
-                      <input type="text" id="m_name" class="form-control" required>
-                  </div>
-                  <div class="col-12">
-                      <label class="form-label">मोबाईल क्रमांक <span class="mandatory">*</span></label>
-                      <input type="tel" id="m_mobile" class="form-control" required pattern="[0-9]{10}">
-                  </div>
-                  <div class="col-12">
-                      <label class="form-label">आधार क्रमांक <span class="mandatory">*</span></label>
-                      <input type="text" id="m_aadhaar" class="form-control" required pattern="[0-9]{12}">
-                  </div>
-                  <div class="col-12">
-                      <label class="form-label">सभासद वर्ग निवडा <span class="mandatory">*</span></label>
-                      <select id="m_class" class="form-select" required>
+              <div class="row g-2">
+                  <div class="col-md-12"><label class="form-label">पूर्ण नाव (आडनाव-नाव-वडील/पती) <span class="mandatory">*</span></label><input type="text" id="m_name" class="form-control form-control-sm" required></div>
+                  
+                  <div class="col-md-6"><label class="form-label">मोबाईल क्रमांक <span class="mandatory">*</span></label><input type="tel" id="m_mobile" class="form-control form-control-sm" required pattern="[0-9]{10}"></div>
+                  <div class="col-md-6"><label class="form-label">ईमेल आयडी</label><input type="email" id="m_email" class="form-control form-control-sm"></div>
+                  
+                  <div class="col-md-6"><label class="form-label">आधार क्रमांक <span class="mandatory">*</span></label><input type="text" id="m_aadhaar" class="form-control form-control-sm" required pattern="[0-9]{12}"></div>
+                  <div class="col-md-6"><label class="form-label">व्यवसाय <span class="mandatory">*</span></label><input type="text" id="m_job" class="form-control form-control-sm" required></div>
+                  
+                  <div class="col-md-6"><label class="form-label">जन्म तारीख <span class="mandatory">*</span></label><input type="date" id="m_dob" class="form-control form-control-sm" required></div>
+                  <div class="col-md-6"><label class="form-label">सभासद वर्ग <span class="mandatory">*</span></label>
+                      <select id="m_class" class="form-select form-select-sm" required>
                           <option value="">-- निवडा --</option>
-                          <option value="वर्ग १ - १ पुस्तक (अनामत ₹३००, दरमहा ₹१०)">वर्ग १ - १ पुस्तक (अनामत ₹३००, दरमहा ₹१०)</option>
-                          <option value="वर्ग २ - २ पुस्तके (अनामत ₹५००, दरमहा ₹२०)">वर्ग २ - २ पुस्तके (अनामत ₹५००, दरमहा ₹२०)</option>
-                          <option value="वर्ग ३ - १ मासिक (अनामत ₹७५, दरमहा ₹१५)">वर्ग ३ - १ मासिक (अनामत ₹७५, दरमहा ₹१५)</option>
-                          <option value="वर्ग ४ - १ पुस्तक व १ मासिक (अनामत ₹३७५, दरमहा ₹२५)">वर्ग ४ - १ पुस्तक व १ मासिक (अनामत ₹३७५, दरमहा ₹२५)</option>
-                          <option value="वर्ग ५ - २ पुस्तके व १ मासिक (अनामत ₹५७५, दरमहा ₹३०)">वर्ग ५ - २ पुस्तके व १ मासिक (अनामत ₹५७५, दरमहा ₹३०)</option>
+                          <option value="वर्ग १ - अनामत ₹३००, दरमहा ₹१०">वर्ग १ (१ पुस्तक - अनामत ₹३००, दरमहा ₹१०)</option>
+                          <option value="वर्ग २ - अनामत ₹५००, दरमहा ₹२०">वर्ग २ (२ पुस्तके - अनामत ₹५००, दरमहा ₹२०)</option>
+                          <option value="वर्ग ३ - अनामत ₹७५, दरमहा ₹१५">वर्ग ३ (१ मासिक - अनामत ₹७५, दरमहा ₹१५)</option>
+                          <option value="वर्ग ४ - अनामत ₹३७५, दरमहा ₹२५">वर्ग ४ (१ पुस्तक + १ मासिक - अनामत ₹३७५, दरमहा ₹२५)</option>
+                          <option value="वर्ग ५ - अनामत ₹५७५, दरमहा ₹३०">वर्ग ५ (२ पुस्तके + १ मासिक - अनामत ₹५७५, दरमहा ₹३०)</option>
                       </select>
                   </div>
-                  <div class="col-12 mt-4">
-                      <button type="submit" id="submitBtn" class="btn btn-success w-100 fw-bold py-2">अर्ज सादर करा</button>
-                  </div>
+
+                  <div class="col-12"><label class="form-label">सध्याचा पत्ता <span class="mandatory">*</span></label><textarea id="m_address" class="form-control form-control-sm" rows="2" required></textarea></div>
+                  
+                  <div class="col-12"><div class="form-check"><input class="form-check-input" type="checkbox" id="sameAddress" onclick="copyAddress()"><label class="form-check-label small fw-bold text-primary" for="sameAddress">कायमचा पत्ता हाच आहे</label></div></div>
+                  
+                  <div class="col-12"><label class="form-label">कायमचा पत्ता <span class="mandatory">*</span></label><textarea id="m_perm_address" class="form-control form-control-sm" rows="2" required></textarea></div>
+                  
+                  <div class="col-12 mt-3"><button type="submit" id="submitBtn" class="btn btn-success w-100 fw-bold">अर्ज सादर करा</button></div>
               </div>
           </form>
         </div>
@@ -178,10 +142,7 @@
     </div>
 </div>
 
-<div class="footer">
-    <p class="mb-1 fw-bold">© सिन्नर सार्वजनिक वाचनालय, सिन्नर</p>
-    <p class="mb-0 small">संकलन व तांत्रिक सहाय्य : जितेंद्र जगताप</p>
-</div>
+<div class="footer"><p class="mb-1 fw-bold">© सिन्नर सार्वजनिक वाचनालय, सिन्नर</p><p class="mb-0 small">संकलन : जितेंद्र जगताप</p></div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -227,8 +188,7 @@
         const cat = document.getElementById('categoryFilter').value;
         filteredBooks = allBooks.filter(b => {
             const matchesSearch = (b.Name?.toLowerCase().includes(search) || b.Author?.toLowerCase().includes(search) || b.SNo?.toString().includes(search));
-            const matchesCat = (cat === 'All' || b.Class === cat);
-            return matchesSearch && matchesCat;
+            return matchesSearch && (cat === 'All' || b.Class === cat);
         });
         currentPage = 1;
         render();
@@ -240,23 +200,28 @@
         const start = (currentPage - 1) * pageSize;
         const items = filteredBooks.slice(start, start + pageSize);
         const totalPages = Math.ceil(filteredBooks.length / pageSize) || 1;
-
         document.getElementById('totalMatches').innerText = filteredBooks.length;
         document.getElementById('currentPageNum').innerText = currentPage;
         document.getElementById('pageIndicator').innerText = `${currentPage} / ${totalPages}`;
         document.getElementById('prevBtn').disabled = (currentPage === 1);
         document.getElementById('nextBtn').disabled = (currentPage === totalPages);
-
         items.forEach(b => {
             const div = document.createElement('div');
             div.className = 'book-card shadow-sm';
-            div.innerHTML = `<div class="sno-badge">${b.SNo}</div><div><h6 class="book-title mb-0">${b.Name}</h6><small class="text-muted">${b.Author} | ${b.Class}</small></div>`;
+            div.innerHTML = `<div class="sno-badge">${b.SNo}</div><div><h6 class="mb-0">${b.Name}</h6><small class="text-muted">${b.Author} | ${b.Class}</small></div>`;
             list.appendChild(div);
         });
     }
 
     function changePage(step) { currentPage += step; render(); window.scrollTo(0,0); }
     
+    function showSection(id, el) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
+        el.classList.add('active');
+    }
+
     function filterByCategory(cat, el) {
         document.getElementById('categoryFilter').value = cat;
         document.querySelectorAll('.category-nav a').forEach(a => a.classList.remove('active'));
@@ -264,11 +229,10 @@
         applyFilters();
     }
 
-    function showSection(id, el) {
-        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
-        el.classList.add('active');
+    function copyAddress() {
+        if(document.getElementById('sameAddress').checked) {
+            document.getElementById('m_perm_address').value = document.getElementById('m_address').value;
+        }
     }
 
     document.getElementById('membershipForm').addEventListener('submit', function(e) {
@@ -279,22 +243,22 @@
         const payload = {
             name: document.getElementById('m_name').value,
             mobile: document.getElementById('m_mobile').value,
+            email: document.getElementById('m_email').value,
             aadhaar: document.getElementById('m_aadhaar').value,
+            job: document.getElementById('m_job').value,
+            dob: document.getElementById('m_dob').value,
             membership_class: document.getElementById('m_class').value,
-            date: new Date().toLocaleDateString()
+            address: document.getElementById('m_address').value,
+            perm_address: document.getElementById('m_perm_address').value
         };
 
-        fetch(SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: JSON.stringify(payload)
-        }).then(() => {
-            alert("अर्ज यशस्वीरित्या पाठवला गेला!");
+        fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
+        .then(() => {
+            alert("तुमचा अर्ज यशस्वीरित्या प्राप्त झाला!");
             bootstrap.Modal.getInstance(document.getElementById('memberModal')).hide();
             this.reset();
         }).finally(() => {
-            btn.disabled = false;
-            btn.innerText = "अर्ज सादर करा";
+            btn.disabled = false; btn.innerText = "अर्ज सादर करा";
         });
     });
 
