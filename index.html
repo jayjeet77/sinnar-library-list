@@ -30,33 +30,32 @@
         
         /* Main Navigation */
         .main-nav { background: var(--footer-bg); display: flex; align-items: center; justify-content: center; padding: 10px; position: sticky; top: 0; z-index: 1100; gap: 8px; }
-        .main-nav a { color: #f6f2e9; text-decoration: none; padding: 7px 15px; border-radius: 20px; font-size: 0.9rem; transition: 0.3s; border: 1px solid transparent; }
+        .main-nav a { color: #f6f2e9; text-decoration: none; padding: 7px 15px; border-radius: 20px; font-size: 0.9rem; transition: 0.3s; border: 1px solid transparent; cursor: pointer; }
         .main-nav a.active { background: var(--accent-color); color: white; }
         .btn-nav-register { background: #ce062b !important; border-color: #ce062b !important; font-weight: bold; }
 
-        /* Category Nav (Sub-menu) */
+        /* Category Nav */
         .category-nav { background: #5a5e4a; display: flex; flex-wrap: nowrap; overflow-x: auto; padding: 10px; gap: 8px; scrollbar-width: none; }
         .category-nav::-webkit-scrollbar { display: none; }
         .category-nav a { color: #f6f2e9; text-decoration: none; padding: 6px 14px; border-radius: 15px; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.2); white-space: nowrap; }
         .category-nav a.active { background: var(--accent-color); border-color: var(--accent-color); }
 
-        /* Sections Visibility */
+        /* Content Sections */
         .content-section { display: none; padding-bottom: 40px; }
         .content-section.active { display: block; }
 
         /* Book Cards */
-        .book-card { background: #ffffff; border-radius: 10px; padding: 15px; margin-bottom: 12px; border-left: 6px solid var(--accent-color); border: 1px solid var(--border-color); display: flex; align-items: center; }
-        .sno-badge { background: var(--accent-color); color: white; min-width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; margin-right: 15px; }
+        .book-card { background: #ffffff; border-radius: 10px; padding: 15px; margin-bottom: 12px; border-left: 6px solid var(--accent-color); border: 1px solid var(--border-color); display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .sno-badge { background: var(--accent-color); color: white; min-width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; margin-right: 15px; font-size: 0.9rem; }
 
-        /* Director Grid (For 600x800 Photos) */
+        /* Director Grid (For 600x800) */
         .director-grid h3 { color: var(--title-color); font-weight: bold; text-align: center; margin: 30px 0; }
         .director-grid .card { border: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.08); border-radius: 10px; overflow: hidden; background: white; height: 100%; }
-        
         .director-grid .card img { 
             width: 100%; 
-            aspect-ratio: 3 / 4; /* ६००x८०० साठी परफेक्ट ३:४ रेशो */
+            aspect-ratio: 3 / 4; 
             object-fit: cover; 
-            object-position: top; /* चेहरा वरतून कट होणार नाही */
+            object-position: top; 
             border-bottom: 3px solid var(--accent-color);
         }
         
@@ -65,7 +64,6 @@
 
         .footer { text-align: center; padding: 30px; background: var(--footer-bg); color: #f6f2e9; margin-top: 50px; }
         .modal-header { background: var(--title-color); color: white; }
-        .mandatory { color: red; }
     </style>
 </head>
 <body>
@@ -77,18 +75,18 @@
 </div>
 
 <div class="main-nav shadow-sm" id="mainNav">
-    <a href="#" class="active" onclick="showSection('portal-section', this)">डिजिटल सूची</a>
-    <a href="#" onclick="showSection('directors-section', this)">संचालक मंडळ</a>
-    <a href="#" class="btn-nav-register" data-bs-toggle="modal" data-bs-target="#memberModal">📝 वाचक सभासद व्हा</a>
+    <a id="link-portal" class="active" onclick="showSection('portal-section', this)">डिजिटल सूची</a>
+    <a id="link-directors" onclick="showSection('directors-section', this)">संचालक मंडळ</a>
+    <a class="btn-nav-register" data-bs-toggle="modal" data-bs-target="#memberModal">📝 वाचक सभासद व्हा</a>
 </div>
 
 <div id="portal-section" class="content-section active">
     <div class="category-nav">
-        <a href="#" class="active" onclick="filterByCategory('All', this)">सर्व पुस्तके</a>
-        <a href="#" onclick="filterByCategory('कादंबरी', this)">कादंबरी</a>
-        <a href="#" onclick="filterByCategory('कथा', this)">कथा</a>
-        <a href="#" onclick="filterByCategory('कविता', this)">कविता</a>
-        <a href="#" onclick="filterByCategory('चरित्र', this)">चरित्र</a>
+        <a href="javascript:void(0)" class="active" onclick="filterByCategory('All', this)">सर्व पुस्तके</a>
+        <a href="javascript:void(0)" onclick="filterByCategory('कादंबरी', this)">कादंबरी</a>
+        <a href="javascript:void(0)" onclick="filterByCategory('कथा', this)">कथा</a>
+        <a href="javascript:void(0)" onclick="filterByCategory('कविता', this)">कविता</a>
+        <a href="javascript:void(0)" onclick="filterByCategory('चरित्र', this)">चरित्र</a>
     </div>
 
     <div class="container mt-4">
@@ -103,10 +101,12 @@
             </div>
         </div>
         <div class="text-center mt-3 small text-muted">
-            एकूण निकाल: <span id="totalMatches" class="fw-bold">0</span> | पान: <span id="currentPageNum" class="fw-bold">1</span>
+            निकाल: <span id="totalMatches" class="fw-bold">0</span> | पान: <span id="currentPageNum" class="fw-bold">1</span>
         </div>
         
-        <div id="bookList" class="mt-3"></div>
+        <div id="bookList" class="mt-3">
+            <div class="text-center p-5">माहिती लोड होत आहे...</div>
+        </div>
         
         <div class="pagination-container d-flex justify-content-center gap-3 mt-4" id="paginationRow" style="display: none;">
             <button id="prevBtn" class="btn btn-dark" onclick="changePage(-1)">मागे</button>
@@ -118,44 +118,43 @@
 
 <div id="directors-section" class="content-section container director-grid">
     <h3>वाचनालय संचालक मंडळ २०२६-२०३१</h3>
-    
     <div class="row row-cols-2 row-cols-md-4 g-3 text-center">
-        <div class="col">
-            <div class="card shadow-sm">
-                <img src="img_director_1.jpg" onerror="this.src='https://via.placeholder.com/600x800?text=Director';">
-                <div class="p-2">
-                    <div class=" पद-badge  पद-अध्यक्ष">अध्यक्ष</div>
-                    <h6 class="mt-2 fw-bold small">श्री. कृष्णाजी भगत</h6>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card shadow-sm">
-                <img src="img_director_2.jpg" onerror="this.src='https://via.placeholder.com/600x800?text=Director';">
-                <div class="p-2">
-                    <div class=" पद-badge  पद-कार्यवाह">कार्यवाह</div>
-                    <h6 class="mt-2 fw-bold small">श्री. हेमंत वाजे</h6>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card shadow-sm">
-                <img src="img_director_3.jpg" onerror="this.src='https://via.placeholder.com/600x800?text=Director';">
-                <div class="p-2">
-                    <div class=" पद-badge">उपाध्यक्ष</div>
-                    <h6 class="mt-2 fw-bold small">श्री. नरेंद्र वैद्य</h6>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card shadow-sm">
-                <img src="img_director_4.jpg" onerror="this.src='https://via.placeholder.com/600x800?text=Director';">
-                <div class="p-2">
-                    <div class=" पद-badge">उपाध्यक्ष</div>
-                    <h6 class="mt-2 fw-bold small">श्री. राजेंद्र देशपांडे</h6>
-                </div>
-            </div>
-        </div>
+        <div class="col"><div class="card shadow-sm"><img src="img_director_1.jpg" onerror="this.src='https://via.placeholder.com/600x800?text=Photo';"><div class="p-2"><div class=" पद-badge  पद-अध्यक्ष">अध्यक्ष</div><h6 class="mt-2 fw-bold small">श्री. कृष्णाजी भगत</h6></div></div></div>
+        <div class="col"><div class="card shadow-sm"><img src="img_director_2.jpg" onerror="this.src='https://via.placeholder.com/600x800?text=Photo';"><div class="p-2"><div class=" पद-badge  पद-कार्यवाह">कार्यवाह</div><h6 class="mt-2 fw-bold small">श्री. हेमंत वाजे</h6></div></div></div>
+        <div class="col"><div class="card shadow-sm"><img src="img_director_3.jpg" onerror="this.src='https://via.placeholder.com/600x800?text=Photo';"><div class="p-2"><div class=" पद-badge">उपाध्यक्ष</div><h6 class="mt-2 fw-bold small">श्री. नरेंद्र वैद्य</h6></div></div></div>
+        <div class="col"><div class="card shadow-sm"><img src="img_director_4.jpg" onerror="this.src='https://via.placeholder.com/600x800?text=Photo';"><div class="p-2"><div class=" पद-badge">उपाध्यक्ष</div><h6 class="mt-2 fw-bold small">श्री. राजेंद्र देशपांडे</h6></div></div></div>
         
-        <div class="col"><div class="card shadow-sm"><img src="img_director_5.jpg" onerror="this.src='https://via.placeholder.com/600x800?text=Director';"><div class="p-2"><div class=" पद-badge">संचालक</div><h6 class="mt-1 fw-bold small">श्री. मनीष गुजरथी</h6></div></div></div>
-        <div class="col"><div class="card shadow-sm"><img src="img_director_6.jpg" onerror="this.src='https://via.placeholder.com/600x800?text=Director';"><div class="p-2"><div class="
+        <div class="col"><div class="card shadow-sm"><img src="img_director_5.jpg" onerror="this.src='https://via.placeholder.com/600x800?text=Photo';"><div class="p-2"><div class=" पद-badge">संचालक</div><h6 class="mt-1 fw-bold small">श्री. मनीष गुजरथी</h6></div></div></div>
+        <div class="col"><div class="card shadow-sm"><img src="img_director_6.jpg" onerror="this.src='https://via.placeholder.com/600x800?text=Photo';"><div class="p-2"><div class=" पद-badge">संचालक</div><h6 class="mt-1 fw-bold small">श्री. विलास पाटील</h6></div></div></div>
+        <div class="col"><div class="card shadow-sm"><img src="img_director_7.jpg" onerror="this.src='https://via.placeholder.com/600x800?text=Photo';"><div class="p-2"><div class=" पद-badge">संचालक</div><h6 class="mt-1 fw-bold small">श्री. जितेंद्र जगताप</h6></div></div></div>
+        <div class="col"><div class="card shadow-sm"><img src="img_director_8.jpg" onerror="this.src='https://via.placeholder.com/600x800?text=Photo';"><div class="p-2"><div class=" पद-badge">संचालक</div><h6 class="mt-1 fw-bold small">श्री. सागर गुजर</h6></div></div></div>
+        <div class="col"><div class="card shadow-sm"><img src="img_director_9.jpg" onerror="this.src='https://via.placeholder.com/600x800?text=Photo';"><div class="p-2"><div class=" पद-badge">संचालक</div><h6 class="mt-1 fw-bold small">श्री. सुनील उगले</h6></div></div></div>
+        <div class="col"><div class="card shadow-sm"><img src="img_director_10.jpg" onerror="this.src='https://via.placeholder.com/600x800?text=Photo';"><div class="p-2"><div class=" पद-badge">संचालक</div><h6 class="mt-1 fw-bold small">श्री. उज्ज्वल पंडित</h6></div></div></div>
+        <div class="col"><div class="card shadow-sm"><img src="img_director_11.jpg" onerror="this.src='https://via.placeholder.com/600x800?text=Photo';"><div class="p-2"><div class=" पद-badge">संचालक</div><h6 class="mt-1 fw-bold small">श्री. मनोजकुमार भंडारी</h6></div></div></div>
+        <div class="col"><div class="card shadow-sm"><img src="img_director_12.jpg" onerror="this.src='https://via.placeholder.com/600x800?text=Photo';"><div class="p-2"><div class=" पद-badge">संचालक</div><h6 class="mt-1 fw-bold small">सौ. निर्मल खिंवसरा</h6></div></div></div>
+        <div class="col"><div class="card shadow-sm"><img src="img_director_13.jpg" onerror="this.src='https://via.placeholder.com/600x800?text=Photo';"><div class="p-2"><div class=" पद-badge">संचालक</div><h6 class="mt-1 fw-bold small">सौ. माधवी पंडित</h6></div></div></div>
+    </div>
+</div>
+
+<div class="modal fade" id="memberModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">नवीन वाचक सभासद नोंदणी अर्ज</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          <form id="membershipForm">
+              <div class="row g-3">
+                  <div class="col-12"><label class="form-label fw-bold">संपूर्ण नाव *</label><input type="text" id="m_name" class="form-control" required placeholder="नाव-वडील-आडनाव"></div>
+                  <div class="col-md-6"><label class="form-label fw-bold">मोबाईल *</label><input type="tel" id="m_mobile" class="form-control" required pattern="[0-9]{10}"></div>
+                  <div class="col-md-6"><label class="form-label fw-bold">आधार क्रमांक *</label><input type="text" id="m_aadhaar" class="form-control" required pattern="[0-9]{12}"></div>
+                  <div class="col-md-12">
+                      <label class="form-label fw-bold">निवडलेला सभासद वर्ग *</label>
+                      <select id="m_class" class="form-select" required>
+                          <option value="">-- वर्ग निवडा --</option>
+                          <option value="वर्ग १">वर्ग १ (१ पुस्तक - अनामत ३००)</option>
+                          <option value="वर्ग २">वर्ग २ (२ पुस्तके - अनामत ५००)</option>
+                          <option value="वर्ग ३">वर्ग ३ (१ मासिक - अनामत ७५)</option>
+                          <option value="वर्ग ४">वर्ग ४ (१ पु. + १ मा. - अनामत ३७५)</option>
+                          <option value="वर्ग ५">वर्ग ५ (२ पुस्तके + १ मासिक - अनामत
