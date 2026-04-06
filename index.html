@@ -177,19 +177,37 @@
         currentPage = 1; render();
     }
 
-    function render() {
-        const list = document.getElementById('bookList'); list.innerHTML = '';
-        const items = filteredBooks.slice((currentPage - 1) * pageSize, currentPage * pageSize);
-        const total = Math.ceil(filteredBooks.length / pageSize) || 1;
-        document.getElementById('pageIndicator').innerText = `${currentPage} / ${total}`;
-        document.getElementById('prevBtn').disabled = (currentPage === 1);
-        document.getElementById('nextBtn').disabled = (currentPage === total);
-        items.forEach(b => {
-            const d = document.createElement('div'); d.className = 'book-card shadow-sm';
-            d.innerHTML = `<div class="sno-badge">${b.SNo}</div><div><h6 class="mb-0 fw-bold small">${b.Name}</h6><small class="text-muted">${b.Author} | ${b.Class}</small></div>`;
-            list.appendChild(d);
-        });
+    ffunction render() {
+    const list = document.getElementById('bookList'); 
+    list.innerHTML = '';
+    const items = filteredBooks.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+    const total = Math.ceil(filteredBooks.length / pageSize) || 1;
+    
+    document.getElementById('pageIndicator').innerText = `${currentPage} / ${total}`;
+    document.getElementById('prevBtn').disabled = (currentPage === 1);
+    document.getElementById('nextBtn').disabled = (currentPage === total);
+    
+    if(items.length === 0) { 
+        list.innerHTML = '<p class="text-center mt-5">माहिती उपलब्ध नाही.</p>'; 
+        return; 
     }
+    
+    items.forEach(b => {
+        const d = document.createElement('div'); 
+        d.className = 'book-card shadow-sm';
+        // येथे बदल केला आहे: विभाग (b.Class) शेवटी दिसेल
+        d.innerHTML = `
+            <div class="sno-badge">${b.SNo}</div>
+            <div class="flex-grow-1">
+                <h6 class="mb-0 fw-bold" style="font-size: 0.9rem;">${b.Name}</h6>
+                <div class="d-flex justify-content-between align-items-center mt-1">
+                    <small class="text-muted">${b.Author}</small>
+                    <span class="badge bg-light text-dark border" style="font-size: 0.7rem;">${b.Class}</span>
+                </div>
+            </div>`;
+        list.appendChild(d);
+    });
+}
 
     function changePage(st) { currentPage += st; render(); window.scrollTo(0,0); }
     function showSection(id, el) {
