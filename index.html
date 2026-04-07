@@ -1,86 +1,307 @@
-<div id="directors-section" class="content-section container">
-    <h5 class="text-center fw-bold mb-4" style="color: var(--title-color);">विद्यमान संचालक मंडळ (२०२६-२०३१)</h5>
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>सिन्नर सार्वजनिक वाचनालय - डिजिटल सूची</title>
     
-    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3 text-center">
-        <div class="col">
-            <div class="card border-0 shadow-sm h-100">
-                <img src="img_director_1.jpg" class="card-img-top" style="aspect-ratio:3/4; object-fit:cover;" onerror="this.src='https://via.placeholder.com/150?text=Sinnar+Library';">
-                <div class="p-2">
-                    <span class="badge bg-danger mb-1" style="font-size: 0.7rem;">अध्यक्ष</span>
-                    <h6 style="font-size: 0.85rem;" class="fw-bold mb-0">श्री. कृष्णाजी भगत</h6>
-                </div>
-            </div>
-        </div>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #f6f2e9;
+            --title-color: #9d4d27;
+            --accent-color: #C5884B;
+            --footer-bg: #494C3B;
+            --text-dark: #7a4224;
+        }
 
-        <div class="col">
-            <div class="card border-0 shadow-sm h-100">
-                <img src="img_director_2.jpg" class="card-img-top" style="aspect-ratio:3/4; object-fit:cover;" onerror="this.src='https://via.placeholder.com/150?text=Sinnar+Library';">
-                <div class="p-2">
-                    <span class="badge bg-danger mb-1" style="font-size: 0.7rem;">कार्यवाह</span>
-                    <h6 style="font-size: 0.85rem;" class="fw-bold mb-0">श्री. हेमंत वाजे</h6>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card border-0 shadow-sm h-100">
-                <img src="img_director_3.jpg" class="card-img-top" style="aspect-ratio:3/4; object-fit:cover;" onerror="this.src='https://via.placeholder.com/150?text=Sinnar+Library';">
-                <div class="p-2">
-                    <span class="badge bg-warning text-dark mb-1" style="font-size: 0.7rem;">उपाध्यक्ष</span>
-                    <h6 style="font-size: 0.85rem;" class="fw-bold mb-0">श्री. नरेंद्र वैद्य</h6>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card border-0 shadow-sm h-100">
-                <img src="img_director_4.jpg" class="card-img-top" style="aspect-ratio:3/4; object-fit:cover;" onerror="this.src='https://via.placeholder.com/150?text=Sinnar+Library';">
-                <div class="p-2">
-                    <span class="badge bg-warning text-dark mb-1" style="font-size: 0.7rem;">उपाध्यक्ष</span>
-                    <h6 style="font-size: 0.85rem;" class="fw-bold mb-0">श्री. राजेंद्र देशपांडे</h6>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card border-0 shadow-sm h-100">
-                <img src="img_director_5.jpg" class="card-img-top" style="aspect-ratio:3/4; object-fit:cover;" onerror="this.src='https://via.placeholder.com/150?text=Sinnar+Library';">
-                <div class="p-2">
-                    <span class="badge bg-secondary mb-1" style="font-size: 0.7rem;">संचालक</span>
-                    <h6 style="font-size: 0.85rem;" class="fw-bold mb-0">श्री. मनीष गुजराथी</h6>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card border-0 shadow-sm h-100">
-                <img src="img_director_6.jpg" class="card-img-top" style="aspect-ratio:3/4; object-fit:cover;" onerror="this.src='https://via.placeholder.com/150?text=Sinnar+Library';">
-                <div class="p-2">
-                    <span class="badge bg-secondary mb-1" style="font-size: 0.7rem;">संचालक</span>
-                    <h6 style="font-size: 0.85rem;" class="fw-bold mb-0">श्री. विलास पाटील</h6>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card border-0 shadow-sm h-100">
-                <img src="img_director_7.jpg" class="card-img-top" style="aspect-ratio:3/4; object-fit:cover;" onerror="this.src='https://via.placeholder.com/150?text=Sinnar+Library';">
-                <div class="p-2">
-                    <span class="badge bg-secondary mb-1" style="font-size: 0.7rem;">संचालक</span>
-                    <h6 style="font-size: 0.85rem;" class="fw-bold mb-0">श्री. जितेंद्र जगताप</h6>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card border-0 shadow-sm h-100">
-                <img src="img_director_8.jpg" class="card-img-top" style="aspect-ratio:3/4; object-fit:cover;" onerror="this.src='https://via.placeholder.com/150?text=Sinnar+Library';">
-                <div class="p-2">
-                    <span class="badge bg-secondary mb-1" style="font-size: 0.7rem;">संचालक</span>
-                    <h6 style="font-size: 0.85rem;" class="fw-bold mb-0">श्री. सागर गुजर</h6>
-                </div>
-            </div>
-        </div>
+        body { background-color: var(--bg-color); font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
         
-        </div>
+        .header-section { background: #ffffff; padding: 15px 10px; text-align: center; border-bottom: 5px solid var(--accent-color); }
+        .header-section img { max-width: 80px; }
+        .header-section h2 { color: var(--title-color); font-weight: bold; font-size: 1.3rem; margin: 5px 0 0; }
+
+        .main-nav { background: var(--footer-bg); display: flex; justify-content: center; padding: 8px; position: sticky; top: 0; z-index: 1050; gap: 8px; }
+        .main-nav a { color: #f6f2e9; text-decoration: none; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; }
+        .main-nav a.active { background: var(--accent-color); color: white; }
+        .btn-nav-register { background: #ce062b !important; color: white !important; font-weight: bold; }
+        
+        .category-nav { background: #5a5e4a; display: flex; overflow-x: auto; padding: 10px; gap: 8px; scrollbar-width: none; }
+        .category-nav a { color: #f6f2e9; text-decoration: none; padding: 5px 12px; border-radius: 15px; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.2); white-space: nowrap; }
+        .category-nav a.active { background: var(--accent-color); border-color: var(--accent-color); }
+
+        .content-section { display: none; padding: 20px 0; }
+        .content-section.active { display: block; }
+
+        #searchCount { font-size: 0.85rem; color: var(--title-color); font-weight: bold; margin-bottom: 10px; }
+
+        /* Book Card Style - Fixed Overlap */
+        .book-card { 
+            background: #ffffff; 
+            border-radius: 15px; 
+            padding: 15px; 
+            margin-bottom: 15px; 
+            border: 1px solid #ddd; 
+            border-left: 10px solid var(--accent-color); 
+            display: flex; 
+            align-items: flex-start;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .sno-badge { 
+            background: var(--accent-color); 
+            color: white; 
+            min-width: 50px; 
+            height: 50px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 50%; 
+            font-weight: bold; 
+            margin-right: 15px; 
+            font-size: 0.85rem; 
+            flex-shrink: 0;
+        }
+        .book-info { flex-grow: 1; }
+        .book-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 5px; }
+        .book-info h6 { color: var(--text-dark); font-weight: 800; font-size: 1.1rem; margin: 0; line-height: 1.3; }
+        .book-info p { margin: 2px 0; font-size: 0.9rem; color: #555; }
+        
+        .cat-tag {
+            background: #9a9a8c;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .modal-header { background: var(--title-color); color: white; }
+        .form-label { font-weight: bold; font-size: 0.85rem; margin-bottom: 2px; }
+        .mandatory { color: red; }
+        .footer { text-align: center; padding: 20px; background: var(--footer-bg); color: #f6f2e9; margin-top: 20px; }
+        
+        /* Director Image Placeholder */
+        .card-img-top { background: #eee; aspect-ratio: 3/4; object-fit: cover; }
+    </style>
+</head>
+<body>
+
+<div class="header-section">
+    <img src="logo.png" alt="Logo" onerror="this.src='https://via.placeholder.com/80?text=Logo';">
+    <h2>सिन्नर सार्वजनिक वाचनालय</h2>
+    <p class="mb-0 fw-bold small text-muted">डिजिटल ग्रंथसूची आणि सभासद पोर्टल</p>
 </div>
+
+<div class="main-nav shadow-sm" id="mainNav">
+    <a href="javascript:void(0)" class="active" onclick="showSection('portal-section', this)">डिजिटल सूची</a>
+    <a href="javascript:void(0)" onclick="showSection('directors-section', this)">संचालक मंडळ</a>
+    <a href="javascript:void(0)" class="btn-nav-register" data-bs-toggle="modal" data-bs-target="#memberModal">वाचक सभासद व्हा</a>
+</div>
+
+<div id="portal-section" class="content-section active">
+    <div class="category-nav" id="categoryNav">
+        <a href="javascript:void(0)" class="active" onclick="filterByCategory('All', this)">सर्व पुस्तके</a>
+    </div>
+    <div class="container mt-3">
+        <div class="row g-2 px-2">
+            <div class="col-8"><input type="text" id="searchInput" class="form-control" placeholder="नाव किंवा लेखक शोधा..."></div>
+            <div class="col-4"><select id="categoryFilter" class="form-select"><option value="All">सर्व विभाग</option></select></div>
+        </div>
+        <div id="searchCount" class="px-2 mt-2">पुस्तके शोधत आहे...</div>
+        <div id="bookList" class="mt-2"></div>
+        <div class="d-flex justify-content-center gap-3 mt-4 pb-4">
+            <button id="prevBtn" class="btn btn-sm btn-dark" onclick="changePage(-1)">मागे</button>
+            <span id="pageIndicator" class="fw-bold mt-1 small">1 / 1</span>
+            <button id="nextBtn" class="btn btn-sm btn-dark" onclick="changePage(1)">पुढचे</button>
+        </div>
+    </div>
+</div>
+
+<div id="directors-section" class="content-section container">
+    <h5 class="text-center fw-bold mb-4" style="color: var(--title-color);">विद्यमान संचालक मंडळ</h5>
+    <div class="row row-cols-2 row-cols-md-4 g-3 text-center">
+        <div class="col"><div class="card border-0 shadow-sm"><img src="img_director_1.jpg" class="card-img-top" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png';"><div class="p-2"><span class="badge bg-danger mb-1">अध्यक्ष</span><h6 class="small fw-bold">श्री. कृष्णाजी भगत</h6></div></div></div>
+        <div class="col"><div class="card border-0 shadow-sm"><img src="img_director_2.jpg" class="card-img-top" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png';"><div class="p-2"><span class="badge bg-danger mb-1">कार्यवाह</span><h6 class="small fw-bold">श्री. हेमंत वाजे</h6></div></div></div>
+        <div class="col"><div class="card border-0 shadow-sm"><img src="img_director_3.jpg" class="card-img-top" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png';"><div class="p-2"><span class="badge bg-warning mb-1">उपाध्यक्ष</span><h6 class="small fw-bold">श्री. नरेंद्र वैद्य</h6></div></div></div>
+        <div class="col"><div class="card border-0 shadow-sm"><img src="img_director_4.jpg" class="card-img-top" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png';"><div class="p-2"><span class="badge bg-warning mb-1">उपाध्यक्ष</span><h6 class="small fw-bold">श्री. राजेंद्र देशपांडे</h6></div></div></div>
+        <div class="col"><div class="card border-0 shadow-sm"><img src="img_director_5.jpg" class="card-img-top" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png';"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">श्री. मनीष गुजराथी</h6></div></div></div>
+        <div class="col"><div class="card border-0 shadow-sm"><img src="img_director_6.jpg" class="card-img-top" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png';"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">श्री. विलास पाटील</h6></div></div></div>
+        <div class="col"><div class="card border-0 shadow-sm"><img src="img_director_7.jpg" class="card-img-top" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png';"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">श्री. जितेंद्र जगताप</h6></div></div></div>
+        <div class="col"><div class="card border-0 shadow-sm"><img src="img_director_8.jpg" class="card-img-top" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png';"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">श्री. सागर गुजर</h6></div></div></div>
+        <div class="col"><div class="card border-0 shadow-sm"><img src="img_director_9.jpg" class="card-img-top" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png';"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">श्री. सुनील उगले</h6></div></div></div>
+        <div class="col"><div class="card border-0 shadow-sm"><img src="img_director_10.jpg" class="card-img-top" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png';"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">श्री. उज्वल पंडित</h6></div></div></div>
+        <div class="col"><div class="card border-0 shadow-sm"><img src="img_director_11.jpg" class="card-img-top" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png';"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">श्री. मनोजकुमार भंडारी</h6></div></div></div>
+        <div class="col"><div class="card border-0 shadow-sm"><img src="img_director_12.jpg" class="card-img-top" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png';"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">सौ. निर्मल खिंवसरा</h6></div></div></div>
+        <div class="col"><div class="card border-0 shadow-sm"><img src="img_director_13.jpg" class="card-img-top" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png';"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">सौ. माधवी पंडित</h6></div></div></div>
+    </div>
+</div>
+
+<div class="modal fade" id="memberModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title">नवीन वाचक सभासद नोंदणी अर्ज</h6>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-3">
+          <form id="membershipForm">
+              <div class="row g-2">
+                  <div class="col-12"><label class="form-label">पूर्ण नाव <span class="mandatory">*</span></label><input type="text" id="m_name" class="form-control form-control-sm" required placeholder="आडनाव नाव वडिलांचे नाव"></div>
+                  <div class="col-md-6"><label class="form-label">मोबाईल <span class="mandatory">*</span></label><input type="tel" id="m_mobile" class="form-control form-control-sm" required pattern="[0-9]{10}"></div>
+                  <div class="col-md-6"><label class="form-label">ईमेल आयडी</label><input type="email" id="m_email" class="form-control form-control-sm"></div>
+                  <div class="col-md-6"><label class="form-label">आधार क्रमांक <span class="mandatory">*</span></label><input type="text" id="m_aadhaar" class="form-control form-control-sm" required pattern="[0-9]{12}"></div>
+                  <div class="col-md-6"><label class="form-label">व्यवसाय <span class="mandatory">*</span></label><input type="text" id="m_job" class="form-control form-control-sm" required></div>
+                  <div class="col-md-6"><label class="form-label">जन्म तारीख <span class="mandatory">*</span></label><input type="date" id="m_dob" class="form-control form-control-sm" required></div>
+                  <div class="col-md-6"><label class="form-label">सभासद वर्गनिवडा <span class="mandatory">*</span></label>
+                      <select id="m_class" class="form-select form-select-sm" required>
+                          <option value="">-- निवडा --</option>
+                          <option value="वर्ग १ (अनामत ₹३००, मासिक ₹१०)">वर्ग १ (अनामत ₹३००, दरमहा ₹१०)</option>
+                          <option value="वर्ग २ (अनामत ₹५००, मासिक ₹२०)">वर्ग २ (अनामत ₹५००, दरमहा ₹२०)</option>
+                          <option value="वर्ग ३ (अनामत ₹७५, मासिक ₹१५)">वर्ग ३ (अनामत ₹७५, दरमहा ₹१५)</option>
+                          <option value="वर्ग ४ (अनामत ₹३७५, मासिक ₹२५)">वर्ग ४ (अनामत ₹३७५, दरमहा ₹२५)</option>
+                          <option value="वर्ग ५ (अनामत ₹५७५, मासिक ₹३०)">वर्ग ५ (अनामत ₹५७५,दरमहा ₹३०)</option>
+                      </select>
+                  </div>
+                  <div class="col-12"><label class="form-label">सध्याचा पत्ता <span class="mandatory">*</span></label><textarea id="m_address" class="form-control form-control-sm" rows="2" required></textarea></div>
+                  <div class="col-12"><div class="form-check"><input class="form-check-input" type="checkbox" id="sameAddress" onclick="copyAddress()"><label class="form-check-label small fw-bold text-primary" for="sameAddress">कायमचा पत्ता हाच आहे</label></div></div>
+                  <div class="col-12"><label class="form-label">कायमचा पत्ता <span class="mandatory">*</span></label><textarea id="m_perm_address" class="form-control form-control-sm" rows="2" required></textarea></div>
+                  <div class="col-12 mt-3"><button type="submit" id="submitBtn" class="btn btn-success w-100 fw-bold">अर्ज सादर करा</button></div>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p class="mb-1 fw-bold">© सिन्नर सार्वजनिक वाचनालय, सिन्नर</p>
+    <p class="mb-0 small">वेबसाइट डिझाईन व सूचीकरण: जितेंद्र जगताप</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1zskDx0OIbMyzY5Sj_7GBS1iokrZY_5KnPn9jsW3dDNc/gviz/tq?tqx=out:csv';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby5w0AOEM8e1dkiwmXdN6-NxqEjrvwQ9fvXODXQOyq7cRUVtTh68WAAn7pvM4ucqCRH8Q/exec';
+
+    let allBooks = [], filteredBooks = [], currentPage = 1, pageSize = 50;
+
+    function parseCSV(text) {
+        const result = [];
+        const rows = text.split(/\r?\n/);
+        for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            if (!row) continue;
+            // CSV parsing with double quotes handling
+            const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+            const cleanCols = cols.map(c => c.replace(/^"|"$/g, '').trim());
+            
+            if (cleanCols[2]) {
+                result.push({ 
+                    SNo: cleanCols[0], 
+                    Class: cleanCols[1], 
+                    Name: cleanCols[2], 
+                    Author: cleanCols[3] || '---',
+                    // Google Sheet मध्ये ५ वा कॉलम (E) प्रकाशक आहे हे गृहीत धरले आहे
+                    Publisher: cleanCols[4] || 'उपलब्ध नाही' 
+                });
+            }
+        }
+        return result;
+    }
+
+    async function fetchData() {
+        try {
+            const resp = await fetch(SHEET_URL);
+            const csvText = await resp.text();
+            allBooks = parseCSV(csvText);
+            setupFilters();
+            applyFilters();
+        } catch (e) {
+            document.getElementById('searchCount').innerText = 'माहिती लोड करण्यात अडचण आली.';
+        }
+    }
+
+    function setupFilters() {
+        const sel = document.getElementById('categoryFilter');
+        const nav = document.getElementById('categoryNav');
+        const cats = [...new Set(allBooks.map(b => b.Class))].filter(Boolean).sort();
+        cats.forEach(c => {
+            let o = document.createElement('option'); o.value = o.innerText = c; sel.appendChild(o);
+            let a = document.createElement('a'); a.href = "javascript:void(0)"; a.innerText = c;
+            a.onclick = function() { filterByCategory(c, this); };
+            nav.appendChild(a);
+        });
+    }
+
+    function applyFilters() {
+        const s = document.getElementById('searchInput').value.toLowerCase();
+        const c = document.getElementById('categoryFilter').value;
+        filteredBooks = allBooks.filter(b => 
+            (b.Name?.toLowerCase().includes(s) || b.Author?.toLowerCase().includes(s) || b.SNo?.toString().includes(s)) && 
+            (c === 'All' || b.Class === c)
+        );
+        document.getElementById('searchCount').innerText = `एकूण ${filteredBooks.length} पुस्तके सापडली`;
+        currentPage = 1; render();
+    }
+
+    function render() {
+        const list = document.getElementById('bookList'); list.innerHTML = '';
+        const items = filteredBooks.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+        const total = Math.ceil(filteredBooks.length / pageSize) || 1;
+        document.getElementById('pageIndicator').innerText = `${currentPage} / ${total}`;
+        document.getElementById('prevBtn').disabled = (currentPage === 1);
+        document.getElementById('nextBtn').disabled = (currentPage === total);
+        
+        items.forEach(b => {
+            const d = document.createElement('div'); 
+            d.className = 'book-card';
+            d.innerHTML = `
+                <div class="sno-badge">${b.SNo}</div>
+                <div class="book-info">
+                    <div class="book-header">
+                        <h6>${b.Name}</h6>
+                        <span class="cat-tag">${b.Class}</span>
+                    </div>
+                    <p><strong>लेखक:</strong> ${b.Author}</p>
+                    <p><strong>प्रकाशक:</strong> ${b.Publisher}</p>
+                </div>
+            `;
+            list.appendChild(d);
+        });
+    }
+
+    function changePage(st) { currentPage += st; render(); window.scrollTo(0,0); }
+    
+    function showSection(id, el) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    function filterByCategory(c, el) {
+        document.getElementById('categoryFilter').value = c;
+        document.querySelectorAll('.category-nav a').forEach(a => a.classList.remove('active'));
+        el.classList.add('active'); applyFilters();
+    }
+
+    function copyAddress() { if(document.getElementById('sameAddress').checked) document.getElementById('m_perm_address').value = document.getElementById('m_address').value; }
+
+    document.getElementById('membershipForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const b = document.getElementById('submitBtn'); b.disabled = true; b.innerText = "पाठवत आहे...";
+        const p = { name: document.getElementById('m_name').value, mobile: document.getElementById('m_mobile').value, email: document.getElementById('m_email').value, aadhaar: document.getElementById('m_aadhaar').value, job: document.getElementById('m_job').value, dob: document.getElementById('m_dob').value, class: document.getElementById('m_class').value, address: document.getElementById('m_address').value, perm_address: document.getElementById('m_perm_address').value };
+        fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(p) })
+        .then(() => { alert("अर्ज यशस्वीरित्या सादर!"); bootstrap.Modal.getInstance(document.getElementById('memberModal')).hide(); this.reset(); })
+        .finally(() => { b.disabled = false; b.innerText = "अर्ज सादर करा"; });
+    });
+
+    window.onload = fetchData;
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+</script>
+</body>
+</html>
