@@ -56,16 +56,28 @@
 </div>
 
 <div class="main-nav shadow-sm" id="mainNav">
-    <a href="javascript:void(0)" class="active" onclick="showSection('portal-section', this)">डिजिटल सूची</a>
+    <a href="javascript:void(0)" class="active" onclick="showSection('home-section', this)">होम</a>
+    <a href="javascript:void(0)" onclick="showSection('portal-section', this)">डिजिटल सूची</a>
     <a href="javascript:void(0)" onclick="showSection('about-section', this)">आमची ओळख</a>
     <a href="javascript:void(0)" onclick="showSection('directors-section', this)">संचालक मंडळ</a>
     <a href="javascript:void(0)" onclick="showSection('contact-section', this)">संपर्क</a>
     <a href="javascript:void(0)" style="background: #ce062b; color: white;" data-bs-toggle="modal" data-bs-target="#memberModal">सभासद व्हा</a>
 </div>
 
+  <div id="home-section" class="content-section active">
+    <div class="container text-center py-4">
+        <h3 class="fw-bold mb-3" style="color: var(--title-color);">सिन्नर सार्वजनिक वाचनालयात आपले स्वागत आहे!</h3>
+        
+        <img src="library_main.jpg" class="img-fluid rounded shadow-sm" alt="Sinnar Library" style="max-height: 400px; width: 100%; object-fit: cover;" onerror="this.src='https://via.placeholder.com/800x400?text=Sinnar+Library';">
+        
+        <div class="mt-4 p-3 bg-white rounded shadow-sm">
+            <p class="lead" style="color: var(--text-dark);">आमच्या समृद्ध ग्रंथसंपदेचा लाभ घेण्यासाठी वरील 'डिजिटल सूची' विभागात जा.</p>
+        </div>
+    </div>
+</div>  
 <div id="portal-section" class="content-section active">
     <div class="category-nav" id="categoryNav">
-        <a href="javascript:void(0)" class="active" onclick="filterByCategory('All', this)">सर्व पुस्तके</a>
+        <a href="javascript:void(0)" onclick="filterByCategory('All', this)">सर्व पुस्तके</a>
     </div>
     <div class="container mt-3">
         <div class="row g-2 px-2">
@@ -139,12 +151,29 @@
         </div>
         <div class="modal-body">
             <form id="membershipForm">
-                <div class="row g-2">
-                    <div class="col-12"><label class="form-label small">पूर्ण नाव *</label><input type="text" id="m_name" class="form-control form-control-sm" required></div>
-                    <div class="col-md-6"><label class="form-label small">मोबाईल *</label><input type="tel" id="m_mobile" class="form-control form-control-sm" required pattern="[0-9]{10}"></div>
-                    <div class="col-md-6"><label class="form-label small">आधार क्रमांक *</label><input type="text" id="m_aadhaar" class="form-control form-control-sm" required></div>
-                    <div class="col-12"><button type="submit" class="btn btn-success w-100 fw-bold mt-2">अर्ज सादर करा</button></div>
-                </div>
+    <div class="row g-2">
+        <div class="col-12"><label class="form-label small">पूर्ण नाव <span class="mandatory">*</span></label><input type="text" id="m_name" class="form-control form-control-sm" required placeholder="आडनाव नाव वडिलांचे नाव"></div>
+        <div class="col-md-6"><label class="form-label small">मोबाईल <span class="mandatory">*</span></label><input type="tel" id="m_mobile" class="form-control form-control-sm" required pattern="[0-9]{10}"></div>
+        <div class="col-md-6"><label class="form-label small">ईमेल आयडी</label><input type="email" id="m_email" class="form-control form-control-sm"></div>
+        <div class="col-md-6"><label class="form-label small">आधार क्रमांक <span class="mandatory">*</span></label><input type="text" id="m_aadhaar" class="form-control form-control-sm" required pattern="[0-9]{12}"></div>
+        <div class="col-md-6"><label class="form-label small">व्यवसाय <span class="mandatory">*</span></label><input type="text" id="m_job" class="form-control form-control-sm" required></div>
+        <div class="col-md-6"><label class="form-label small">जन्म तारीख <span class="mandatory">*</span></label><input type="date" id="m_dob" class="form-control form-control-sm" required></div>
+        <div class="col-md-6"><label class="form-label small">सभासद वर्गनिवडा <span class="mandatory">*</span></label>
+            <select id="m_class" class="form-select form-select-sm" required>
+                <option value="">-- निवडा --</option>
+                <option value="वर्ग १ (अनामत ₹३००, मासिक ₹१०)">वर्ग १ (अनामत ₹३००, दरमहा ₹१०)</option>
+                <option value="वर्ग २ (अनामत ₹५००, मासिक ₹२०)">वर्ग २ (अनामत ₹५००, दरमहा ₹२०)</option>
+                <option value="वर्ग ३ (अनामत ₹७५, मासिक ₹१५)">वर्ग ३ (अनामत ₹७५, दरमहा ₹१५)</option>
+                <option value="वर्ग ४ (अनामत ₹३७५, मासिक ₹२५)">वर्ग ४ (अनामत ₹३७५, दरमहा ₹२५)</option>
+                <option value="वर्ग ५ (अनामत ₹५७५, मासिक ₹३0)">वर्ग ५ (अनामत ₹५७५,दरमहा ₹३०)</option>
+            </select>
+        </div>
+        <div class="col-12"><label class="form-label small">सध्याचा पत्ता <span class="mandatory">*</span></label><textarea id="m_address" class="form-control form-control-sm" rows="2" required></textarea></div>
+        <div class="col-12"><div class="form-check"><input class="form-check-input" type="checkbox" id="sameAddress" onclick="copyAddress()"><label class="form-check-label small fw-bold text-primary" for="sameAddress">कायमचा पत्ता हाच आहे</label></div></div>
+        <div class="col-12"><label class="form-label small">कायमचा पत्ता <span class="mandatory">*</span></label><textarea id="m_perm_address" class="form-control form-control-sm" rows="2" required></textarea></div>
+        <div class="col-12 mt-3"><button type="submit" id="submitBtn" class="btn btn-success w-100 fw-bold">अर्ज सादर करा</button></div>
+    </div>
+</form>
             </form>
         </div>
       </div>
