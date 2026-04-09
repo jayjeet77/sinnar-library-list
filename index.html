@@ -63,7 +63,7 @@
      <a href="javascript:void(0)" onclick="showSection('rates-section', this)">वर्गणी दरपत्रक</a>
     <a href="javascript:void(0)" onclick="showSection('directors-section', this)">संचालक मंडळ</a>
     <a href="javascript:void(0)" onclick="showSection('contact-section', this)">संपर्क</a>
-    <a href="javascript:void(0)" style="background: #ce062b; color: white;" data-bs-toggle="modal" data-bs-target="#memberModal">सभासद व्हा</a>
+    <a href="javascript:void(0)" style="background: #ce062b; color: white;" data-bs-toggle="modal" data-bs-target="#memberModal">वाचक सभासद व्हा</a>
 </div>
 
   <div id="home-section" class="content-section active">
@@ -129,27 +129,65 @@
     </div>
 </div>
 <div id="rates-section" class="content-section container">
-    <div class="card p-4 border-0 shadow-sm text-center">
-        <h4 class="fw-bold mb-4" style="color: var(--title-color);">सभासद वर्गणी दरपत्रक</h4>
+    <div class="card p-4 border-0 shadow-sm">
+        <h4 class="fw-bold text-center mb-4" style="color: var(--title-color);">वर्गणीचे दर</h4>
+        
         <div class="table-responsive">
-            <table class="table table-bordered">
+            <table class="table table-bordered text-center align-middle shadow-sm">
                 <thead class="table-dark">
-                    <tr>
-                        <th>सभासद वर्ग</th>
-                        <th>अनामत रक्कम (Deposit)</th>
-                        <th>मासिक वर्गणी (Monthly)</th>
+                    <tr style="font-size: 0.85rem;">
+                        <th style="width: 10%;">वर्ग क्र.</th>
+                        <th style="width: 35%;">वाचक वर्गीकरणासाठी घेण्यात येणारे वाचन साहित्य</th>
+                        <th style="width: 15%;">प्रवेश फी (₹)</th>
+                        <th style="width: 20%;">अनामत रक्कम (₹)</th>
+                        <th style="width: 20%;">दरमहा वर्गणी (₹)</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr><td>वर्ग १</td><td>₹ ३००/-</td><td>₹ १०/-</td></tr>
-                    <tr><td>वर्ग २</td><td>₹ ५००/-</td><td>₹ २०/-</td></tr>
-                    <tr><td>वर्ग ३</td><td>₹ ७५/-</td><td>₹ १५/-</td></tr>
-                    <tr><td>वर्ग ४</td><td>₹ ३७५/-</td><td>₹ २५/-</td></tr>
-                    <tr><td>वर्ग ५</td><td>₹ ५७५/-</td><td>₹ ३०/-</td></tr>
+                <tbody style="font-size: 0.9rem;">
+                    <tr>
+                        <td>1</td>
+                        <td class="text-start">एक पुस्तक</td>
+                        <td>10/-</td>
+                        <td>300/-</td>
+                        <td>10/-</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td class="text-start">दोन पुस्तके</td>
+                        <td>10/-</td>
+                        <td>400/-</td>
+                        <td>20/-</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td class="text-start">एक मासिक</td>
+                        <td>10/-</td>
+                        <td>15/-</td>
+                        <td>15/-</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td class="text-start">एक पुस्तक व एक मासिक</td>
+                        <td>10/-</td>
+                        <td>350/-</td>
+                        <td>25/-</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td class="text-start">दोन पुस्तके व एक मासिक</td>
+                        <td>10/-</td>
+                        <td>450/-</td>
+                        <td>30/-</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
-        <p class="small text-muted mt-2 text-start">* अधिक माहितीसाठी वाचनालय कार्यालयाशी संपर्क साधावा.</p>
+        
+        <div class="mt-3">
+            <p class="fw-bold mb-0" style="color: #333;">प्रवेश फी : ₹ १०/- मात्र.</p>
+        </div>
+    </div>
+</div>        <p class="small text-muted mt-2 text-start">* अधिक माहितीसाठी वाचनालय कार्यालयाशी संपर्क साधावा.</p>
     </div>
 </div>
 <div id="directors-section" class="content-section container">
