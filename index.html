@@ -13,7 +13,6 @@
             --accent-color: #C5884B;
             --footer-bg: #494C3B;
             --category-bg: #5a5e4a;
-            --text-dark: #7a4224;
         }
 
         body { background-color: var(--bg-color); font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
@@ -34,14 +33,13 @@
         .content-section.active { display: block; }
 
         .book-card { background: #ffffff; border-radius: 15px; padding: 15px; margin-bottom: 15px; border-left: 10px solid var(--accent-color); box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; align-items: flex-start; }
-        .sno-badge { background: var(--accent-color); color: white; min-width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; margin-right: 15px; flex-shrink: 0; font-size: 0.85rem; }
+        .sno-badge { background: var(--accent-color); color: white; min-width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; margin-right: 15px; flex-shrink: 0; }
 
         .director-card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); height: 100%; border: 1px solid #ddd; }
         .director-img { width: 100%; aspect-ratio: 3/4; object-fit: contain; background: #eee; }
         
-        .modal-header { background: var(--title-color); color: white; }
         .footer { text-align: center; padding: 20px; background: var(--footer-bg); color: #f6f2e9; margin-top: 30px; }
-        .mandatory { color: red; }
+        .about-text { line-height: 1.8; text-align: justify; white-space: pre-line; font-size: 1rem; color: #333; }
     </style>
 </head>
 <body>
@@ -63,9 +61,27 @@
 
 <div id="home-section" class="content-section active container text-center">
     <h3 class="fw-bold mb-3" style="color: var(--title-color);">सिन्नरचे सांस्कृतिक वैभव!</h3>
-    <img src="library_main.jpg" class="img-fluid rounded shadow-sm" style="width: 100%; max-height: 500px; object-fit: cover;" onerror="this.src='https://via.placeholder.com/1000x500?text=Library+Building';">
-    <div class="mt-4 p-3 bg-white rounded shadow-sm">
-        <p class="lead">सिन्नर सार्वजनिक वाचनालयात आपले सहर्ष स्वागत आहे. ८० वर्षांची समृद्ध परंपरा असलेले हे वाचनालय ज्ञानाचा अनमोल खजिना आहे.</p>
+    <img src="library_main.jpg" class="img-fluid rounded shadow-sm" style="width: 100%; max-height: 450px; object-fit: cover;" onerror="this.src='https://via.placeholder.com/1000x500?text=Sinnar+Library';">
+    <div class="mt-4 p-4 bg-white rounded shadow-sm">
+        <p class="lead fw-bold" style="color: var(--title-color);">८० वर्षांची समृद्ध परंपरा असलेले आपले वाचनालय.</p>
+        <p>खालील 'डिजिटल सूची' टॅबवर क्लिक करून तुम्ही उपलब्ध पुस्तके शोधू शकता.</p>
+    </div>
+</div>
+
+<div id="about-section" class="content-section container">
+    <div class="card p-4 shadow-sm border-0">
+        <h4 class="fw-bold text-center mb-4" style="color: var(--title-color);">सिन्नरचे सांस्कृतिक वैभव असलेले सार्वजनिक वाचनालय</h4>
+        <div class="about-text">
+            महाराष्ट्रातील वाचनालयांना शासनाचे भरघोस अनुदान नाही. त्यामुळे सततच्या आर्थिक अडचणींशी सामना करताना राज्यभरातील वाचनालयांची वाढ खुरटली. परिणामी वाचन संस्कृतीही अशक्त झाली. मात्र, उदार देणगीदारांनी सतत पाठबळ दिल्यामुळे सिन्नर सार्वजनिक वाचनालय नशिबवान ठरले. त्यामुळे अत्यल्प अनुदान असूनही अन्य वाचनालयांच्या तुलनेत सिन्नर वाचनालयातील सेवकांना सन्मानजनक वेतन दिले जाते. वाचनालयाच्या ग्रंथसंपदेत दरवर्षी दर्जेदार पुस्तकांची भर पडते. नामवंत व्याख्यात्यांच्या सहभागाने ग्रंथालय सप्ताह दरवर्षी नवी उंची गाठतो. दोन सभागृहांसह, सुसज्ज ग्रंथालय, पुस्तक देवघेव विभाग, वृत्तपत्रे व नियतकालिके वाचनासाठी येणाऱ्या वाचकांसाठी मुक्तद्वार वाचनालय यांचा समावेश असलेली वाचनालयाची दोन मजली सुसज्ज इमारत शहराच्या मध्यवर्ती भागात डौलाने उभी आहे. अर्थात, वाचनालयाची विकासाच्या दिशेने होणारी वाटचाल, देणगीदारांच्या औदार्याच्या पाठबळामुळेच शक्य झाली आहे.
+
+            सन १५ एप्रिल १९४५ मध्ये म्हणजे तब्बल ८० वर्षांपूर्वी ज्या मान्यवरांनी वाचनालयाची स्थापना केली त्यांना स्वातंत्र्यपूर्व काळात अनंत अडचणींशी सामना करावा लागला. त्यावेळीही त्यांनी खिशाला झळ सोसून व गावातील देणगीदारांकडून मदत मिळवून सिन्नर नगरीत वाचन चळवळीची मुहूर्तमेढ रोवली. स्वातंत्र्यसैनिक नारायण मुरलीधर धारणकर (मास्तर) वाचनालयाचे पहिले ग्रंथपाल म्हणून रुजू झाले. त्यांनी २६ वर्षे प्रामाणिक सेवा केली. 
+
+            सुरुवातीला भाडेतत्त्वावरील जागेत वाचनालय सुरू होते. स्वःमालकीची जागा मिळावी असा विचार सुरू झाला तेव्हा सुप्रसिद्ध विडी कारखानदार व माजी आमदार कै. शंकरराव बाळाजी वाजे व कै. बाळाजी गणपत वाजे यांच्या विडी कारखान्यातील शक्ती विडी कामगार संघ पुढे आला. कामगारांनी पै-पै जमा करून खरेदी केलेला भूखंड त्यांनी वाचनालयाकडे सुपूर्द केला. आपली भावी पिढी ज्ञानाने समृद्ध व्हावी या भावनेतून जागेबरोबरच ५००१ रुपयांची देणगीही या संघाने दिली. वाचनालयाची अर्धी इमारत शक्ती विडी कामगार संघाने उभारलेल्या निधीतून उभारण्यात आली व बाकी उर्वरित जागेवर महाराष्ट्र शासन, राजाराम मोहनराय ट्रस्ट, ज्येष्ठ उद्योजक देवकिसन सारडा आणि दानशूर व्यक्तींच्या मदतीतून नवी इमारत १९८४ साली उभी राहिली.
+
+            वाचनालयाची ग्रंथसंपदा ४० हजारांच्या पुढे गेली आहे. सभासद संख्या ७०० च्या आसपास आहे. वाचनालयात दैनंदिन पुस्तक देवाण-घेवाण व्यतिरिक्त मुक्तद्वार विभाग, संदर्भ विभाग, संगणक कक्ष, दोन सभागृहे, स्वतंत्र महिला व बाल विभाग, अभ्यासिका असे विभाग आहेत. सिन्नरचे उद्योजक अरुण कलंत्री यांनी ७ लाख रुपयांचे वैद्यकीय रुग्ण साहित्य वाचनालयाकडे सुपूर्द केले असून ती सेवा रुग्णांना मोफत दिली जाते.
+
+            सिन्नर तालुक्याला दातृत्वाची मोठी परंपरा आहे. कुणाचे निधन झाले तर त्यांच्या स्मृतिप्रित्यर्थ किंवा वाढदिवसानिमित्त वाचनालयाला मदत करण्याची परंपरा सिन्नरकरांनी जपली आहे. पुण्यात स्थायिक झालेले सुधीर गंगावणे दरवर्षी गुढीपाडव्याला पुस्तके भेट देतात. माजी नगराध्यक्ष स्व. जगदीशभाऊ चांडक यांनी स्व. भावना चांडक यांच्या स्मरणार्थ २ लाख रुपयांची पुस्तके दिली आहेत. खासदार राजाभाऊ वाजे यांनी १० लाखांच्या नव्या रॅक उपलब्ध करून दिल्या आहेत.
+        </div>
     </div>
 </div>
 
@@ -78,7 +94,7 @@
             <div class="col-8"><input type="text" id="searchInput" class="form-control" placeholder="नाव किंवा लेखक शोधा..."></div>
             <div class="col-4"><select id="categoryFilter" class="form-select"><option value="All">सर्व विभाग</option></select></div>
         </div>
-        <div id="searchCount" class="px-2 mt-2 fw-bold" style="color: var(--title-color); font-size: 0.85rem;">पुस्तके शोधत आहे...</div>
+        <div id="searchCount" class="px-2 mt-2 fw-bold" style="color: var(--title-color);">पुस्तके शोधत आहे...</div>
         <div id="bookList" class="mt-2 container"></div>
         <div class="d-flex justify-content-center gap-3 mt-4 pb-4">
             <button id="prevBtn" class="btn btn-sm btn-dark" onclick="changePage(-1)">मागे</button>
@@ -88,32 +104,12 @@
     </div>
 </div>
 
-<div id="about-section" class="content-section container">
-    <div class="card p-4 shadow-sm border-0">
-        <h4 class="fw-bold text-center mb-4" style="color: var(--title-color);">सिन्नरकरांचे 'ज्ञान' मंदिर सिन्नर सार्वजनिक वाचनालय</h4>
-        <div style="line-height: 1.8; text-align: justify; white-space: pre-line; font-size: 0.95rem;">
-            सिन्नर शहराच्या वैभवात भर टाकणान्या अनेक वास्तू,मंदिरे, वेशी, वाडे यांच्या पाऊलखुना स्पष्टपणे आजही उमटलेल्या आहेत.शहराला ऐतिहासिक, धार्मिक, राजकीय व उयोजकांची श्रीमंती लाभली आहे... [येथे तुमचा मजकूर सुरू होतो] ... रॅकस् उपलब्ध करुन दिल्या आहेत. त्यामुळे ग्रंथसंपदा सुरक्षित झाली आहे.
-        </div>
-    </div>
-</div>
-
 <div id="directors-section" class="content-section container">
     <h5 class="text-center fw-bold mb-4" style="color: var(--title-color);">विद्यमान संचालक मंडळ</h5>
-    <div class="row row-cols-2 row-cols-md-4 g-3 text-center">
+    <div class="row row-cols-2 row-cols-md-4 g-3 text-center" id="directors-grid">
         <div class="col"><div class="director-card"><img src="img_director_1.jpg" class="director-img" onerror="this.src='https://via.placeholder.com/300x400';"><div class="p-2"><span class="badge bg-danger mb-1">अध्यक्ष</span><h6 class="small fw-bold">श्री. कृष्णाजी भगत</h6></div></div></div>
         <div class="col"><div class="director-card"><img src="img_director_2.jpg" class="director-img" onerror="this.src='https://via.placeholder.com/300x400';"><div class="p-2"><span class="badge bg-danger mb-1">कार्यवाह</span><h6 class="small fw-bold">श्री. हेमंत वाजे</h6></div></div></div>
-        <div class="col"><div class="director-card"><img src="img_director_3.jpg" class="director-img" onerror="this.src='https://via.placeholder.com/300x400';"><div class="p-2"><span class="badge bg-warning mb-1">उपाध्यक्ष</span><h6 class="small fw-bold">श्री. नरेंद्र वैद्य</h6></div></div></div>
-        <div class="col"><div class="director-card"><img src="img_director_4.jpg" class="director-img" onerror="this.src='https://via.placeholder.com/300x400';"><div class="p-2"><span class="badge bg-warning mb-1">उपाध्यक्ष</span><h6 class="small fw-bold">श्री. राजेंद्र देशपांडे</h6></div></div></div>
-        <div class="col"><div class="director-card"><img src="img_director_5.jpg" class="director-img" onerror="this.src='https://via.placeholder.com/300x400';"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">श्री. मनीष गुजराथी</h6></div></div></div>
-        <div class="col"><div class="director-card"><img src="img_director_6.jpg" class="director-img" onerror="this.src='https://via.placeholder.com/300x400';"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">श्री. विलास पाटील</h6></div></div></div>
-        <div class="col"><div class="director-card"><img src="img_director_7.jpg" class="director-img" onerror="this.src='https://via.placeholder.com/300x400';"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">श्री. जितेंद्र जगताप</h6></div></div></div>
-        <div class="col"><div class="director-card"><img src="img_director_8.jpg" class="director-img" onerror="this.src='https://via.placeholder.com/300x400';"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">श्री. सागर गुजर</h6></div></div></div>
-        <div class="col"><div class="director-card"><img src="img_director_9.jpg" class="director-img" onerror="this.src='https://via.placeholder.com/300x400';"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">श्री. सुनील उगले</h6></div></div></div>
-        <div class="col"><div class="director-card"><img src="img_director_10.jpg" class="director-img" onerror="this.src='https://via.placeholder.com/300x400';"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">श्री. उज्वल पंडित</h6></div></div></div>
-        <div class="col"><div class="director-card"><img src="img_director_11.jpg" class="director-img" onerror="this.src='https://via.placeholder.com/300x400';"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">श्री. मनोजकुमार भंडारी</h6></div></div></div>
-        <div class="col"><div class="director-card"><img src="img_director_12.jpg" class="director-img" onerror="this.src='https://via.placeholder.com/300x400';"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">सौ. निर्मल खिंवसरा</h6></div></div></div>
-        <div class="col"><div class="director-card"><img src="img_director_13.jpg" class="director-img" onerror="this.src='https://via.placeholder.com/300x400';"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">सौ. माधवी पंडित</h6></div></div></div>
-    </div>
+        </div>
 </div>
 
 <div id="contact-section" class="content-section container text-center">
@@ -121,45 +117,21 @@
         <h5 class="fw-bold mb-3">संपर्क व पत्ता</h5>
         <p>पत्ता: राजा फत्तेसिंग मार्ग, शिवाजी चौक, सिन्नर | फोन: ९३७०२८३३४६</p>
         <div class="ratio ratio-16x9 mt-3 shadow-sm rounded overflow-hidden">
-            <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3754.793798539272!2d74.0017135!3d19.7634842!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bddbadb6bf781e7%3A0x958421f21c939d76!2sPublic%20Library%2C%20Sinnar!5e0!3m2!1sen!2sin!4v1712650000000!5m2!1sen!2sin" 
-                style="border:0;" 
-                allowfullscreen="" 
-                loading="lazy" 
-                referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
+            <iframe src="https://maps.app.goo.gl/NnDBEFdgxezvbeiP9…" allowfullscreen="" loading="lazy"></iframe>
         </div>
-    </div>
-</div>
     </div>
 </div>
 
 <div class="modal fade" id="memberModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
-        <div class="modal-header"><h6>नवीन वाचक सभासद नोंदणी अर्ज</h6><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+        <div class="modal-header" style="background: var(--title-color); color: white;"><h6>नवीन वाचक सभासद नोंदणी अर्ज</h6><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
         <div class="modal-body p-3">
           <form id="membershipForm">
               <div class="row g-2">
-                  <div class="col-12"><label class="form-label fw-bold small">पूर्ण नाव <span class="mandatory">*</span></label><input type="text" id="m_name" class="form-control form-control-sm" required placeholder="आडनाव नाव वडिलांचे नाव"></div>
-                  <div class="col-md-6"><label class="form-label fw-bold small">मोबाईल <span class="mandatory">*</span></label><input type="tel" id="m_mobile" class="form-control form-control-sm" required pattern="[0-9]{10}"></div>
-                  <div class="col-md-6"><label class="form-label fw-bold small">ईमेल आयडी</label><input type="email" id="m_email" class="form-control form-control-sm"></div>
-                  <div class="col-md-6"><label class="form-label fw-bold small">आधार क्रमांक <span class="mandatory">*</span></label><input type="text" id="m_aadhaar" class="form-control form-control-sm" required pattern="[0-9]{12}"></div>
-                  <div class="col-md-6"><label class="form-label fw-bold small">व्यवसाय <span class="mandatory">*</span></label><input type="text" id="m_job" class="form-control form-control-sm" required></div>
-                  <div class="col-md-6"><label class="form-label fw-bold small">जन्म तारीख <span class="mandatory">*</span></label><input type="date" id="m_dob" class="form-control form-control-sm" required></div>
-                  <div class="col-md-6"><label class="form-label fw-bold small">सभासद वर्ग निवडा <span class="mandatory">*</span></label>
-                      <select id="m_class" class="form-select form-select-sm" required>
-                          <option value="">-- निवडा --</option>
-                          <option value="वर्ग १ (अनामत ₹३००, मासिक ₹१०)">वर्ग १ (अनामत ₹३००, दरमहा ₹१०)</option>
-                          <option value="वर्ग २ (अनामत ₹५००, मासिक ₹२०)">वर्ग २ (अनामत ₹५००, दरमहा ₹२०)</option>
-                          <option value="वर्ग ३ (अनामत ₹७५, मासिक ₹१५)">वर्ग ३ (अनामत ₹७५, दरमहा ₹१५)</option>
-                          <option value="वर्ग ४ (अनामत ₹३७५, मासिक ₹२५)">वर्ग ४ (अनामत ₹३७५, दरमहा ₹२५)</option>
-                          <option value="वर्ग ५ (अनामत ₹५७५, मासिक ₹३०)">वर्ग ५ (अनामत ₹५७५, दरमहा ₹३०)</option>
-                      </select>
-                  </div>
-                  <div class="col-12"><label class="form-label fw-bold small">सध्याचा पत्ता <span class="mandatory">*</span></label><textarea id="m_address" class="form-control form-control-sm" rows="2" required></textarea></div>
-                  <div class="col-12"><div class="form-check"><input class="form-check-input" type="checkbox" id="sameAddress" onclick="copyAddress()"><label class="form-check-label small fw-bold text-primary" for="sameAddress">कायमचा पत्ता हाच आहे</label></div></div>
-                  <div class="col-12"><label class="form-label fw-bold small">कायमचा पत्ता <span class="mandatory">*</span></label><textarea id="m_perm_address" class="form-control form-control-sm" rows="2" required></textarea></div>
+                  <div class="col-12"><label class="form-label fw-bold small">पूर्ण नाव *</label><input type="text" id="m_name" class="form-control form-control-sm" required></div>
+                  <div class="col-md-6"><label class="form-label fw-bold small">मोबाईल *</label><input type="tel" id="m_mobile" class="form-control form-control-sm" required pattern="[0-9]{10}"></div>
+                  <div class="col-md-6"><label class="form-label fw-bold small">आधार क्रमांक *</label><input type="text" id="m_aadhaar" class="form-control form-control-sm" required pattern="[0-9]{12}"></div>
                   <div class="col-12 mt-3"><button type="submit" id="submitBtn" class="btn btn-success w-100 fw-bold">अर्ज सादर करा</button></div>
               </div>
           </form>
@@ -168,10 +140,7 @@
     </div>
 </div>
 
-<div class="footer">
-    <p class="mb-1 fw-bold">© सिन्नर सार्वजनिक वाचनालय, सिन्नर</p>
-    <p class="mb-0 small">वेबसाइट डिझाईन व सूचीकरण: जितेंद्र जगताप</p>
-</div>
+<div class="footer"><p class="mb-0">© सिन्नर सार्वजनिक वाचनालय | डिझाईन: जितेंद्र जगताप</p></div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -187,31 +156,28 @@
             const rows = csvText.split(/\r?\n/).slice(1);
             allBooks = rows.map(r => {
                 const cols = r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/^"|"$/g, '').trim());
-                return { SNo: cols[0], Class: cols[1], Name: cols[2], Author: cols[3] || '---', Publisher: cols[4] || '---' };
+                return { SNo: cols[0], Class: cols[1], Name: cols[2], Author: cols[3] || '---' };
             }).filter(b => b.Name);
             setupFilters();
             applyFilters();
-        } catch (e) { document.getElementById('searchCount').innerText = 'Error loading data.'; }
+        } catch (e) { document.getElementById('searchCount').innerText = 'माहिती लोड करताना त्रुटी आली.'; }
     }
 
     function setupFilters() {
         const nav = document.getElementById('categoryNav');
-        const sel = document.getElementById('categoryFilter');
         const cats = [...new Set(allBooks.map(b => b.Class))].filter(Boolean).sort();
         cats.forEach(c => {
             const a = document.createElement('a'); a.innerText = c; a.href = "javascript:void(0)";
             a.onclick = () => filterByCategory(c, a);
             nav.appendChild(a);
-            const o = document.createElement('option'); o.value = o.innerText = c; sel.appendChild(o);
         });
     }
 
     function applyFilters() {
         const s = document.getElementById('searchInput').value.toLowerCase();
-        const c = document.getElementById('categoryFilter').value;
+        const c = document.getElementById('categoryFilter')?.value || 'All';
         filteredBooks = allBooks.filter(b => 
-            (b.Name.toLowerCase().includes(s) || b.Author.toLowerCase().includes(s) || b.SNo.toString().includes(s)) && 
-            (c === 'All' || b.Class === c)
+            (b.Name.toLowerCase().includes(s) || b.Author.toLowerCase().includes(s)) && (c === 'All' || b.Class === c)
         );
         document.getElementById('searchCount').innerText = `एकूण ${filteredBooks.length} पुस्तके सापडली`;
         currentPage = 1; render();
@@ -222,7 +188,7 @@
         const items = filteredBooks.slice((currentPage-1)*pageSize, currentPage*pageSize);
         items.forEach(b => {
             const d = document.createElement('div'); d.className = 'book-card';
-            d.innerHTML = `<div class="sno-badge">${b.SNo}</div><div class="book-info"><h6>${b.Name}</h6><p class="mb-0 small">लेखक: ${b.Author} | विभाग: ${b.Class}</p></div>`;
+            d.innerHTML = `<div class="sno-badge">${b.SNo}</div><div><h6 class="fw-bold mb-1">${b.Name}</h6><p class="small mb-0">लेखक: ${b.Author} | विभाग: ${b.Class}</p></div>`;
             list.appendChild(d);
         });
         document.getElementById('pageIndicator').innerText = `${currentPage} / ${Math.ceil(filteredBooks.length/pageSize) || 1}`;
@@ -237,26 +203,12 @@
     }
 
     function filterByCategory(c, el) {
-        document.getElementById('categoryFilter').value = c;
         document.querySelectorAll('.category-nav a').forEach(a => a.classList.remove('active'));
         el.classList.add('active'); applyFilters();
     }
 
-    function copyAddress() { if(document.getElementById('sameAddress').checked) document.getElementById('m_perm_address').value = document.getElementById('m_address').value; }
-
-    document.getElementById('membershipForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const b = document.getElementById('submitBtn'); b.disabled = true; b.innerText = "पाठवत आहे...";
-        const p = { name: document.getElementById('m_name').value, mobile: document.getElementById('m_mobile').value, email: document.getElementById('m_email').value, aadhaar: document.getElementById('m_aadhaar').value, job: document.getElementById('m_job').value, dob: document.getElementById('m_dob').value, class: document.getElementById('m_class').value, address: document.getElementById('m_address').value, perm_address: document.getElementById('m_perm_address').value };
-        fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(p) })
-        .then(() => { alert("अर्ज यशस्वीरित्या सादर!"); bootstrap.Modal.getInstance(document.getElementById('memberModal')).hide(); this.reset(); })
-        .finally(() => { b.disabled = false; b.innerText = "अर्ज सादर करा"; });
-    });
-
-    function changePage(v) { currentPage += v; render(); window.scrollTo(0,0); }
     window.onload = fetchData;
     document.getElementById('searchInput').addEventListener('input', applyFilters);
-    document.getElementById('categoryFilter').addEventListener('change', applyFilters);
 </script>
 </body>
 </html>
