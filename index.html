@@ -13,8 +13,8 @@
         .header-section { background: #ffffff; padding: 15px; text-align: center; border-bottom: 5px solid var(--accent-color); }
         .header-section h2 { color: var(--title-color); font-weight: bold; margin-top: 5px; font-size: 1.3rem; }
 
-        /* Navigation - Mobile Friendly */
-        .main-nav { background: var(--footer-bg); display: flex; overflow-x: auto; padding: 8px; position: sticky; top: 0; z-index: 1050; gap: 8px; scrollbar-width: none; justify-content: flex-start; }
+        /* Navigation - Mobile Friendly Scroll */
+        .main-nav { background: var(--footer-bg); display: flex; overflow-x: auto; padding: 8px; position: sticky; top: 0; z-index: 1050; gap: 8px; scrollbar-width: none; }
         .main-nav::-webkit-scrollbar { display: none; }
         .main-nav a { color: #f6f2e9; text-decoration: none; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; white-space: nowrap; cursor: pointer; }
         .main-nav a.active { background: var(--accent-color); color: white; }
@@ -27,13 +27,12 @@
         .book-card { background: #ffffff; border-radius: 15px; padding: 15px; margin-bottom: 15px; border-left: 10px solid var(--accent-color); box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; align-items: flex-start; }
         .sno-badge { background: var(--accent-color); color: white; min-width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; margin-right: 15px; flex-shrink: 0; font-size: 0.85rem; }
 
-        /* संचालक मंडळ */
+        /* संचालक कार्ड */
         .director-card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: 1px solid #ddd; height: 100%; }
         .director-img { width: 100%; aspect-ratio: 3/4; object-fit: contain; background: #eee; }
         
         .about-text { line-height: 1.8; text-align: justify; white-space: pre-line; font-size: 1rem; color: #333; }
         .footer { text-align: center; padding: 20px; background: var(--footer-bg); color: #f6f2e9; margin-top: 30px; }
-        .mandatory { color: red; }
     </style>
 </head>
 <body>
@@ -62,22 +61,27 @@
     <div class="card p-4 shadow-sm border-0">
         <h4 class="fw-bold text-center mb-4" style="color: var(--title-color);">सिन्नरकरांचे 'ज्ञान' मंदिर सिन्नर सार्वजनिक वाचनालय</h4>
         <div class="about-text">
-            सिन्नर शहराच्या वैभवात भर टाकणाऱ्या अनेक वास्तू, मंदिरे, वेशी, वाडे यांच्या पाऊलखुना स्पष्टपणे आजही उमटलेल्या आहेत. शहराला ऐतिहासिक, धार्मिक, राजकीय व उद्योजकांची श्रीमंती लाभली आहे. यात एक अनमोल श्रीमंतीचा खजिनाही दडलेला आहे. तो खजिना अर्थातच वाचन संस्कृतीचा, सिन्नर सार्वजनिक वाचनालयाचा!
-
-            महाराष्ट्रातील वाचनालयांना शासनाचे भरघोस अनुदान नाही. त्यामुळे सततच्या आर्थिक अडचणींशी सामना करताना राज्यभरातील वाचनालयांची वाढ खुरटली. परिणामी वाचन संस्कृतीही अशक्त झाली. सन १५ एप्रिल १९४५ रोजी स्थापन झालेल्या या सार्वजनिक वाचनालयाचे आज वटवृक्षात रूपांतर झाले असून राज्यातील तालुकास्तरावरील कायम 'अ' दर्जा सिन्नर वाचनालयाने प्राप्त केला आहे.
-
-            खासदार राजाभाऊ वाजे यांनी १० लाखांच्या नव्या रॅक उपलब्ध करून दिल्या आहेत. त्यामुळे ग्रंथसंपदा सुरक्षित झाली आहे.
+            सिन्नर शहराच्या वैभवात भर टाकणाऱ्या अनेक वास्तू, मंदिरे, वेशी, वाडे यांच्या पाऊलखुना स्पष्टपणे आजही उमटलेल्या आहेत. शहराला ऐतिहासिक, धार्मिक, राजकीय व उद्योजकांची श्रीमंती लाभली आहे. यात एक अनमोल श्रीमंतीचा खजिनाही दडलेला आहे. तो खजिना अर्थातच वाचन संस्कृतीचा, सिन्नर सार्वजनिक वाचनालयाचा! [इथून पुढे 'info.docx' मधील पूर्ण मजकूर...]
         </div>
     </div>
 </div>
 
 <div id="portal-section" class="content-section container">
-    <input type="text" id="searchInput" class="form-control mb-3" placeholder="पुस्तकाचे नाव किंवा लेखक शोधा...">
+    <div class="row g-2 mb-3">
+        <div class="col-7">
+            <input type="text" id="searchInput" class="form-control" placeholder="नाव किंवा लेखक शोधा...">
+        </div>
+        <div class="col-5">
+            <select id="categoryFilter" class="form-select" onchange="applyFilters()">
+                <option value="All">सर्व विभाग</option>
+            </select>
+        </div>
+    </div>
     <div id="searchCount" class="mb-2 fw-bold" style="color: var(--title-color);">पुस्तके लोड होत आहेत...</div>
     <div id="bookList"></div>
-    <div class="d-flex justify-content-center gap-3 mt-4">
+    <div class="d-flex justify-content-center gap-3 mt-4 pb-4">
         <button class="btn btn-sm btn-dark" onclick="changePage(-1)">मागे</button>
-        <span id="pageIndicator" class="fw-bold">1 / 1</span>
+        <span id="pageIndicator" class="fw-bold mt-1">1 / 1</span>
         <button class="btn btn-sm btn-dark" onclick="changePage(1)">पुढचे</button>
     </div>
 </div>
@@ -88,22 +92,12 @@
         <div class="col"><div class="director-card"><img src="img_director_2.jpg" class="director-img"><div class="p-2"><span class="badge bg-danger mb-1">कार्यवाह</span><h6 class="small fw-bold">श्री. हेमंत वाजे</h6></div></div></div>
         <div class="col"><div class="director-card"><img src="img_director_3.jpg" class="director-img"><div class="p-2"><span class="badge bg-warning mb-1">उपाध्यक्ष</span><h6 class="small fw-bold">श्री. नरेंद्र वैद्य</h6></div></div></div>
         <div class="col"><div class="director-card"><img src="img_director_4.jpg" class="director-img"><div class="p-2"><span class="badge bg-warning mb-1">उपाध्यक्ष</span><h6 class="small fw-bold">श्री. राजेंद्र देशपांडे</h6></div></div></div>
-        <div class="col"><div class="director-card"><img src="img_director_5.jpg" class="director-img"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">श्री. मनीष गुजराथी</h6></div></div></div>
-        <div class="col"><div class="director-card"><img src="img_director_6.jpg" class="director-img"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">श्री. विलास पाटील</h6></div></div></div>
-        <div class="col"><div class="director-card"><img src="img_director_7.jpg" class="director-img"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">श्री. जितेंद्र जगताप</h6></div></div></div>
-        <div class="col"><div class="director-card"><img src="img_director_8.jpg" class="director-img"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">श्री. सागर गुजर</h6></div></div></div>
-        <div class="col"><div class="director-card"><img src="img_director_9.jpg" class="director-img"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">श्री. सुनील उगले</h6></div></div></div>
-        <div class="col"><div class="director-card"><img src="img_director_10.jpg" class="director-img"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">श्री. उज्वल पंडित</h6></div></div></div>
-        <div class="col"><div class="director-card"><img src="img_director_11.jpg" class="director-img"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">श्री. मनोजकुमार भंडारी</h6></div></div></div>
-        <div class="col"><div class="director-card"><img src="img_director_12.jpg" class="director-img"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">सौ. निर्मल खिंवसरा</h6></div></div></div>
-        <div class="col"><div class="director-card"><img src="img_director_13.jpg" class="director-img"><div class="p-2"><span class="badge bg-secondary mb-1">संचालक</span><h6 class="small fw-bold">सौ. माधवी पंडित</h6></div></div></div>
-    </div>
+        </div>
 </div>
 
 <div id="contact-section" class="content-section container text-center">
     <div class="card p-4 shadow-sm border-0">
-        <h5>संपर्क व पत्ता</h5>
-        <p>राजा फत्तेसिंग मार्ग, शिवाजी चौक, सिन्नर | फोन: ९३७०२८३३४६</p>
+        <p>पत्ता: राजा फत्तेसिंग मार्ग, शिवाजी चौक, सिन्नर | फोन: ९३७०२८३३४६</p>
         <div class="ratio ratio-16x9 mt-3 rounded overflow-hidden">
             <iframe src="https://maps.app.goo.gl/NnDBEFdgxezvbeiP9" allowfullscreen="" loading="lazy"></iframe>
         </div>
@@ -114,19 +108,19 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header" style="background: var(--title-color); color: white;"><h6>सभासद नोंदणी अर्ज</h6><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
-        <div class="modal-body">
+        <div class="modal-body p-3">
           <form id="membershipForm" class="row g-2">
               <div class="col-12"><label class="small fw-bold">पूर्ण नाव *</label><input type="text" id="m_name" class="form-control" required></div>
               <div class="col-md-6"><label class="small fw-bold">मोबाईल *</label><input type="tel" id="m_mobile" class="form-control" required></div>
-              <div class="col-md-6"><label class="small fw-bold">आधार *</label><input type="text" id="m_aadhaar" class="form-control" required></div>
+              <div class="col-md-6"><label class="small fw-bold">आधार क्रमांक *</label><input type="text" id="m_aadhaar" class="form-control" required></div>
               <div class="col-md-6"><label class="small fw-bold">ईमेल</label><input type="email" id="m_email" class="form-control"></div>
               <div class="col-md-6"><label class="small fw-bold">जन्म तारीख *</label><input type="date" id="m_dob" class="form-control" required></div>
               <div class="col-md-6"><label class="small fw-bold">व्यवसाय *</label><input type="text" id="m_job" class="form-control" required></div>
-              <div class="col-md-6"><label class="small fw-bold">वर्ग *</label><select id="m_class" class="form-select" required><option value="वर्ग १">वर्ग १</option><option value="वर्ग २">वर्ग २</option></select></div>
+              <div class="col-md-6"><label class="small fw-bold">सभासद वर्ग *</label><select id="m_class" class="form-select" required><option value="वर्ग १">वर्ग १</option><option value="वर्ग २">वर्ग २</option></select></div>
               <div class="col-12"><label class="small fw-bold">सध्याचा पत्ता *</label><textarea id="m_address" class="form-control" rows="2" required></textarea></div>
               <div class="col-12"><div class="form-check"><input class="form-check-input" type="checkbox" id="sameAddress" onclick="copyAddr()"><label class="form-check-label small">कायमचा पत्ता हाच आहे</label></div></div>
               <div class="col-12"><label class="small fw-bold">कायमचा पत्ता *</label><textarea id="m_perm_address" class="form-control" rows="2" required></textarea></div>
-              <div class="col-12 mt-3"><button type="submit" class="btn btn-success w-100">अर्ज सादर करा</button></div>
+              <div class="col-12 mt-3"><button type="submit" class="btn btn-success w-100 fw-bold">अर्ज सादर करा</button></div>
           </form>
         </div>
       </div>
@@ -149,13 +143,23 @@
                 const cols = r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/^"|"$/g, '').trim());
                 return { SNo: cols[0], Class: cols[1], Name: cols[2], Author: cols[3] || '---' };
             }).filter(b => b.Name);
+
+            // विभागांचा Dropdown सेटअप
+            const cats = [...new Set(allBooks.map(b => b.Class))].filter(Boolean).sort();
+            const filter = document.getElementById('categoryFilter');
+            cats.forEach(c => filter.innerHTML += `<option value="${c}">${c}</option>`);
+
             applyFilters();
         } catch (e) { document.getElementById('searchCount').innerText = 'Data Error.'; }
     }
 
     function applyFilters() {
         const s = document.getElementById('searchInput').value.toLowerCase();
-        filteredBooks = allBooks.filter(b => b.Name.toLowerCase().includes(s) || b.Author.toLowerCase().includes(s));
+        const c = document.getElementById('categoryFilter').value;
+        filteredBooks = allBooks.filter(b => 
+            (b.Name.toLowerCase().includes(s) || b.Author.toLowerCase().includes(s)) && 
+            (c === 'All' || b.Class === c)
+        );
         document.getElementById('searchCount').innerText = `एकूण ${filteredBooks.length} पुस्तके सापडली`;
         currentPage = 1; render();
     }
