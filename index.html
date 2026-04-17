@@ -20,7 +20,50 @@
             --footer-bg: #494C3B;
             --text-dark: #7a4224;
         }
+<script>
+    function showSection(sectionId, element) {
+        // १. सर्व कंटेंट सेक्शन्स लपवा
+        const sections = document.querySelectorAll('.content-section');
+        sections.forEach(section => {
+            section.classList.remove('active');
+        });
 
+        // २. निवडलेला सेक्शन दाखवा
+        const activeSection = document.getElementById(sectionId);
+        if (activeSection) {
+            activeSection.classList.add('active');
+        }
+
+        // ३. नेव्हिगेशन बारमधील 'active' क्लास अपडेट करा
+        const navLinks = document.querySelectorAll('.main-nav a');
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+        });
+
+        // जर 'element' उपलब्ध असेल तर त्याला active करा (काही ठिकाणी आपण this वापरला नाहीये)
+        if (element) {
+            element.classList.add('active');
+        } else {
+            // गॅलरी टॅबसाठी विशेष ओळख
+            document.getElementById('nav-gallery-section').classList.add('active');
+        }
+
+        // ४. नवीन सेक्शन उघडल्यावर पेज आपोआप वरती स्क्रोल होईल
+        window.scrollTo(0, 0);
+    }
+
+    // पत्ता कॉपी करण्यासाठीचे फंक्शन (तुमच्या अर्जासाठी)
+    function copyAddress() {
+        var same = document.getElementById('sameAddress');
+        var current = document.getElementById('m_address');
+        var perm = document.getElementById('m_perm_address');
+        if (same.checked) {
+            perm.value = current.value;
+        } else {
+            perm.value = "";
+        }
+    }
+</script>
         body { background-color: var(--bg-color); font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
         
         .header-section { background: #ffffff; padding: 15px 10px; text-align: center; border-bottom: 5px solid var(--accent-color); }
