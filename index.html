@@ -49,6 +49,18 @@
         .about-text { line-height: 1.8; text-align: justify; white-space: pre-line; color: #333; }
         .footer { text-align: center; padding: 20px; background: var(--footer-bg); color: #f6f2e9; margin-top: 20px; }
         .card-img-top { background: #eee; aspect-ratio: 3/4; object-fit: cover; }
+ .gallery-img {
+    width: 100%;
+    aspect-ratio: 1/1; /* चौकोनी आकार */
+    object-fit: cover; /* फोटो ताणला जाणार नाही */
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    transition: 0.3s;
+}
+.gallery-img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
     </style>
 </head>
 <body>
@@ -64,6 +76,7 @@
     <a href="javascript:void(0)" class="active" onclick="showSection('home-section', this)">होम</a>
     <a href="javascript:void(0)" onclick="showSection('portal-section', this)">डिजिटल सूची</a>
     <a href="javascript:void(0)" onclick="showSection('about-section', this)">आमची ओळख</a>
+    <a href="javascript:void(0)" onclick="showSection('gallery-section', this)">छायाचित्रे</a>
      <a href="javascript:void(0)" onclick="showSection('rates-section', this)">वर्गणी दरपत्रक</a>
     <a href="javascript:void(0)" onclick="showSection('directors-section', this)">संचालक मंडळ</a>
     <a href="javascript:void(0)" onclick="showSection('contact-section', this)">संपर्क</a>
@@ -181,7 +194,31 @@
         </p>
 
     </div>
-</div><div id="rates-section" class="content-section container">
+    </div>
+    <div id="gallery-section" class="content-section container">
+    <div style="background: #ffffff; padding: 20px; border-radius: 8px; border-top: 6px solid var(--accent-color); box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+        <h5 class="text-center fw-bold mb-4" style="color: var(--title-color);">वाचनालयाची छायाचित्रे</h5>
+        
+        <div class="row g-3">
+            <div class="col-6 col-md-3"><img src="img1.jpg" class="gallery-img" onerror="this.src='https://via.placeholder.com/400x300?text=Photo+1';"></div>
+            <div class="col-6 col-md-3"><img src="img2.jpg" class="gallery-img" onerror="this.src='https://via.placeholder.com/400x300?text=Photo+2';"></div>
+            <div class="col-6 col-md-3"><img src="img3.jpg" class="gallery-img" onerror="this.src='https://via.placeholder.com/400x300?text=Photo+3';"></div>
+            <div class="col-6 col-md-3"><img src="img4.jpg" class="gallery-img" onerror="this.src='https://via.placeholder.com/400x300?text=Photo+4';"></div>
+            
+            <div class="col-6 col-md-3"><img src="img5.jpg" class="gallery-img" onerror="this.src='https://via.placeholder.com/400x300?text=Photo+5';"></div>
+            <div class="col-6 col-md-3"><img src="img6.jpg" class="gallery-img" onerror="this.src='https://via.placeholder.com/400x300?text=Photo+6';"></div>
+            <div class="col-6 col-md-3"><img src="img7.jpg" class="gallery-img" onerror="this.src='https://via.placeholder.com/400x300?text=Photo+7';"></div>
+            <div class="col-6 col-md-3"><img src="img8.jpg" class="gallery-img" onerror="this.src='https://via.placeholder.com/400x300?text=Photo+8';"></div>
+            
+            <div class="col-6 col-md-3"><img src="img9.jpg" class="gallery-img" onerror="this.src='https://via.placeholder.com/400x300?text=Photo+9';"></div>
+            <div class="col-6 col-md-3"><img src="img10.jpg" class="gallery-img" onerror="this.src='https://via.placeholder.com/400x300?text=Photo+10';"></div>
+            <div class="col-6 col-md-3"><img src="img11.jpg" class="gallery-img" onerror="this.src='https://via.placeholder.com/400x300?text=Photo+11';"></div>
+            <div class="col-6 col-md-3"><img src="img12.jpg" class="gallery-img" onerror="this.src='https://via.placeholder.com/400x300?text=Photo+12';"></div>
+        </div>
+    </div>
+</div>
+</div>
+<div id="rates-section" class="content-section container">
     <div class="card p-4 border-0 shadow-sm">
         <h4 class="fw-bold text-center mb-4" style="color: var(--title-color);">वर्गणीचे दर</h4>
         
