@@ -20,50 +20,7 @@
             --footer-bg: #494C3B;
             --text-dark: #7a4224;
         }
-<script>
-    function showSection(sectionId, element) {
-        // १. सर्व कंटेंट सेक्शन्स लपवा
-        const sections = document.querySelectorAll('.content-section');
-        sections.forEach(section => {
-            section.classList.remove('active');
-        });
 
-        // २. निवडलेला सेक्शन दाखवा
-        const activeSection = document.getElementById(sectionId);
-        if (activeSection) {
-            activeSection.classList.add('active');
-        }
-
-        // ३. नेव्हिगेशन बारमधील 'active' क्लास अपडेट करा
-        const navLinks = document.querySelectorAll('.main-nav a');
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-        });
-
-        // जर 'element' उपलब्ध असेल तर त्याला active करा (काही ठिकाणी आपण this वापरला नाहीये)
-        if (element) {
-            element.classList.add('active');
-        } else {
-            // गॅलरी टॅबसाठी विशेष ओळख
-            document.getElementById('nav-gallery-section').classList.add('active');
-        }
-
-        // ४. नवीन सेक्शन उघडल्यावर पेज आपोआप वरती स्क्रोल होईल
-        window.scrollTo(0, 0);
-    }
-
-    // पत्ता कॉपी करण्यासाठीचे फंक्शन (तुमच्या अर्जासाठी)
-    function copyAddress() {
-        var same = document.getElementById('sameAddress');
-        var current = document.getElementById('m_address');
-        var perm = document.getElementById('m_perm_address');
-        if (same.checked) {
-            perm.value = current.value;
-        } else {
-            perm.value = "";
-        }
-    }
-</script>
         body { background-color: var(--bg-color); font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
         
         .header-section { background: #ffffff; padding: 15px 10px; text-align: center; border-bottom: 5px solid var(--accent-color); }
@@ -107,7 +64,6 @@
     <a href="javascript:void(0)" class="active" onclick="showSection('home-section', this)">होम</a>
     <a href="javascript:void(0)" onclick="showSection('portal-section', this)">डिजिटल सूची</a>
     <a href="javascript:void(0)" onclick="showSection('about-section', this)">आमची ओळख</a>
-    <a onclick="showSection('gallery-section')" id="nav-gallery-section">छायाचित्रे</a>
      <a href="javascript:void(0)" onclick="showSection('rates-section', this)">वर्गणी दरपत्रक</a>
     <a href="javascript:void(0)" onclick="showSection('directors-section', this)">संचालक मंडळ</a>
     <a href="javascript:void(0)" onclick="showSection('contact-section', this)">संपर्क</a>
@@ -223,54 +179,7 @@
         <p style="text-align: justify; line-height: 1.8; margin-bottom: 0;">
             वाचनालयाला महाराष्ट्र शासनाचा  १९९०-९१ चा <strong>डॉ. बाबासाहेब आंबेडकर पुरस्कार</strong>, अध्यक्ष कृष्णाजी भगत यांना २००६-७ चा उत्कृष्ट <strong> ग्रंथालय कार्यकर्ता</strong> पुरस्कार आणि म.वि.प्र. समाजाचा उत्कृष्ट ग्रंथालय पुरस्कार प्राप्त झाला आहे.
         </p>
-<div id="gallery-section" class="content-section container">
-    <div style="background: #ffffff; padding: 25px; border-radius: 8px; border-top: 6px solid #f39c12; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-        
-        <div class="text-center mb-4">
-            <h3 class="fw-bold" style="color: #9d4d27;">छायाचित्र दालन</h3>
-            <p class="text-muted">वाचनालयाच्या ७५ वर्षांच्या प्रवासातील काही आठवणी</p>
-        </div>
 
-        <h5 style="color: #2c3e50; border-left: 5px solid #f39c12; padding-left: 15px; margin-bottom: 20px; font-weight: bold;">दुर्मिळ ऐतिहासिक छायाचित्रे</h5>
-        
-        <div class="row g-4">
-            <div class="col-12 col-md-6">
-                <div class="card border-0 shadow-sm overflow-hidden">
-                    <img src="old_photo1.jpg" class="img-fluid" alt="वाचनालयाची जुनी इमारत" style="width: 100%; height: 250px; object-fit: cover;" onerror="this.src='https://via.placeholder.com/600x400?text=जुनी+इमारत+फोटो';">
-                    <div class="card-body bg-light">
-                        <p class="card-text text-center fw-bold" style="color: #7a4224;">वाचनालयाची मूळ इमारत (१९८० चे दशक)</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-md-6">
-                <div class="card border-0 shadow-sm overflow-hidden">
-                    <img src="old_photo2.jpg" class="img-fluid" alt="ऐतिहासिक सोहळा" style="width: 100%; height: 250px; object-fit: cover;" onerror="this.src='https://via.placeholder.com/600x400?text=ऐतिहासिक+सोहळा';">
-                    <div class="card-body bg-light">
-                        <p class="card-text text-center fw-bold" style="color: #7a4224;">वाचनालयाच्या अमृत महोत्सवी कार्यक्रमातील क्षणचित्रे</p>
-                    </div>
-                </div>
-            </div>
-            
-            </div>
-
-        <h5 style="color: #2c3e50; border-left: 5px solid #f39c12; padding-left: 15px; margin-top: 40px; margin-bottom: 20px; font-weight: bold;">नूतन उपक्रम व कार्यक्रम</h5>
-        <div class="row g-3">
-            <div class="col-6 col-md-4">
-                <img src="event1.jpg" class="img-fluid rounded shadow-sm" alt="कार्यक्रम" onerror="this.src='https://via.placeholder.com/400x300?text=ग्रंथपूजन';">
-                <p class="small text-center mt-2 fw-bold">ग्रंथपूजन</p>
-            </div>
-            <div class="col-6 col-md-4">
-                <img src="event2.jpg" class="img-fluid rounded shadow-sm" alt="कार्यक्रम" onerror="this.src='https://via.placeholder.com/400x300?text=अभ्यासिका';">
-                <p class="small text-center mt-2 fw-bold">अभ्यासिका</p>
-            </div>
-            <div class="col-6 col-md-4">
-                <img src="event3.jpg" class="img-fluid rounded shadow-sm" alt="कार्यक्रम" onerror="this.src='https://via.placeholder.com/400x300?text=सप्ताह+व्याख्यान';">
-                <p class="small text-center mt-2 fw-bold">सप्ताह व्याख्यान</p>
-            </div>
-        </div>
-
-</div>
     </div>
 </div><div id="rates-section" class="content-section container">
     <div class="card p-4 border-0 shadow-sm">
