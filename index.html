@@ -1,14 +1,10 @@
 <!DOCTYPE html>
 <html lang="mr">
 <head>
-    <meta name="google-site-verification" content="M5e4PusgUX9TKphxzyZ-Ql2D6_ERHiHxTOzlrS-hmX0" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>सिन्नर सार्वजनिक वाचनालय | Sinnar Public Library</title>
-    
+    <title>सिन्नर सार्वजनिक वाचनालय</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
     <style>
         :root {
             --bg-color: #f6f2e9;
@@ -18,56 +14,29 @@
             --text-dark: #7a4224;
         }
 
-        body { background-color: var(--bg-color); font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
+        body { background-color: var(--bg-color); font-family: 'Segoe UI', Arial, sans-serif; margin: 0; }
         
-        .header-section { background: #ffffff; padding: 15px 10px; text-align: center; border-bottom: 5px solid var(--accent-color); }
-        .header-section img { max-width: 80px; }
-        .header-section h2 { color: var(--title-color); font-weight: bold; font-size: 1.5rem; margin: 5px 0 0; }
+        .header-section { background: #ffffff; padding: 15px; text-align: center; border-bottom: 5px solid var(--accent-color); }
+        .header-section h2 { color: var(--title-color); font-weight: bold; }
 
-        .main-nav { background: var(--footer-bg); display: flex; overflow-x: auto; padding: 8px; position: sticky; top: 0; z-index: 1050; gap: 8px; scrollbar-width: none; }
-        .main-nav::-webkit-scrollbar { display: none; }
-        .main-nav a { color: #f6f2e9; text-decoration: none; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; white-space: nowrap; }
+        .main-nav { background: var(--footer-bg); display: flex; overflow-x: auto; padding: 8px; position: sticky; top: 0; z-index: 1050; gap: 8px; }
+        .main-nav a { color: #f6f2e9; text-decoration: none; padding: 6px 15px; border-radius: 20px; font-size: 0.85rem; white-space: nowrap; cursor: pointer; }
         .main-nav a.active { background: var(--accent-color); color: white; }
 
-        .content-section { display: none; padding: 20px 0; }
+        .content-section { display: none; padding: 20px; }
         .content-section.active { display: block; }
 
-        /* गॅलरी आणि लाईटबॉक्स CSS */
-        .gallery-img {
-            width: 100%;
-            aspect-ratio: 1/1;
-            object-fit: cover;
-            cursor: pointer;
-            transition: 0.3s;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-        }
-        .gallery-img:hover { transform: scale(1.03); border-color: var(--accent-color); }
+        .gallery-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; cursor: pointer; border-radius: 8px; border: 2px solid #ddd; }
         
-        #lightbox {
-            display: none;
-            position: fixed;
-            z-index: 9999;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-            text-align: center;
-            padding-top: 50px;
-        }
-        #lightbox-img { max-width: 90%; max-height: 80%; border: 3px solid white; border-radius: 5px; }
-        
-        /* इतर स्टाइलिंग */
-        .book-card { background: #ffffff; border-radius: 15px; padding: 15px; margin-bottom: 15px; border-left: 10px solid var(--accent-color); display: flex; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .footer { text-align: center; padding: 20px; background: var(--footer-bg); color: #f6f2e9; }
-        .mandatory { color: red; }
+        #lightbox { display:none; position:fixed; z-index:9999; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); text-align:center; padding-top:50px; }
+        #lightbox img { max-width:90%; max-height:80%; border:3px solid white; }
     </style>
 </head>
 <body>
 
 <div class="header-section">
-    <img src="logo.png" alt="Logo" onerror="this.src='https://via.placeholder.com/80';">
     <h2>सिन्नर सार्वजनिक वाचनालय</h2>
-    <p class="mb-0 fw-bold small text-muted">राजा फत्तेसिंग मार्ग, शिवाजी चौक, सिन्नर जि. नाशिक.</p>
+    <p class="mb-0 fw-bold small text-muted text-uppercase">राजा फत्तेसिंग मार्ग, शिवाजी चौक, सिन्नर</p>
 </div>
 
 <div class="main-nav shadow-sm" id="mainNav">
@@ -80,64 +49,83 @@
     <a href="javascript:void(0)" onclick="showSection('contact-section', this)">संपर्क</a>
 </div>
 
-<div id="home-section" class="content-section active">
-    <div class="container text-center py-4">
-        <h3 class="fw-normal fs-6 mb-3" style="color: var(--title-color);">सिन्नर सार्वजनिक वाचनालयात आपले स्वागत आहे!</h3>
-        <img src="library_main.jpg" class="img-fluid rounded shadow-sm" onerror="this.src='https://via.placeholder.com/800x400?text=Sinnar+Library';">
+<div id="home-section" class="content-section active container">
+    <div class="text-center">
+        <h3 class="fs-5" style="color: var(--title-color);">वाचनालयात आपले स्वागत आहे!</h3>
+        <img src="library_main.jpg" class="img-fluid rounded mt-3 shadow-sm" onerror="this.src='https://via.placeholder.com/800x400?text=Sinnar+Library';">
     </div>
 </div>
 
-<div id="portal-section" class="content-section">
-    <div class="container mt-3">
-        <input type="text" class="form-control" placeholder="पुस्तकाचे नाव शोधा...">
-        <div id="bookList" class="mt-3 text-center text-muted">पुस्तके लोड करण्यासाठी डेटा लिंक करा...</div>
-    </div>
+<div id="portal-section" class="content-section container">
+    <input type="text" class="form-control mb-3" placeholder="पुस्तकाचे नाव किंवा लेखक शोधा...">
+    <div id="bookList" class="text-center p-5 border rounded bg-white">पुस्तके लवकरच उपलब्ध होतील...</div>
 </div>
 
 <div id="about-section" class="content-section container">
-    <div style="background: #ffffff; padding: 20px; border-radius: 8px; border-top: 6px solid #f39c12; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-        <h3 class="fw-bold text-center" style="color: #2c3e50;">आमची ओळख</h3>
+    <div class="bg-white p-4 rounded shadow-sm border-top border-warning border-5">
+        <h4 class="fw-bold mb-3">इतिहास आणि विकास</h4>
         <p>सिन्नर सार्वजनिक वाचनालयाची स्थापना १५ एप्रिल १९४५ रोजी झाली...</p>
-        </div>
+        <p>१५ एप्रिल १९४५ या दिवशी घरोघरी गुढी पाडव्याच्या गुढ्या उभ्या राहत असतानाच साहित्यिक व वाचन संस्कृतीची समृद्ध अशी पताका सिन्नर शहरात फडकली.</p>
+    </div>
 </div>
 
 <div id="gallery-section" class="content-section container">
-    <div style="background: #ffffff; padding: 20px; border-radius: 8px; border-top: 6px solid var(--accent-color); box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-        <h5 class="text-center fw-bold mb-4" style="color: var(--title-color);">वाचनालयाची काही छायाचित्रे</h5>
+    <div class="bg-white p-3 rounded shadow-sm border-top border-primary border-5">
+        <h5 class="text-center fw-bold mb-4">वाचनालयाची छायाचित्रे</h5>
         <div class="row g-2">
-            <div class="col-6 col-md-3"><img src="img1.jpg" class="gallery-img" onclick="openLightbox(this.src)" onerror="this.src='https://via.placeholder.com/400x300?text=Photo+1';"></div>
-            <div class="col-6 col-md-3"><img src="img2.jpg" class="gallery-img" onclick="openLightbox(this.src)" onerror="this.src='https://via.placeholder.com/400x300?text=Photo+2';"></div>
-            <div class="col-6 col-md-3"><img src="img3.jpg" class="gallery-img" onclick="openLightbox(this.src)" onerror="this.src='https://via.placeholder.com/400x300?text=Photo+3';"></div>
-            <div class="col-6 col-md-3"><img src="img4.jpg" class="gallery-img" onclick="openLightbox(this.src)" onerror="this.src='https://via.placeholder.com/400x300?text=Photo+4';"></div>
-            <div class="col-6 col-md-3"><img src="img5.jpg" class="gallery-img" onclick="openLightbox(this.src)" onerror="this.src='https://via.placeholder.com/400x300?text=Photo+5';"></div>
-            <div class="col-6 col-md-3"><img src="img6.jpg" class="gallery-img" onclick="openLightbox(this.src)" onerror="this.src='https://via.placeholder.com/400x300?text=Photo+6';"></div>
-            <div class="col-6 col-md-3"><img src="img7.jpg" class="gallery-img" onclick="openLightbox(this.src)" onerror="this.src='https://via.placeholder.com/400x300?text=Photo+7';"></div>
-            <div class="col-6 col-md-3"><img src="img8.jpg" class="gallery-img" onclick="openLightbox(this.src)" onerror="this.src='https://via.placeholder.com/400x300?text=Photo+8';"></div>
-            </div>
+            <div class="col-6 col-md-3"><img src="img1.jpg" class="gallery-img" onclick="openLightbox(this.src)" onerror="this.src='https://via.placeholder.com/400x400?text=Photo+1';"></div>
+            <div class="col-6 col-md-3"><img src="img2.jpg" class="gallery-img" onclick="openLightbox(this.src)" onerror="this.src='https://via.placeholder.com/400x400?text=Photo+2';"></div>
+            <div class="col-6 col-md-3"><img src="img3.jpg" class="gallery-img" onclick="openLightbox(this.src)" onerror="this.src='https://via.placeholder.com/400x400?text=Photo+3';"></div>
+            <div class="col-6 col-md-3"><img src="img4.jpg" class="gallery-img" onclick="openLightbox(this.src)" onerror="this.src='https://via.placeholder.com/400x400?text=Photo+4';"></div>
+        </div>
     </div>
 </div>
 
 <div id="rates-section" class="content-section container">
+    <div class="table-responsive bg-white p-3 rounded shadow-sm">
+        <h5 class="fw-bold text-center mb-3">वर्गणीचे दर</h5>
+        <table class="table table-bordered text-center">
+            <thead class="table-dark">
+                <tr><th>वर्ग</th><th>साहित्य</th><th>अनामत</th><th>वर्गणी</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>१</td><td>१ पुस्तक</td><td>३००/-</td><td>१०/-</td></tr>
+                <tr><td>२</td><td>२ पुस्तके</td><td>४००/-</td><td>२०/-</td></tr>
+            </tbody>
+        </table>
     </div>
+</div>
+
+<div id="directors-section" class="content-section container">
+    <h5 class="text-center fw-bold mb-4">विद्यमान संचालक मंडळ</h5>
+    <div class="row row-cols-2 row-cols-md-4 g-3">
+        <div class="col text-center">
+            <div class="card p-2 border-0 shadow-sm">
+                <img src="img_director_1.jpg" class="rounded" onerror="this.src='https://via.placeholder.com/150';">
+                <h6 class="mt-2 small fw-bold">श्री. कृष्णाजी भगत</h6>
+                <span class="badge bg-danger small">अध्यक्ष</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="contact-section" class="content-section container text-center">
+    <div class="bg-white p-4 rounded shadow-sm">
+        <h5 class="fw-bold">संपर्क साधा</h5>
+        <p>फोन: ९३७०२ ८३३४६</p>
+        <p>पत्ता: राजा फत्तेसिंग मार्ग, छ. शिवाजी महाराज चौक, सिन्नर</p>
+    </div>
+</div>
 
 <div id="lightbox" onclick="closeLightbox()">
     <span style="position:absolute; top:20px; right:30px; color:white; font-size:40px; cursor:pointer;">&times;</span>
-    <img id="lightbox-img">
+    <img id="lightbox-img" src="">
 </div>
 
-<footer class="footer mt-5">
-    <p class="small mb-0">© २०२६ सिन्नर सार्वजनिक वाचनालय. सर्व हक्क सुरक्षित.</p>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     function showSection(id, el) {
-        // सर्व विभाग लपवा
         document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-        // निवडलेला विभाग दाखवा
         document.getElementById(id).classList.add('active');
-        
-        // मेनू बटण सक्रिय करा
         document.querySelectorAll('.main-nav a').forEach(a => a.classList.remove('active'));
         if(el) el.classList.add('active');
         window.scrollTo(0,0);
@@ -153,5 +141,6 @@
     }
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
