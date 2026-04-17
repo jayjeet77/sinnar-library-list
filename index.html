@@ -104,21 +104,14 @@
                     <h6 class="fw-bold mb-1 small" style="color: var(--title-color);">अभ्यासिका वेळ</h6>
                     <p class="small mb-0" style="color: var(--text-dark);">सकाळी ६:०० ते रात्री १०:००</p>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-        </div>
-    </div>
-</div>  
+           
 <div id="portal-section" class="content-section">
     <div class="category-nav" id="categoryNav">
         <a href="javascript:void(0)" onclick="filterByCategory('All', this)">सर्व पुस्तके</a>
     </div>
     <div class="container mt-3">
         <div class="row g-2 px-2">
-            <div class="col-8"><input type="text" id="searchInput" class="form-control" placeholder="नाव किंवा लेखक शोधा..."></div>
+            <div class="col-8"><input type="text" id="searchInput" class="form-control" placeholder="नाव किंवा लेखक शोधा..." onkeyup="applyFilters()">
             <div class="col-4">
                 <select id="categoryFilter" class="form-select" onchange="applyFilters()">
                     <option value="All">सर्व विभाग</option>
