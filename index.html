@@ -13,17 +13,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <style>
-        .gallery-img {
-    width: 100%;
-    aspect-ratio: 4/3; /* सर्व फोटो एकाच आकारात दिसतील */
-    object-fit: cover;
-    transition: transform 0.3s;
-    cursor: pointer;
-}
-
-.gallery-img:hover {
-    transform: scale(1.05); /* माऊस नेल्यावर फोटो थोडा मोठा होईल */
-}
         :root {
             --bg-color: #f6f2e9;
             --title-color: #9d4d27;
@@ -75,7 +64,6 @@
     <a href="javascript:void(0)" class="active" onclick="showSection('home-section', this)">होम</a>
     <a href="javascript:void(0)" onclick="showSection('portal-section', this)">डिजिटल सूची</a>
     <a href="javascript:void(0)" onclick="showSection('about-section', this)">आमची ओळख</a>
-    <a href="javascript:void(0)" onclick="showSection('gallery-section', this)">छायाचित्रे</a>
      <a href="javascript:void(0)" onclick="showSection('rates-section', this)">वर्गणी दरपत्रक</a>
     <a href="javascript:void(0)" onclick="showSection('directors-section', this)">संचालक मंडळ</a>
     <a href="javascript:void(0)" onclick="showSection('contact-section', this)">संपर्क</a>
@@ -193,20 +181,6 @@
         </p>
 
     </div>
-    <div id="gallery-section" class="content-section container">
-    <div style="background: #ffffff; padding: 20px; border-radius: 8px; border-top: 6px solid #C5884B; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-        <h5 class="text-center fw-bold mb-4" style="color: var(--title-color);">वाचनालयाची छायाचित्रे</h5>
-        
-        <div class="row g-3">
-            <div class="col-6 col-md-4 col-lg-3">
-                <img src="img1.jpg" class="img-fluid rounded shadow-sm gallery-img" alt="Library Photo" onerror="this.src='https://via.placeholder.com/400x300?text=वाचनालय+फोटो';">
-            </div>
-            <div class="col-6 col-md-4 col-lg-3">
-                <img src="img2.jpg" class="img-fluid rounded shadow-sm gallery-img" alt="Library Photo" onerror="this.src='https://via.placeholder.com/400x300?text=वाचनालय+फोटो';">
-            </div>
-            </div>
-    </div>
-</div>
 </div><div id="rates-section" class="content-section container">
     <div class="card p-4 border-0 shadow-sm">
         <h4 class="fw-bold text-center mb-4" style="color: var(--title-color);">वर्गणीचे दर</h4>
