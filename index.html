@@ -11,6 +11,7 @@
     <meta name="language" content="Marathi, English">
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">  
     
     <style>
         :root {
@@ -293,7 +294,7 @@
                target="_blank" 
              
                style="border-radius: 20px;">
-                <i class="bi bi-geo-alt-fill"></i> गूगल मॅपवर दिशा पहा
+                <i class="bi bi-geo-alt-fill"></i> गूगल मॅपवर दिशा पहा </a>
                 <div class="mt-4 p-3 border-top">
     
     <a href="https://www.instagram.com/sinnar_sarvajnik_vachnalay?igsh=aDE0MjBlNGcxZW10" target="_blank" class="text-decoration-none" style="color: #E1306C;">
@@ -331,7 +332,6 @@
     </div>
 </div>
     </div>
-</div></div>
 
 <div class="modal fade" id="memberModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
@@ -365,7 +365,7 @@
         <div class="col-12 mt-3"><button type="submit" id="submitBtn" class="btn btn-success w-100 fw-bold">अर्ज सादर करा</button></div>
     </div>
 </form>
-            </form>
+          
         </div>
       </div>
     </div>
@@ -390,7 +390,6 @@
 
     </body>
 </html>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -475,9 +474,21 @@ function applyFilters() {
         el.classList.add('active');
     }
 
-    function changePage(v) { currentPage += v; render(); window.scrollTo(0,0); }
-    window.onload = fetchData;
+function changePage(v) {
+    const maxPage = Math.ceil(filteredBooks.length / pageSize) || 1;
+    
+    currentPage += v;
+
+    if (currentPage < 1) currentPage = 1;
+    if (currentPage > maxPage) currentPage = maxPage;
+
+    render();
+    window.scrollTo(0, 0);
+}    window.onload = fetchData;
+window.onload = function () {
+    fetchData();
     document.getElementById('searchInput').addEventListener('input', applyFilters);
+};
 </script>
 </body>
 </html>
