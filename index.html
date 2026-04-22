@@ -409,7 +409,13 @@
             const rows = csvText.split(/\r?\n/).slice(1);
             allBooks = rows.map(r => {
                 const cols = r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/^"|"$/g, '').trim());
-                return { SNo: cols[0], Class: cols[1], Name: cols[2], Author: cols[3],Publisher: cols[4] || '---'};
+                return { 
+    SNo: cols[0], 
+    Class: cols[1], 
+    Name: cols[2], 
+    Author: cols[3]?.trim() || '---',
+    Publisher: cols[4]?.trim() ? cols[4].trim() : '---'
+};
             }).filter(b => b.Name);
             setupFilters();
             applyFilters();
