@@ -106,34 +106,32 @@
     <a href="javascript:void(0)" style="background: #ce062b; color: white;" data-bs-toggle="modal" data-bs-target="#memberModal">वाचक सभासद व्हा</a>
 </div>
 
-  <div id="home-section" class="content-section active">
+<div id="home-section" class="content-section active">
     <div class="container text-center py-4">
-    <h3 class="fw-normal fs-6 mb-3" style="color: var(--title-color);">सिन्नर सार्वजनिक वाचनालयात आपले स्वागत आहे!</h3>
-    
-    <img src="library_main.jpg" class="img-fluid rounded shadow-sm" alt="Sinnar Library" style="max-height: 400px; width: 100%; object-fit: cover;" onerror="this.src='https://via.placeholder.com/800x400?text=Sinnar+Library';">
-    
-    <div class="mt-4 p-3 bg-white rounded shadow-sm">
-        <p class="lead" style="color: var(--text-dark); font-weight: 500;">आपल्या समृद्ध ग्रंथसंपदेचा लाभ घेण्यासाठी वरील 'डिजिटल सूची' विभागात जावे.</p>
+        <h3 class="fw-normal fs-6 mb-3" style="color: var(--title-color);">सिन्नर सार्वजनिक वाचनालयात आपले स्वागत आहे!</h3>
+        <img src="library_main.jpg" class="img-fluid rounded shadow-sm" alt="Sinnar Library" style="max-height: 400px; width: 100%; object-fit: cover;" onerror="this.src='https://via.placeholder.com/800x400?text=Sinnar+Library';">
         
-        <div class="row g-2 mt-4 px-3">
-            <div class="col-6">
-                <div class="p-2 border rounded bg-white shadow-sm" style="border-color: rgba(157, 77, 39, 0.2) !important;">
-                    <h6 class="fw-bold mb-1 small" style="color: var(--title-color);">वाचनालय वेळ</h6>
-                    <p class="small mb-0" style="color: var(--text-dark);">सकाळी १०.०० ते सायं ७:३०</p>
+        <div class="mt-4 p-3 bg-white rounded shadow-sm">
+            <p class="lead" style="color: var(--text-dark); font-weight: 500;">आपल्या समृद्ध ग्रंथसंपदेचा लाभ घेण्यासाठी वरील 'डिजिटल सूची' विभागात जावे.</p>
+            <div class="row g-2 mt-4 px-3">
+                <div class="col-6">
+                    <div class="p-2 border rounded bg-white shadow-sm" style="border-color: rgba(157, 77, 39, 0.2) !important;">
+                        <h6 class="fw-bold mb-1 small" style="color: var(--title-color);">वाचनालय वेळ</h6>
+                        <p class="small mb-0" style="color: var(--text-dark);">सकाळी १०.०० ते सायं ७:३०</p>
+                    </div>
                 </div>
-            </div>
-            <div class="col-6">
-                <div class="p-2 border rounded bg-white shadow-sm" style="border-color: rgba(157, 77, 39, 0.2) !important;">
-                    <h6 class="fw-bold mb-1 small" style="color: var(--title-color);">अभ्यासिका वेळ</h6>
-                    <p class="small mb-0" style="color: var(--text-dark);">सकाळी ६:०० ते रात्री १०:००</p>
+                <div class="col-6">
+                    <div class="p-2 border rounded bg-white shadow-sm" style="border-color: rgba(157, 77, 39, 0.2) !important;">
+                        <h6 class="fw-bold mb-1 small" style="color: var(--title-color);">अभ्यासिका वेळ</h6>
+                        <p class="small mb-0" style="color: var(--text-dark);">सकाळी ६:०० ते रात्री १०:००</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>  
-<div id="portal-section" class="content-section">
+</div> <div id="portal-section" class="content-section">
     <div class="category-nav" id="categoryNav">
-        <a href="javascript:void(0)" onclick="filterByCategory('All', this)">सर्व पुस्तके</a>
+        <a href="javascript:void(0)" class="active" onclick="filterByCategory('All', this)">सर्व पुस्तके</a>
     </div>
     <div class="container mt-3">
         <div class="row g-2 px-2">
@@ -152,9 +150,7 @@
             <button class="btn btn-sm btn-dark" onclick="changePage(1)">पुढचे</button>
         </div>
     </div>
-</div>
-
-<div id="about-section" class="content-section container">
+</div><div id="about-section" class="content-section container">
     <div style="background: #ffffff; padding: 20px; border-radius: 8px; border-top: 6px solid #f39c12; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden;">
         
         <div class="text-center mb-4">
@@ -539,13 +535,17 @@ function applyFilters() {
     
     filteredBooks = allBooks.filter(b => 
         (
-            b.Name.toLowerCase().includes(s) || 
-            b.Author.toLowerCase().includes(s) || 
-            b.Publisher.toLowerCase().includes(s) // <--- Search includes publishers now
+            (b.Name && b.Name.toLowerCase().includes(s)) || 
+            (b.Author && b.Author.toLowerCase().includes(s)) || 
+            (b.Publisher && b.Publisher.toLowerCase().includes(s))
         ) && 
         (c === 'All' || b.Class === c)
     );
     
+    document.getElementById('searchCount').innerText = `एकूण ${filteredBooks.length} पुस्तके सापडली`;
+    currentPage = 1; 
+    render();
+}
     document.getElementById('searchCount').innerText = `एकूण ${filteredBooks.length} पुस्तके सापडली`;
     currentPage = 1; 
     render();
