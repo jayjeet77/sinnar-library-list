@@ -58,9 +58,31 @@
     border: 3px solid #fff;
 }
 
-.gallery-card img:hover {
-    transform: scale(1.05);
-    border-color: var(--accent-color);
+.gallery-card {
+    background: #ffffff;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.gallery-card img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+.gallery-caption {
+    font-size: 0.75rem;
+    color: var(--title-color);
+    text-align: center;
+    font-weight: bold;
+    padding-top: 8px;
+    line-height: 1.2;
+    margin-top: auto; /* Pushes caption to bottom */
 }
     </style>
 </head>
@@ -196,21 +218,81 @@
 
     </div>
     </div>
-    <div id="gallery-section" class="content-section container">
-    <h4 class="text-center fw-bold mb-4" style="color: var(--title-color);">वाचनालय छायाचित्रे</h4>
+  <div id="gallery-section" class="content-section container">
+    <h4 class="text-center fw-bold mb-4" style="color: var(--title-color);">ऐतिहासिक पाऊलखुणा (Legacy Gallery)</h4>
     
     <div class="row g-3">
         <div class="col-6 col-md-3">
-            <div class="gallery-card">
-                <img src="photo1.jpg" class="img-fluid rounded shadow-sm" alt="Library Photo" onclick="window.open(this.src)">
+            <div class="gallery-card shadow-sm">
+                <img src="hist1.jpg" class="img-fluid" alt="Foundation" onerror="this.src='https://via.placeholder.com/400x400?text=वाचनालय+स्थापना+१९४५';">
+                <div class="gallery-caption">वाचनालय स्थापना (१५ एप्रिल १९४५)</div>
             </div>
         </div>
+
         <div class="col-6 col-md-3">
-            <div class="gallery-card">
-                <img src="photo2.jpg" class="img-fluid rounded shadow-sm" alt="Library Photo" onclick="window.open(this.src)">
+            <div class="gallery-card shadow-sm">
+                <img src="hist2.jpg" class="img-fluid" alt="Old Building" onerror="this.src='https://via.placeholder.com/400x400?text=जुनी+इमारत';">
+                <div class="gallery-caption">वाचनालयाची जुनी ऐतिहासिक इमारत</div>
             </div>
         </div>
+
+        <div class="col-6 col-md-3">
+            <div class="gallery-card shadow-sm">
+                <img src="hist3.jpg" class="img-fluid" alt="Event" onerror="this.src='https://via.placeholder.com/400x400?text=सुवर्ण+महोत्सव';">
+                <div class="gallery-caption">सुवर्ण महोत्सव सोहळा</div>
+            </div>
         </div>
+
+        <div class="col-6 col-md-3">
+            <div class="gallery-card shadow-sm">
+                <img src="hist4.jpg" class="img-fluid" alt="Guest" onerror="this.src='https://via.placeholder.com/400x400?text=कुसुमाग्रज+भेट';">
+                <div class="gallery-caption">कवी कुसुमाग्रज यांची ऐतिहासिक भेट</div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="gallery-card shadow-sm">
+                <img src="hist5.jpg" class="img-fluid" alt="New Building" onerror="this.src='https://via.placeholder.com/400x400?text=इमारत+उद्घाटन';">
+                <div class="gallery-caption">नवीन वास्तू उद्घाटन सोहळा (१९८४)</div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="gallery-card shadow-sm">
+                <img src="hist6.jpg" class="img-fluid" alt="Award" onerror="this.src='https://via.placeholder.com/400x400?text=राज्य+पुरस्कार';">
+                <div class="gallery-caption">डॉ. आंबेडकर पुरस्कार वितरण</div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="gallery-card shadow-sm">
+                <img src="hist7.jpg" class="img-fluid" alt="Library Week" onerror="this.src='https://via.placeholder.com/400x400?text=ग्रंथालय+सप्ताह+प्रारंभ';">
+                <div class="gallery-caption">ग्रंथालय सप्ताह - प्रथम वर्ष</div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="gallery-card shadow-sm">
+                <img src="hist8.jpg" class="img-fluid" alt="Books" onerror="this.src='https://via.placeholder.com/400x400?text=दुर्मीळ+ग्रंथ+संग्रह';">
+                <div class="gallery-caption">वाचनालयातील दुर्मीळ ग्रंथ संग्रह</div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="gallery-card shadow-sm">
+                <img src="hist9.jpg" class="img-fluid" alt="Celebration" onerror="this.src='https://via.placeholder.com/400x400?text=अमृत+महोत्सव';">
+                <div class="gallery-caption">अमृत महोत्सव सोहळा (७५ वर्षे)</div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="gallery-card shadow-sm">
+                <img src="hist10.jpg" class="img-fluid" alt="Digital" onerror="this.src='https://via.placeholder.com/400x400?text=संगणकीकरण+प्रारंभ';">
+                <div class="gallery-caption">वाचनालय संगणकीकरण प्रारंभ</div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
     </div><div id="rates-section" class="content-section container">
