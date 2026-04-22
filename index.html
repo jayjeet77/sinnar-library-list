@@ -11,7 +11,7 @@
     <meta name="language" content="Marathi, English">
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">    
     <style>
         :root {
             --bg-color: #f6f2e9;
@@ -90,15 +90,14 @@
                 <div class="p-2 border rounded bg-white shadow-sm" style="border-color: rgba(157, 77, 39, 0.2) !important;">
                     <h6 class="fw-bold mb-1 small" style="color: var(--title-color);">अभ्यासिका वेळ</h6>
                     <p class="small mb-0" style="color: var(--text-dark);">सकाळी ६:०० ते रात्री १०:००</p>
-                </div>
+               
+</div>
+</div>
+   </div>
             </div>
         </div>
     </div>
-</div>
-</div>
-        </div>
-    </div>
-</div>  
+</div>     
 <div id="portal-section" class="content-section">
     <div class="category-nav" id="categoryNav">
         <a href="javascript:void(0)" onclick="filterByCategory('All', this)">सर्व पुस्तके</a>
@@ -293,7 +292,7 @@
                target="_blank" 
              
                style="border-radius: 20px;">
-                <i class="bi bi-geo-alt-fill"></i> गूगल मॅपवर दिशा पहा
+                <i class="bi bi-geo-alt-fill"></i> गूगल मॅपवर दिशा पहा</a>
                 <div class="mt-4 p-3 border-top">
     
     <a href="https://www.instagram.com/sinnar_sarvajnik_vachnalay?igsh=aDE0MjBlNGcxZW10" target="_blank" class="text-decoration-none" style="color: #E1306C;">
@@ -325,13 +324,6 @@
     </p>
 </div>
 </div>
-    </a>
-</div>
-        </div>
-    </div>
-</div>
-    </div>
-</div></div>
 
 <div class="modal fade" id="memberModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
@@ -364,7 +356,7 @@
         <div class="col-12"><label class="form-label small">कायमचा पत्ता <span class="mandatory">*</span></label><textarea id="m_perm_address" class="form-control form-control-sm" rows="2" required></textarea></div>
         <div class="col-12 mt-3"><button type="submit" id="submitBtn" class="btn btn-success w-100 fw-bold">अर्ज सादर करा</button></div>
     </div>
-</form>
+
             </form>
         </div>
       </div>
@@ -388,9 +380,6 @@
     </div>
 </footer>
 
-    </body>
-</html>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -475,9 +464,21 @@ function applyFilters() {
         el.classList.add('active');
     }
 
-    function changePage(v) { currentPage += v; render(); window.scrollTo(0,0); }
-    window.onload = fetchData;
+function changePage(v) {
+    const maxPage = Math.ceil(filteredBooks.length / pageSize);
+
+    currentPage += v;
+
+    if (currentPage < 1) currentPage = 1;
+    if (currentPage > maxPage) currentPage = maxPage;
+
+    render();
+    window.scrollTo(0,0);
+}
+window.onload = function() {
+    fetchData();
     document.getElementById('searchInput').addEventListener('input', applyFilters);
+}
 </script>
 </body>
 </html>
