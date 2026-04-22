@@ -439,13 +439,14 @@ function applyFilters() {
     const c = document.getElementById('categoryFilter').value;
     
     filteredBooks = allBooks.filter(b => 
-        (
-            b.Name.toLowerCase().includes(s) || 
-            b.Author.toLowerCase().includes(s) || 
-            b.Publisher.toLowerCase().includes(s) // <--- Search includes publishers now
-        ) && 
-        (c === 'All' || b.Class === c)
-    );
+    (
+        b.SNo.toString().includes(s) ||
+        b.Name.toLowerCase().includes(s) || 
+        b.Author.toLowerCase().includes(s) || 
+        b.Publisher.toLowerCase().includes(s)
+    ) && 
+    (c === 'All' || b.Class === c)
+);
     
     document.getElementById('searchCount').innerText = `एकूण ${filteredBooks.length} पुस्तके सापडली`;
     currentPage = 1; 
