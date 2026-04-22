@@ -499,41 +499,43 @@
     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1zskDx0OIbMyzY5Sj_7GBS1iokrZY_5KnPn9jsW3dDNc/gviz/tq?tqx=out:csv';
     let allBooks = [], filteredBooks = [], currentPage = 1, pageSize = 50;
 
-   async function fetchData() {
-    try {
-        const resp = await fetch(SHEET_URL);
-        const csvText = await resp.text();
-        
-        // ओळींमध्ये विभागणी करा
-        const rows = csvText.split(/\r?\n/);
-        
-        allBooks = [];
-        // पहिली ओळ (Header) सोडून बाकी डेटा प्रोसेस करा
-        for (let i = 1; i < rows.length; i++) {
-            if (!rows[i]) continue;
+async function fetchData() {
+        try {
+            const resp = await fetch(SHEET_URL);
+            const csvText = await resp.text();
             
-            // स्वल्पविरामाने डेटा विभागताना येणाऱ्या त्रुटी टाळण्यासाठी साधी पद्धत
-            const cols = rows[i].split(',').map(v => v.replace(/^"|"$/g, '').trim());
+            // CSV डेटाला ओळींमध्ये विभागून घ्या
+            const rows = csvText.split(/\r?\n/).filter(row => row.trim() !== "");
             
-            if (cols[2]) { // जर पुस्तकाचे नाव असेल तरच ॲड करा
-                allBooks.push({
-                    SNo: cols[0] || '---',
-                    Class: cols[1] || 'सामान्य',
-                    Name: cols[2],
-                    Author: cols[3] || '---',
-                    Publisher: cols[4] || '---'
-                });
+            allBooks = [];
+            // पहिली ओळ (Header) सोडून डेटा वाचणे
+            for (let i = 1; i < rows.length; i++) {
+                // स्वल्पविराम आणि अवतरण चिन्हे (Quotes) सुरक्षितपणे हाताळणे
+                const cols = rows[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                
+                if (cols.length >= 3 && cols[2]) {
+                    allBooks.push({
+                        SNo: (cols[0] || '').replace(/"/g, '').trim(),
+                        Class: (cols[1] || 'सामान्य').replace(/"/g, '').trim(),
+                        Name: (cols[2] || '').replace(/"/g, '').trim(),
+                        Author: (cols[3] || '---').replace(/"/g, '').trim(),
+                        Publisher: (cols[4] || '---').replace(/"/g, '').trim()
+                    });
+                }
             }
-        }
-        
-        setupFilters();
-        applyFilters();
-    } catch (e) {
-        console.error(e);
-        document.getElementById('searchCount').innerText = 'डेटा लोड होऊ शकला नाही. कृपया इंटरनेट तपासा.';
-    }
-}
 
+            if (allBooks.length === 0) {
+                document.getElementById('bookList').innerHTML = "<p class='text-center'>माहिती उपलब्ध नाही.</p>";
+            } else {
+                setupFilters();
+                applyFilters();
+            }
+            
+        } catch (e) {
+            console.error("Data Load Error:", e);
+            document.getElementById('bookList').innerHTML = "<p class='text-center text-danger'>इंटरनेट कनेक्शन तपासा किंवा पेज रिफ्रेश करा.</p>";
+        }
+    }
     function setupFilters() {
         const sel = document.getElementById('categoryFilter');
         const nav = document.getElementById('categoryNav');
