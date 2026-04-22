@@ -49,33 +49,6 @@
         .about-text { line-height: 1.8; text-align: justify; white-space: pre-line; color: #333; }
         .footer { text-align: center; padding: 20px; background: var(--footer-bg); color: #f6f2e9; margin-top: 20px; }
         .card-img-top { background: #eee; aspect-ratio: 3/4; object-fit: cover; }
-        /* पायरी २: गॅलरी आणि कॅप्शन्ससाठी डिझाईन */
-.gallery-card {
-    background: #fff;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    height: 100%;
-    transition: transform 0.2s;
-    text-align: center;
-}
-.gallery-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--title-color);
-}
-.gallery-card img {
-    width: 100%;
-    aspect-ratio: 1/1;
-    object-fit: cover;
-    border-radius: 5px;
-}
-.gallery-caption {
-    font-size: 0.8rem;
-    color: var(--title-color);
-    margin-top: 10px;
-    font-weight: bold;
-    line-height: 1.2;
-}
     </style>
 </head>
 <body>
@@ -91,7 +64,6 @@
     <a href="javascript:void(0)" class="active" onclick="showSection('home-section', this)">होम</a>
     <a href="javascript:void(0)" onclick="showSection('portal-section', this)">डिजिटल सूची</a>
     <a href="javascript:void(0)" onclick="showSection('about-section', this)">आमची ओळख</a>
-    <a href="javascript:void(0)" onclick="showSection('gallery-section', this)">छायाचित्रे</a>
      <a href="javascript:void(0)" onclick="showSection('rates-section', this)">वर्गणी दरपत्रक</a>
     <a href="javascript:void(0)" onclick="showSection('directors-section', this)">संचालक मंडळ</a>
     <a href="javascript:void(0)" onclick="showSection('contact-section', this)">संपर्क</a>
@@ -118,12 +90,16 @@
                 <div class="p-2 border rounded bg-white shadow-sm" style="border-color: rgba(157, 77, 39, 0.2) !important;">
                     <h6 class="fw-bold mb-1 small" style="color: var(--title-color);">अभ्यासिका वेळ</h6>
                     <p class="small mb-0" style="color: var(--text-dark);">सकाळी ६:०० ते रात्री १०:००</p>
-           </div>
                 </div>
             </div>
         </div>
     </div>
-</div> <div id="portal-section" class="content-section">
+</div>
+</div>
+        </div>
+    </div>
+</div>  
+<div id="portal-section" class="content-section">
     <div class="category-nav" id="categoryNav">
         <a href="javascript:void(0)" onclick="filterByCategory('All', this)">सर्व पुस्तके</a>
     </div>
@@ -205,81 +181,7 @@
         </p>
 
     </div>
-<div id="gallery-section" class="content-section container">
-    <h4 class="text-center fw-bold mb-4" style="color: var(--title-color);">ऐतिहासिक पाऊलखुणा</h4>
-    
-    <div class="row g-3">
-        <div class="col-6 col-md-3">
-            <div class="gallery-card shadow-sm">
-                <img src="hist1.jpg" alt="स्थापना" onerror="this.src='https://via.placeholder.com/400x400?text=स्थापना+१९४५';">
-                <div class="gallery-caption">वाचनालय स्थापना (१९४५)</div>
-            </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-            <div class="gallery-card shadow-sm">
-                <img src="hist2.jpg" alt="जुनी इमारत" onerror="this.src='https://via.placeholder.com/400x400?text=जुनी+इमारत';">
-                <div class="gallery-caption">वाचनालयाची जुनी ऐतिहासिक इमारत</div>
-            </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-            <div class="gallery-card shadow-sm">
-                <img src="hist3.jpg" alt="अमृत महोत्सव" onerror="this.src='https://via.placeholder.com/400x400?text=अमृत+महोत्सव';">
-                <div class="gallery-caption">अमृत महोत्सव सोहळा</div>
-            </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-            <div class="gallery-card shadow-sm">
-                <img src="hist4.jpg" alt="प्रदर्शन" onerror="this.src='https://via.placeholder.com/400x400?text=ग्रंथ+प्रदर्शन';">
-                <div class="gallery-caption">ऐतिहासिक ग्रंथ प्रदर्शन</div>
-            </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-            <div class="gallery-card shadow-sm">
-                <img src="hist5.jpg" alt="साहित्यिक भेट" onerror="this.src='https://via.placeholder.com/400x400?text=साहित्यिक+भेट';">
-                <div class="gallery-caption">नामवंत साहित्यिकांची भेट</div>
-            </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-            <div class="gallery-card shadow-sm">
-                <img src="hist6.jpg" alt="पुरस्कार" onerror="this.src='https://via.placeholder.com/400x400?text=पुरस्कार';">
-                <div class="gallery-caption">वाचनालयास मिळालेले पुरस्कार</div>
-            </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-            <div class="gallery-card shadow-sm">
-                <img src="hist7.jpg" alt="अभ्यासिका" onerror="this.src='https://via.placeholder.com/400x400?text=अभ्यासिका';">
-                <div class="gallery-caption">अभ्यासिकेचा प्रारंभ</div>
-            </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-            <div class="gallery-card shadow-sm">
-                <img src="hist8.jpg" alt="बालविभाग" onerror="this.src='https://via.placeholder.com/400x400?text=बालविभाग';">
-                <div class="gallery-caption">बालविभाग उद्घाटन</div>
-            </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-            <div class="gallery-card shadow-sm">
-                <img src="hist9.jpg" alt="सांस्कृतिक" onerror="this.src='https://via.placeholder.com/400x400?text=सांस्कृतिक';">
-                <div class="gallery-caption">सांस्कृतिक कार्यक्रमांची परंपरा</div>
-            </div>
-        </div>
-
-       <div class="col-6 col-md-3">
-            <div class="gallery-card shadow-sm">
-                <img src="hist10.jpg" alt="डिजिटल" onerror="this.src='https://via.placeholder.com/400x400?text=डिजिटल+सूची';">
-                <div class="gallery-caption">संगणकीकरण आणि डिजिटल सूची</div>
-            </div>
-        </div>
-
-    </div> </div> <div id="rates-section" class="content-section container">
+</div><div id="rates-section" class="content-section container">
     <div class="card p-4 border-0 shadow-sm">
         <h4 class="fw-bold text-center mb-4" style="color: var(--title-color);">वर्गणीचे दर</h4>
         
@@ -495,43 +397,20 @@
     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1zskDx0OIbMyzY5Sj_7GBS1iokrZY_5KnPn9jsW3dDNc/gviz/tq?tqx=out:csv';
     let allBooks = [], filteredBooks = [], currentPage = 1, pageSize = 50;
 
-async function fetchData() {
+    async function fetchData() {
         try {
             const resp = await fetch(SHEET_URL);
             const csvText = await resp.text();
-            
-            // CSV डेटाला ओळींमध्ये विभागून घ्या
-            const rows = csvText.split(/\r?\n/).filter(row => row.trim() !== "");
-            
-            allBooks = [];
-            // पहिली ओळ (Header) सोडून डेटा वाचणे
-            for (let i = 1; i < rows.length; i++) {
-                // स्वल्पविराम आणि अवतरण चिन्हे (Quotes) सुरक्षितपणे हाताळणे
-                const cols = rows[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-                
-                if (cols.length >= 3 && cols[2]) {
-                    allBooks.push({
-                        SNo: (cols[0] || '').replace(/"/g, '').trim(),
-                        Class: (cols[1] || 'सामान्य').replace(/"/g, '').trim(),
-                        Name: (cols[2] || '').replace(/"/g, '').trim(),
-                        Author: (cols[3] || '---').replace(/"/g, '').trim(),
-                        Publisher: (cols[4] || '---').replace(/"/g, '').trim()
-                    });
-                }
-            }
-
-            if (allBooks.length === 0) {
-                document.getElementById('bookList').innerHTML = "<p class='text-center'>माहिती उपलब्ध नाही.</p>";
-            } else {
-                setupFilters();
-                applyFilters();
-            }
-            
-        } catch (e) {
-            console.error("Data Load Error:", e);
-            document.getElementById('bookList').innerHTML = "<p class='text-center text-danger'>इंटरनेट कनेक्शन तपासा किंवा पेज रिफ्रेश करा.</p>";
-        }
+            const rows = csvText.split(/\r?\n/).slice(1);
+            allBooks = rows.map(r => {
+                const cols = r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/^"|"$/g, '').trim());
+                return { SNo: cols[0], Class: cols[1], Name: cols[2], Author: cols[3] || '---' };
+            }).filter(b => b.Name);
+            setupFilters();
+            applyFilters();
+        } catch (e) { document.getElementById('searchCount').innerText = 'डेटा लोड होऊ शकला नाही.'; }
     }
+
     function setupFilters() {
         const sel = document.getElementById('categoryFilter');
         const nav = document.getElementById('categoryNav');
@@ -544,23 +423,16 @@ async function fetchData() {
         });
     }
 
-function applyFilters() {
-    const s = document.getElementById('searchInput').value.toLowerCase();
-    const c = document.getElementById('categoryFilter').value;
-    
-    filteredBooks = allBooks.filter(b => 
-        (
-            b.Name.toLowerCase().includes(s) || 
-            b.Author.toLowerCase().includes(s) || 
-            b.Publisher.toLowerCase().includes(s) // <--- Search includes publishers now
-        ) && 
-        (c === 'All' || b.Class === c)
-    );
-    
-    document.getElementById('searchCount').innerText = `एकूण ${filteredBooks.length} पुस्तके सापडली`;
-    currentPage = 1; 
-    render();
-}
+    function applyFilters() {
+        const s = document.getElementById('searchInput').value.toLowerCase();
+        const c = document.getElementById('categoryFilter').value;
+        filteredBooks = allBooks.filter(b => 
+            (b.Name.toLowerCase().includes(s) || b.Author.toLowerCase().includes(s)) && (c === 'All' || b.Class === c)
+        );
+        document.getElementById('searchCount').innerText = `एकूण ${filteredBooks.length} पुस्तके सापडली`;
+        currentPage = 1; render();
+    }
+
     function render() {
         const list = document.getElementById('bookList'); list.innerHTML = '';
         const items = filteredBooks.slice((currentPage-1)*pageSize, currentPage*pageSize);
@@ -574,9 +446,6 @@ function applyFilters() {
                             <span class="cat-tag">${b.Class}</span>
                         </div>
                         <p class="small mb-0 text-muted">लेखक: ${b.Author}</p>
-                        <p class="small mb-0 text-secondary" style="font-size: 0.75rem;">
-                    प्रकाशक: ${b.Publisher}</p>
-                
                     </div>
                 </div>`;
         });
@@ -589,18 +458,12 @@ function applyFilters() {
         el.classList.add('active'); applyFilters();
     }
 
-function showSection(id, el) {
-    const target = document.getElementById(id);
-    if (!target) return; // जर ID सापडला नाही तर फंक्शन थांबेल
-
-    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-    target.classList.add('active');
-    
-    document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
-    if (el) el.classList.add('active');
-    
-    window.scrollTo(0,0);
-}
+    function showSection(id, el) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
+        el.classList.add('active');
+    }
 
     function changePage(v) { currentPage += v; render(); window.scrollTo(0,0); }
     window.onload = fetchData;
