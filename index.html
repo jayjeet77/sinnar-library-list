@@ -49,6 +49,33 @@
         .about-text { line-height: 1.8; text-align: justify; white-space: pre-line; color: #333; }
         .footer { text-align: center; padding: 20px; background: var(--footer-bg); color: #f6f2e9; margin-top: 20px; }
         .card-img-top { background: #eee; aspect-ratio: 3/4; object-fit: cover; }
+        /* पायरी २: गॅलरी आणि कॅप्शन्ससाठी डिझाईन */
+.gallery-card {
+    background: #fff;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    height: 100%;
+    transition: transform 0.2s;
+    text-align: center;
+}
+.gallery-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--title-color);
+}
+.gallery-card img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 5px;
+}
+.gallery-caption {
+    font-size: 0.8rem;
+    color: var(--title-color);
+    margin-top: 10px;
+    font-weight: bold;
+    line-height: 1.2;
+}
     </style>
 </head>
 <body>
@@ -64,6 +91,7 @@
     <a href="javascript:void(0)" class="active" onclick="showSection('home-section', this)">होम</a>
     <a href="javascript:void(0)" onclick="showSection('portal-section', this)">डिजिटल सूची</a>
     <a href="javascript:void(0)" onclick="showSection('about-section', this)">आमची ओळख</a>
+    <a href="javascript:void(0)" onclick="showSection('gallery-section', this)">छायाचित्रे</a>
      <a href="javascript:void(0)" onclick="showSection('rates-section', this)">वर्गणी दरपत्रक</a>
     <a href="javascript:void(0)" onclick="showSection('directors-section', this)">संचालक मंडळ</a>
     <a href="javascript:void(0)" onclick="showSection('contact-section', this)">संपर्क</a>
@@ -181,7 +209,81 @@
         </p>
 
     </div>
-</div><div id="rates-section" class="content-section container">
+<div id="gallery-section" class="content-section container">
+    <h4 class="text-center fw-bold mb-4" style="color: var(--title-color);">ऐतिहासिक पाऊलखुणा</h4>
+    
+    <div class="row g-3">
+        <div class="col-6 col-md-3">
+            <div class="gallery-card shadow-sm">
+                <img src="hist1.jpg" alt="स्थापना" onerror="this.src='https://via.placeholder.com/400x400?text=स्थापना+१९४५';">
+                <div class="gallery-caption">वाचनालय स्थापना (१९४५)</div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="gallery-card shadow-sm">
+                <img src="hist2.jpg" alt="जुनी इमारत" onerror="this.src='https://via.placeholder.com/400x400?text=जुनी+इमारत';">
+                <div class="gallery-caption">वाचनालयाची जुनी ऐतिहासिक इमारत</div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="gallery-card shadow-sm">
+                <img src="hist3.jpg" alt="अमृत महोत्सव" onerror="this.src='https://via.placeholder.com/400x400?text=अमृत+महोत्सव';">
+                <div class="gallery-caption">अमृत महोत्सव सोहळा</div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="gallery-card shadow-sm">
+                <img src="hist4.jpg" alt="प्रदर्शन" onerror="this.src='https://via.placeholder.com/400x400?text=ग्रंथ+प्रदर्शन';">
+                <div class="gallery-caption">ऐतिहासिक ग्रंथ प्रदर्शन</div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="gallery-card shadow-sm">
+                <img src="hist5.jpg" alt="साहित्यिक भेट" onerror="this.src='https://via.placeholder.com/400x400?text=साहित्यिक+भेट';">
+                <div class="gallery-caption">नामवंत साहित्यिकांची भेट</div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="gallery-card shadow-sm">
+                <img src="hist6.jpg" alt="पुरस्कार" onerror="this.src='https://via.placeholder.com/400x400?text=पुरस्कार';">
+                <div class="gallery-caption">वाचनालयास मिळालेले पुरस्कार</div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="gallery-card shadow-sm">
+                <img src="hist7.jpg" alt="अभ्यासिका" onerror="this.src='https://via.placeholder.com/400x400?text=अभ्यासिका';">
+                <div class="gallery-caption">अभ्यासिकेचा प्रारंभ</div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="gallery-card shadow-sm">
+                <img src="hist8.jpg" alt="बालविभाग" onerror="this.src='https://via.placeholder.com/400x400?text=बालविभाग';">
+                <div class="gallery-caption">बालविभाग उद्घाटन</div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="gallery-card shadow-sm">
+                <img src="hist9.jpg" alt="सांस्कृतिक" onerror="this.src='https://via.placeholder.com/400x400?text=सांस्कृतिक';">
+                <div class="gallery-caption">सांस्कृतिक कार्यक्रमांची परंपरा</div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="gallery-card shadow-sm">
+                <img src="hist10.jpg" alt="डिजिटल" onerror="this.src='https://via.placeholder.com/400x400?text=डिजिटल+सूची';">
+                <div class="gallery-caption">संगणकीकरण आणि डिजिटल सूची</div>
+            </div>
+        </div>
+        </div> </div>
+            </div> </div> <div id="rates-section" class="content-section container">
     <div class="card p-4 border-0 shadow-sm">
         <h4 class="fw-bold text-center mb-4" style="color: var(--title-color);">वर्गणीचे दर</h4>
         
