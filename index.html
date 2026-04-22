@@ -23,7 +23,10 @@
         }
 
         body { background-color: var(--bg-color); font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
-        
+        .mandatory {
+    color: red;
+    font-weight: bold;
+}
         .header-section { background: #ffffff; padding: 15px 10px; text-align: center; border-bottom: 5px solid var(--accent-color); }
         .header-section img { max-width: 80px; }
         .header-section h2 { color: var(--title-color); font-weight: bold; font-size: 1.5rem; margin: 5px 0 0; }
@@ -71,35 +74,39 @@
     <a href="javascript:void(0)" style="background: #ce062b; color: white;" data-bs-toggle="modal" data-bs-target="#memberModal">वाचक सभासद व्हा</a>
 </div>
 
-  <div id="home-section" class="content-section active">
+ <div id="home-section" class="content-section active">
     <div class="container text-center py-4">
-    <h3 class="fw-normal fs-6 mb-3" style="color: var(--title-color);">सिन्नर सार्वजनिक वाचनालयात आपले स्वागत आहे!</h3>
-    
-    <img src="library_main.jpg" class="img-fluid rounded shadow-sm" alt="Sinnar Library" style="max-height: 400px; width: 100%; object-fit: cover;" onerror="this.src='https://via.placeholder.com/800x400?text=Sinnar+Library';">
-    
-    <div class="mt-4 p-3 bg-white rounded shadow-sm">
-        <p class="lead" style="color: var(--text-dark); font-weight: 500;">आपल्या समृद्ध ग्रंथसंपदेचा लाभ घेण्यासाठी वरील 'डिजिटल सूची' विभागात जावे.</p>
+        <h3 class="fw-normal fs-6 mb-3" style="color: var(--title-color);">
+            सिन्नर सार्वजनिक वाचनालयात आपले स्वागत आहे!
+        </h3>
         
-        <div class="row g-2 mt-4 px-3">
-            <div class="col-6">
-                <div class="p-2 border rounded bg-white shadow-sm" style="border-color: rgba(157, 77, 39, 0.2) !important;">
-                    <h6 class="fw-bold mb-1 small" style="color: var(--title-color);">वाचनालय वेळ</h6>
-                    <p class="small mb-0" style="color: var(--text-dark);">सकाळी १०.०० ते सायं ७:३०</p>
+        <img src="library_main.jpg" class="img-fluid rounded shadow-sm" 
+             alt="Sinnar Library"
+             style="max-height: 400px; width: 100%; object-fit: cover;"
+             onerror="this.src='https://via.placeholder.com/800x400?text=Sinnar+Library';">
+        
+        <div class="mt-4 p-3 bg-white rounded shadow-sm">
+            <p class="lead" style="color: var(--text-dark); font-weight: 500;">
+                आपल्या समृद्ध ग्रंथसंपदेचा लाभ घेण्यासाठी वरील 'डिजिटल सूची' विभागात जावे.
+            </p>
+            
+            <div class="row g-2 mt-4 px-3">
+                <div class="col-6">
+                    <div class="p-2 border rounded bg-white shadow-sm">
+                        <h6 class="fw-bold mb-1 small" style="color: var(--title-color);">वाचनालय वेळ</h6>
+                        <p class="small mb-0" style="color: var(--text-dark);">सकाळी १०.०० ते सायं ७:३०</p>
+                    </div>
                 </div>
-            </div>
-            <div class="col-6">
-                <div class="p-2 border rounded bg-white shadow-sm" style="border-color: rgba(157, 77, 39, 0.2) !important;">
-                    <h6 class="fw-bold mb-1 small" style="color: var(--title-color);">अभ्यासिका वेळ</h6>
-                    <p class="small mb-0" style="color: var(--text-dark);">सकाळी ६:०० ते रात्री १०:००</p>
+                <div class="col-6">
+                    <div class="p-2 border rounded bg-white shadow-sm">
+                        <h6 class="fw-bold mb-1 small" style="color: var(--title-color);">अभ्यासिका वेळ</h6>
+                        <p class="small mb-0" style="color: var(--text-dark);">सकाळी ६:०० ते रात्री १०:००</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-</div>
-        </div>
-    </div>
-</div>  
 <div id="portal-section" class="content-section">
     <div class="category-nav" id="categoryNav">
         <a href="javascript:void(0)" onclick="filterByCategory('All', this)">सर्व पुस्तके</a>
@@ -294,7 +301,8 @@
                target="_blank" 
              
                style="border-radius: 20px;">
-                <i class="bi bi-geo-alt-fill"></i> गूगल मॅपवर दिशा पहा </a>
+                <i class="bi bi-geo-alt-fill"></i> गूगल मॅपवर दिशा पहा
+            </a>
                 <div class="mt-4 p-3 border-top">
     
     <a href="https://www.instagram.com/sinnar_sarvajnik_vachnalay?igsh=aDE0MjBlNGcxZW10" target="_blank" class="text-decoration-none" style="color: #E1306C;">
@@ -480,9 +488,10 @@ function changePage(v) {
     if (currentPage < 1) currentPage = 1;
     if (currentPage > maxPage) currentPage = maxPage;
 
-    render();
-    window.scrollTo(0, 0);
-}    window.onload = fetchData;
+render();
+window.scrollTo(0, 0);
+}
+
 window.onload = function () {
     fetchData();
     document.getElementById('searchInput').addEventListener('input', applyFilters);
