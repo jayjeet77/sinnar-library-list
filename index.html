@@ -49,41 +49,6 @@
         .about-text { line-height: 1.8; text-align: justify; white-space: pre-line; color: #333; }
         .footer { text-align: center; padding: 20px; background: var(--footer-bg); color: #f6f2e9; margin-top: 20px; }
         .card-img-top { background: #eee; aspect-ratio: 3/4; object-fit: cover; }
-        .gallery-card img {
-    width: 100%;
-    aspect-ratio: 1/1; /* Makes all photos square and uniform */
-    object-fit: cover;
-    cursor: pointer;
-    transition: transform 0.2s;
-    border: 3px solid #fff;
-}
-
-.gallery-card {
-    background: #ffffff;
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.gallery-card img {
-    width: 100%;
-    aspect-ratio: 1/1;
-    object-fit: cover;
-    border-radius: 2px;
-}
-
-.gallery-caption {
-    font-size: 0.75rem;
-    color: var(--title-color);
-    text-align: center;
-    font-weight: bold;
-    padding-top: 8px;
-    line-height: 1.2;
-    margin-top: auto; /* Pushes caption to bottom */
-}
     </style>
 </head>
 <body>
@@ -99,36 +64,45 @@
     <a href="javascript:void(0)" class="active" onclick="showSection('home-section', this)">होम</a>
     <a href="javascript:void(0)" onclick="showSection('portal-section', this)">डिजिटल सूची</a>
     <a href="javascript:void(0)" onclick="showSection('about-section', this)">आमची ओळख</a>
-    <a href="javascript:void(0)" onclick="showSection('gallery-section', this)">छायाचित्रे</a>
      <a href="javascript:void(0)" onclick="showSection('rates-section', this)">वर्गणी दरपत्रक</a>
     <a href="javascript:void(0)" onclick="showSection('directors-section', this)">संचालक मंडळ</a>
     <a href="javascript:void(0)" onclick="showSection('contact-section', this)">संपर्क</a>
     <a href="javascript:void(0)" style="background: #ce062b; color: white;" data-bs-toggle="modal" data-bs-target="#memberModal">वाचक सभासद व्हा</a>
 </div>
 
-<div id="home-section" class="content-section active">
+  <div id="home-section" class="content-section active">
     <div class="container text-center py-4">
-        <h3 class="fw-normal fs-6 mb-3" style="color: var(--title-color);">सिन्नर सार्वजनिक वाचनालयात आपले स्वागत आहे!</h3>
-        <img src="library_main.jpg" class="img-fluid rounded shadow-sm" alt="Sinnar Library" style="max-height: 400px; width: 100%; object-fit: cover;" onerror="this.src='https://via.placeholder.com/800x400?text=Sinnar+Library';">
+    <h3 class="fw-normal fs-6 mb-3" style="color: var(--title-color);">सिन्नर सार्वजनिक वाचनालयात आपले स्वागत आहे!</h3>
+    
+    <img src="library_main.jpg" class="img-fluid rounded shadow-sm" alt="Sinnar Library" style="max-height: 400px; width: 100%; object-fit: cover;" onerror="this.src='https://via.placeholder.com/800x400?text=Sinnar+Library';">
+    
+    <div class="mt-4 p-3 bg-white rounded shadow-sm">
+        <p class="lead" style="color: var(--text-dark); font-weight: 500;">आपल्या समृद्ध ग्रंथसंपदेचा लाभ घेण्यासाठी वरील 'डिजिटल सूची' विभागात जावे.</p>
         
-        <div class="mt-4 p-3 bg-white rounded shadow-sm">
-            <p class="lead" style="color: var(--text-dark); font-weight: 500;">आपल्या समृद्ध ग्रंथसंपदेचा लाभ घेण्यासाठी वरील 'डिजिटल सूची' विभागात जावे.</p>
-            <div class="row g-2 mt-4 px-3">
-                <div class="col-6">
-                    <div class="p-2 border rounded bg-white shadow-sm" style="border-color: rgba(157, 77, 39, 0.2) !important;">
-                        <h6 class="fw-bold mb-1 small" style="color: var(--title-color);">वाचनालय वेळ</h6>
-                        <p class="small mb-0" style="color: var(--text-dark);">सकाळी १०.०० ते सायं ७:३०</p>
-                    </div>
+        <div class="row g-2 mt-4 px-3">
+            <div class="col-6">
+                <div class="p-2 border rounded bg-white shadow-sm" style="border-color: rgba(157, 77, 39, 0.2) !important;">
+                    <h6 class="fw-bold mb-1 small" style="color: var(--title-color);">वाचनालय वेळ</h6>
+                    <p class="small mb-0" style="color: var(--text-dark);">सकाळी १०.०० ते सायं ७:३०</p>
                 </div>
-                <div class="col-6">
-                    <div class="p-2 border rounded bg-white shadow-sm" style="border-color: rgba(157, 77, 39, 0.2) !important;">
-                        <h6 class="fw-bold mb-1 small" style="color: var(--title-color);">अभ्यासिका वेळ</h6>
-                        <p class="small mb-0" style="color: var(--text-dark);">सकाळी ६:०० ते रात्री १०:००</p>
-      </div> </div> </div> </div> <div id="portal-section" class="content-section">
-    <div class="category-nav" id="categoryNav">
-        <a href="javascript:void(0)" class="active" onclick="filterByCategory('All', this)">सर्व पुस्तके</a>
+            </div>
+            <div class="col-6">
+                <div class="p-2 border rounded bg-white shadow-sm" style="border-color: rgba(157, 77, 39, 0.2) !important;">
+                    <h6 class="fw-bold mb-1 small" style="color: var(--title-color);">अभ्यासिका वेळ</h6>
+                    <p class="small mb-0" style="color: var(--text-dark);">सकाळी ६:०० ते रात्री १०:००</p>
+                </div>
+            </div>
+        </div>
     </div>
-    ```
+</div>
+</div>
+        </div>
+    </div>
+</div>  
+<div id="portal-section" class="content-section">
+    <div class="category-nav" id="categoryNav">
+        <a href="javascript:void(0)" onclick="filterByCategory('All', this)">सर्व पुस्तके</a>
+    </div>
     <div class="container mt-3">
         <div class="row g-2 px-2">
             <div class="col-8"><input type="text" id="searchInput" class="form-control" placeholder="नाव किंवा लेखक शोधा..."></div>
@@ -146,7 +120,9 @@
             <button class="btn btn-sm btn-dark" onclick="changePage(1)">पुढचे</button>
         </div>
     </div>
-</div><div id="about-section" class="content-section container">
+</div>
+
+<div id="about-section" class="content-section container">
     <div style="background: #ffffff; padding: 20px; border-radius: 8px; border-top: 6px solid #f39c12; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden;">
         
         <div class="text-center mb-4">
@@ -205,85 +181,7 @@
         </p>
 
     </div>
-    </div>
-  <div id="gallery-section" class="content-section container">
-    <h4 class="text-center fw-bold mb-4" style="color: var(--title-color);">ऐतिहासिक पाऊलखुणा (Legacy Gallery)</h4>
-    
-    <div class="row g-3">
-        <div class="col-6 col-md-3">
-            <div class="gallery-card shadow-sm">
-                <img src="hist1.jpg" class="img-fluid" alt="Foundation" onerror="this.src='https://via.placeholder.com/400x400?text=वाचनालय+स्थापना+१९४५';">
-                <div class="gallery-caption">वाचनालय स्थापना (१५ एप्रिल १९४५)</div>
-            </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-            <div class="gallery-card shadow-sm">
-                <img src="hist2.jpg" class="img-fluid" alt="Old Building" onerror="this.src='https://via.placeholder.com/400x400?text=जुनी+इमारत';">
-                <div class="gallery-caption">वाचनालयाची जुनी ऐतिहासिक इमारत</div>
-            </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-            <div class="gallery-card shadow-sm">
-                <img src="hist3.jpg" class="img-fluid" alt="Event" onerror="this.src='https://via.placeholder.com/400x400?text=सुवर्ण+महोत्सव';">
-                <div class="gallery-caption">सुवर्ण महोत्सव सोहळा</div>
-            </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-            <div class="gallery-card shadow-sm">
-                <img src="hist4.jpg" class="img-fluid" alt="Guest" onerror="this.src='https://via.placeholder.com/400x400?text=कुसुमाग्रज+भेट';">
-                <div class="gallery-caption">कवी कुसुमाग्रज यांची ऐतिहासिक भेट</div>
-            </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-            <div class="gallery-card shadow-sm">
-                <img src="hist5.jpg" class="img-fluid" alt="New Building" onerror="this.src='https://via.placeholder.com/400x400?text=इमारत+उद्घाटन';">
-                <div class="gallery-caption">नवीन वास्तू उद्घाटन सोहळा (१९८४)</div>
-            </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-            <div class="gallery-card shadow-sm">
-                <img src="hist6.jpg" class="img-fluid" alt="Award" onerror="this.src='https://via.placeholder.com/400x400?text=राज्य+पुरस्कार';">
-                <div class="gallery-caption">डॉ. आंबेडकर पुरस्कार वितरण</div>
-            </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-            <div class="gallery-card shadow-sm">
-                <img src="hist7.jpg" class="img-fluid" alt="Library Week" onerror="this.src='https://via.placeholder.com/400x400?text=ग्रंथालय+सप्ताह+प्रारंभ';">
-                <div class="gallery-caption">ग्रंथालय सप्ताह - प्रथम वर्ष</div>
-            </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-            <div class="gallery-card shadow-sm">
-                <img src="hist8.jpg" class="img-fluid" alt="Books" onerror="this.src='https://via.placeholder.com/400x400?text=दुर्मीळ+ग्रंथ+संग्रह';">
-                <div class="gallery-caption">वाचनालयातील दुर्मीळ ग्रंथ संग्रह</div>
-            </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-            <div class="gallery-card shadow-sm">
-                <img src="hist9.jpg" class="img-fluid" alt="Celebration" onerror="this.src='https://via.placeholder.com/400x400?text=अमृत+महोत्सव';">
-                <div class="gallery-caption">अमृत महोत्सव सोहळा (७५ वर्षे)</div>
-            </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-            <div class="gallery-card shadow-sm">
-                <img src="hist10.jpg" class="img-fluid" alt="Digital" onerror="this.src='https://via.placeholder.com/400x400?text=संगणकीकरण+प्रारंभ';">
-                <div class="gallery-caption">वाचनालय संगणकीकरण प्रारंभ</div>
-          </div>
-        </div>
-        </div>
-</div> ```
-
-
-    </div><div id="rates-section" class="content-section container">
+</div><div id="rates-section" class="content-section container">
     <div class="card p-4 border-0 shadow-sm">
         <h4 class="fw-bold text-center mb-4" style="color: var(--title-color);">वर्गणीचे दर</h4>
         
@@ -531,17 +429,13 @@ function applyFilters() {
     
     filteredBooks = allBooks.filter(b => 
         (
-            (b.Name && b.Name.toLowerCase().includes(s)) || 
-            (b.Author && b.Author.toLowerCase().includes(s)) || 
-            (b.Publisher && b.Publisher.toLowerCase().includes(s))
+            b.Name.toLowerCase().includes(s) || 
+            b.Author.toLowerCase().includes(s) || 
+            b.Publisher.toLowerCase().includes(s) // <--- Search includes publishers now
         ) && 
         (c === 'All' || b.Class === c)
     );
     
-    document.getElementById('searchCount').innerText = `एकूण ${filteredBooks.length} पुस्तके सापडली`;
-    currentPage = 1; 
-    render();
-}
     document.getElementById('searchCount').innerText = `एकूण ${filteredBooks.length} पुस्तके सापडली`;
     currentPage = 1; 
     render();
@@ -574,19 +468,12 @@ function applyFilters() {
         el.classList.add('active'); applyFilters();
     }
 
-  function showSection(id, element) {
-    // Hide all sections
-    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-    // Show selected section
-    document.getElementById(id).classList.add('active');
-    
-    // Update active tab styling
-    document.querySelectorAll('.main-nav a').forEach(a => a.classList.remove('active'));
-    element.classList.add('active');
-
-    // Scroll to top when switching tabs
-    window.scrollTo(0,0);
-}
+    function showSection(id, el) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
+        el.classList.add('active');
+    }
 
     function changePage(v) { currentPage += v; render(); window.scrollTo(0,0); }
     window.onload = fetchData;
