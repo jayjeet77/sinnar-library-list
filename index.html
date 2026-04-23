@@ -608,6 +608,16 @@ window.onload = function () {
     fetchData();
     document.getElementById('searchInput').addEventListener('input', applyFilters);
 };
+    function openImage(img) {
+    const modalImg = document.getElementById("modalImage");
+    const caption = img.nextElementSibling.innerText;
+
+    modalImg.src = img.src;
+    document.getElementById("modalCaption").innerText = caption;
+
+    const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+    modal.show();
+}
 </script>
     <div class="modal fade" id="imageModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg">
