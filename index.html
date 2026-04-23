@@ -88,7 +88,9 @@
         <div id="dinvisheshBox" class="mt-3 p-3 rounded shadow-sm text-center"
      style="background:#fff3cd; border-left:5px solid #C5884B;">
     
-    <h6 class="fw-bold mb-1" style="color:#9d4d27;">📅 आजचा दिनविशेष</h6>
+  <h6 class="fw-bold mb-1" style="color:#9d4d27;">
+    📅 आजचा दिनविशेष (<span id="todayDate"></span>)
+</h6>
     
     <div id="dinvisheshContent" style="font-size:0.9rem;">
         लोड होत आहे...
@@ -616,14 +618,28 @@ render();
 window.scrollTo(0, 0);
 }
 
+const DINVISHESH_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1TLkkdF6v006Wuq8N6hVLwOg4biA0GP7seF0Fo_sZp6b4Y_tVcVzPCSYIQn6QLzHVGdQ2Vem-Ho4F/pub?output=csv';
+
 window.onload = function () {
     fetchData();
-     loadDinvishesh();
+    loadDinvishesh();
+    setTodayDate();
 
-    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('searchInput')
+        .addEventListener('input', applyFilters);
 };
-  
-    const DINVISHESH_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1TLkkdF6v006Wuq8N6hVLwOg4biA0GP7seF0Fo_sZp6b4Y_tVcVzPCSYIQn6QLzHVGdQ2Vem-Ho4F/pub?output=csv';
+
+function setTodayDate() {
+    const today = new Date();
+
+    const formatted = today.toLocaleDateString('mr-IN', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    });
+
+    document.getElementById('todayDate').innerText = formatted;
+}
 
 async function loadDinvishesh() {
     try {
@@ -661,8 +677,7 @@ async function loadDinvishesh() {
         document.getElementById('dinvisheshContent').innerText =
             "दिनविशेष लोड होऊ शकला नाही.";
     }
-}
-    function openImage(img) {
+}    function openImage(img) {
     const modalImg = document.getElementById("modalImage");
     const caption = img.nextElementSibling.innerText;
 
