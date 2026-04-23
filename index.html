@@ -85,11 +85,11 @@
              alt="Sinnar Library"
              style="max-height: 400px; width: 100%; object-fit: cover;"
              onerror="this.src='https://via.placeholder.com/800x400?text=Sinnar+Library';">
-        <div id="dinvisheshBox" class="mt-3 p-3 rounded shadow-sm text-center"
-     style="background:#fff3cd; border-left:5px solid #C5884B;">
+        <div id="dinvisheshBox" class="mt-3 p-2 rounded shadow-sm text-center"
+     style="background:#fff8dc; border-left:3px solid #d9a441;">
     
   <h6 class="fw-bold mb-1" style="color:#9d4d27;">
-    📅 आजचा दिनविशेष (<span id="todayDate"></span>)
+    आजचा दिनविशेष (<span id="todayDate"></span>)
 </h6>
     
     <div id="dinvisheshContent" style="font-size:0.9rem;">
@@ -670,7 +670,7 @@ async function loadDinvishesh() {
 
         if (!found) {
             document.getElementById('dinvisheshContent').innerText =
-                "आज खास दिनविशेष नाही, वाचनाचा आनंद घ्या 📚";
+                "आज खास दिनविशेष नाही, वाचनाचा आनंद घ्या ";
         }
 
     } catch (e) {
