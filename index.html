@@ -446,7 +446,10 @@
         <div class="col-12"><label class="form-label small">पूर्ण नाव <span class="mandatory">*</span></label><input type="text" id="m_name" class="form-control form-control-sm" required placeholder="आडनाव नाव वडिलांचे नाव"></div>
         <div class="col-md-6"><label class="form-label small">मोबाईल <span class="mandatory">*</span></label><input type="tel" id="m_mobile" class="form-control form-control-sm" required pattern="[0-9]{10}"></div>
         <div class="col-md-6"><label class="form-label small">ईमेल आयडी</label><input type="email" id="m_email" class="form-control form-control-sm"></div>
-        <div class="col-md-6"><label class="form-label small">आधार क्रमांक <span class="mandatory">*</span></label><input type="text" id="m_aadhaar" class="form-control form-control-sm" required pattern="[0-9]{12}"></div>
+        <div class="col-md-6"><label class="form-label small">आधार क्रमांक (शेवटचे ४ अंक) <span class="mandatory">*</span></label><input type="text" id="m_aadhaar" class="form-control form-control-sm"required pattern="[0-9]{4}" maxlength="4"
+        inputmode="numeric"
+        oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+        placeholder="शेवटचे ४ अंक"></div>
         <div class="col-md-6"><label class="form-label small">व्यवसाय <span class="mandatory">*</span></label><input type="text" id="m_job" class="form-control form-control-sm" required></div>
         <div class="col-md-6"><label class="form-label small">जन्म तारीख <span class="mandatory">*</span></label><input type="date" id="m_dob" class="form-control form-control-sm" required></div>
         <div class="col-md-6"><label class="form-label small">सभासद वर्गनिवडा <span class="mandatory">*</span></label>
