@@ -35,45 +35,8 @@
         .main-nav::-webkit-scrollbar { display: none; }
         .main-nav a { color: #f6f2e9; text-decoration: none; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; white-space: nowrap; }
         .main-nav a.active { background: var(--accent-color); color: white; }
-/* Right side gradient fade */
-.category-nav::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 40px;
-    height: 100%;
-    background: linear-gradient(to left, #5a5e4a, transparent);
-    pointer-events: none;
-}
 
-/* Arrow hint */
-.category-nav::before {
-    content: '➜';
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 16px;
-    color: rgba(255,255,255,0.7);
-    animation: arrowMove 1.5s infinite;
-}
-
-/* Arrow animation */
-@keyframes arrowMove {
-    0% { transform: translateY(-50%) translateX(0); opacity: 0.3; }
-    50% { transform: translateY(-50%) translateX(5px); opacity: 1; }
-    100% { transform: translateY(-50%) translateX(0); opacity: 0.3; }
-}
-        .category-nav { 
-    background: #5a5e4a; 
-    display: flex; 
-    overflow-x: auto; 
-    padding: 10px 30px 10px 10px;  /* 👈 right side space for arrow */
-    gap: 8px; 
-    scrollbar-width: none; 
-    position: relative; /* 👈 IMPORTANT */
-}
+        .category-nav { background: #5a5e4a; display: flex; overflow-x: auto; padding: 10px; gap: 8px; scrollbar-width: none; }
         .category-nav::-webkit-scrollbar { display: none; }
         .category-nav a { color: #f6f2e9; text-decoration: none; padding: 5px 12px; border-radius: 15px; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.2); white-space: nowrap; }
         .category-nav a.active { background: var(--accent-color); border-color: var(--accent-color); }
@@ -158,9 +121,6 @@
     </div>
 </div>
 <div id="portal-section" class="content-section">
-    <p style="font-size:12px; text-align:center; margin:4px 0; color:#eee;">
-👉 अधिक विभाग पाहण्यासाठी बाजूला swipe करा
-</p>
     <div class="category-nav" id="categoryNav">
         <a href="javascript:void(0)" onclick="filterByCategory('All', this)">सर्व पुस्तके</a>
     </div>
@@ -669,12 +629,7 @@ window.onload = function () {
     document.getElementById('searchInput')
         .addEventListener('input', applyFilters);
 };
-setTimeout(() => {
-    const nav = document.getElementById('categoryNav');
-    if (nav) {
-        nav.scrollLeft = 80;
-    }
-}, 800);
+
 function setTodayDate() {
     const today = new Date();
 
