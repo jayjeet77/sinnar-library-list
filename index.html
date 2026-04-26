@@ -264,7 +264,7 @@
             <img src="photo7.jpg" class="img-fluid rounded-top" alt="Photo 7"
             onclick="openImage(this)"
      style="cursor:pointer;">
-            <p class="small mb-0 text-truncate" style="max-width: 150px; margin: 0 auto;">शक्ति विडी कामगार संघ हॉल चे बांधकाम </p>
+            <div class="p-2 text-center small">शक्ति विडी कामगार संघ हॉल चे बांधकाम </p>
         </div>
     </div>
        <div class="col">
@@ -640,7 +640,9 @@ filteredBooks = allBooks.filter(b => {
     if (targetSection) {
         targetSection.classList.add('active');
     }
-
+if (id !== 'home-section') {
+        history.pushState({ sectionId: id }, "");
+    }
     // ३. मेनू बारमधील 'active' क्लास अपडेट करा
     document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
     if (el) {
@@ -762,6 +764,16 @@ window.addEventListener('load', () => {
     }
 });
     // --- कोड संपला ---
+window.addEventListener('popstate', function (event) {
+    // जर युजरने बॅक बटण दाबले, तर त्याला होम सेक्शनवर न्या
+    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+    document.getElementById('home-section').classList.add('active');
+    
+    // मेनू बारमधील होम बटन अ‍ॅक्टिव्ह करा
+    document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
+    const homeLink = document.querySelector('a[onclick*="home-section"]');
+    if (homeLink) homeLink.classList.add('active');
+});
 </script>
     <div class="modal fade" id="imageModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg">
