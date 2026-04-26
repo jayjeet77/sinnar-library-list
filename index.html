@@ -715,16 +715,21 @@ async function loadDinvishesh() {
     modal.show();
 }
 window.addEventListener('load', () => {
-        const topNav = document.querySelector('.nav-scroll');
-        if (topNav) {
+    // आपण ID वापरून Main Nav ला टार्गेट करूया
+    const mainBar = document.getElementById('mainNav');
+    
+    if (mainBar) {
+        setTimeout(() => {
+            // १०० पिक्सेल उजवीकडे सरकवा (मोबाईलवर स्पष्ट दिसण्यासाठी)
+            mainBar.scrollTo({ left: 100, behavior: 'smooth' });
+            
+            // ६०० मिलीसेकंदांनंतर परत डावीकडे आणा
             setTimeout(() => {
-                topNav.scrollTo({ left: 40, behavior: 'smooth' });
-                setTimeout(() => {
-                    topNav.scrollTo({ left: 0, behavior: 'smooth' });
-                }, 500);
-            }, 1000); 
-        }
-    });
+                mainBar.scrollTo({ left: 0, behavior: 'smooth' });
+            }, 600);
+        }, 1500); // पेज लोड झाल्यावर १.५ सेकंदाने सुरू होईल
+    }
+});
     // --- कोड संपला ---
 </script>
     <div class="modal fade" id="imageModal" tabindex="-1">
