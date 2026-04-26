@@ -36,35 +36,11 @@
         .main-nav a { color: #f6f2e9; text-decoration: none; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; white-space: nowrap; }
         .main-nav a.active { background: var(--accent-color); color: white; }
 
-        .category-nav {
-    background: #5a5e4a;
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding: 8px;
-    gap: 6px;
-    scrollbar-width: none;
-}
+        .category-nav { background: #5a5e4a; display: flex; overflow-x: auto; padding: 10px; gap: 8px; scrollbar-width: none; }
+        .category-nav::-webkit-scrollbar { display: none; }
+        .category-nav a { color: #f6f2e9; text-decoration: none; padding: 5px 12px; border-radius: 15px; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.2); white-space: nowrap; }
+        .category-nav a.active { background: var(--accent-color); border-color: var(--accent-color); }
 
-.category-nav::-webkit-scrollbar {
-    display: none;
-}
-
-.category-nav a {
-    flex: 0 0 auto;
-    color: #f6f2e9;
-    text-decoration: none;
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 0.8rem;
-    border: 1px solid rgba(255,255,255,0.2);
-    white-space: nowrap;
-}
-
-.category-nav a.active {
-    background: var(--accent-color);
-    border-color: var(--accent-color);
-}
         .content-section { display: none; padding: 20px 0; }
         .content-section.active { display: block; }
 
@@ -77,53 +53,6 @@
         .about-text { line-height: 1.8; text-align: justify; white-space: pre-line; color: #333; }
         .footer { text-align: center; padding: 20px; background: var(--footer-bg); color: #f6f2e9; margin-top: 20px; }
         .card-img-top { background: #eee; aspect-ratio: 3/4; object-fit: cover; }
-      .more-menu {
-    position: absolute;
-    top: 55px;
-    right: 8px;
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-    overflow: hidden;
-    z-index: 2000;
-    min-width: 140px;
-
-    opacity: 0;
-    transform: translateY(-10px);
-    pointer-events: none;
-    transition: all 0.25s ease;
-}
-
-.more-menu.show {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
-.more-menu a {
-    display: block;
-    padding: 8px 12px;
-    text-decoration: none;
-    color: #333;
-    font-size: 0.85rem;
-    border-bottom: 1px solid #eee;
-}
-
-.more-menu a:last-child {
-    border-bottom: none;
-}
-
-.more-menu a:hover {
-    background: #f5f5f5;
-}
-
-/* Smooth animation */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-.more-menu a:hover {
-    background: #f2f2f2;
-}
     </style>
 </head>
 <body>
@@ -136,19 +65,14 @@
 </div>
 
 <div class="main-nav shadow-sm" id="mainNav">
-    <div id="moreMenu" class="more-menu">
-    <a href="javascript:void(0)" onclick="showSection('gallery-section', this)">फोटो गॅलरी</a>
-    <a href="javascript:void(0)" onclick="showSection('rates-section', this)">वर्गणी दरपत्रक</a>
-    <a href="javascript:void(0)" onclick="showSection('directors-section', this)">संचालक मंडळ</a>
-    <a href="javascript:void(0)" onclick="showSection('contact-section', this)">संपर्क</a>
-</div>
     <a href="javascript:void(0)" class="active" onclick="showSection('home-section', this)">होम</a>
     <a href="javascript:void(0)" onclick="showSection('portal-section', this)">डिजिटल सूची</a>
     <a href="javascript:void(0)" onclick="showSection('about-section', this)">आमची ओळख</a>
-   
+    <a href="javascript:void(0)" onclick="showSection('gallery-section', this)">फोटो गॅलरी</a>
+     <a href="javascript:void(0)" onclick="showSection('rates-section', this)">वर्गणी दरपत्रक</a>
+    <a href="javascript:void(0)" onclick="showSection('directors-section', this)">संचालक मंडळ</a>
     <a href="javascript:void(0)" onclick="showSection('contact-section', this)">संपर्क</a>
     <a href="javascript:void(0)" style="background: #ce062b; color: white;" data-bs-toggle="modal" data-bs-target="#memberModal">वाचक सभासद व्हा</a>
-    <a href="javascript:void(0)" class="more-btn" onclick="toggleMoreMenu(event)">More ▾</a>
 </div>
 
  <div id="home-section" class="content-section active">
@@ -582,12 +506,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    function toggleMoreMenu(event) {
-    event.stopPropagation();   // 🔥 important
-    const menu = document.getElementById('moreMenu');
-    menu.classList.toggle('show');
-}
-}
     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1zskDx0OIbMyzY5Sj_7GBS1iokrZY_5KnPn9jsW3dDNc/gviz/tq?tqx=out:csv';
     let allBooks = [], filteredBooks = [], currentPage = 1, pageSize = 50;
 
@@ -614,33 +532,14 @@
     function setupFilters() {
         const sel = document.getElementById('categoryFilter');
         const nav = document.getElementById('categoryNav');
-       let cats = [...new Set(allBooks.map(b => b.Class))].filter(Boolean);
-
-// English शेवटी टाकण्यासाठी
-cats = cats.sort((a, b) => {
-    if (a === "English") return 1;
-    if (b === "English") return -1;
-    return a.localeCompare(b);
-});
-        const visibleCount = 5; // किती categories बाहेर दिसतील
-
-cats.forEach((c, index) => {
-    let o = document.createElement('option');
-    o.value = o.innerText = c;
-    sel.appendChild(o);
-
-    let a = document.createElement('a');
-    a.href = "javascript:void(0)";
-    a.innerText = c;
-    a.onclick = function() { filterByCategory(c, this); };
-
-    if (index < visibleCount) {
-        nav.appendChild(a); // direct show
-    } else {
-        document.getElementById('moreMenu').appendChild(a); // More मध्ये
+        const cats = [...new Set(allBooks.map(b => b.Class))].filter(Boolean).sort();
+        cats.forEach(c => {
+            let o = document.createElement('option'); o.value = o.innerText = c; sel.appendChild(o);
+            let a = document.createElement('a'); a.href = "javascript:void(0)"; a.innerText = c;
+            a.onclick = function() { filterByCategory(c, this); };
+            nav.appendChild(a);
+        });
     }
-});
- }       
 
 function applyFilters() {
     const s = document.getElementById('searchInput').value.toLowerCase();
@@ -789,14 +688,6 @@ async function loadDinvishesh() {
     const modal = new bootstrap.Modal(document.getElementById('imageModal'));
     modal.show();
 }
-        document.addEventListener('click', function(event) {
-    const menu = document.getElementById('moreMenu');
-    const button = document.querySelector('.more-btn');
-
-    if (!menu.contains(event.target) && !button.contains(event.target)) {
-        menu.style.display = 'none';
-    }
-});
 </script>
     <div class="modal fade" id="imageModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg">
