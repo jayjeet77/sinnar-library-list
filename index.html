@@ -529,18 +529,52 @@
         } catch (e) { document.getElementById('searchCount').innerText = 'डेटा लोड होऊ शकला नाही.'; }
     }
 
-    function setupFilters() {
-        const sel = document.getElementById('categoryFilter');
-        const nav = document.getElementById('categoryNav');
-        const cats = [...new Set(allBooks.map(b => b.Class))].filter(Boolean).sort();
-        cats.forEach(c => {
-            let o = document.createElement('option'); o.value = o.innerText = c; sel.appendChild(o);
-            let a = document.createElement('a'); a.href = "javascript:void(0)"; a.innerText = c;
-            a.onclick = function() { filterByCategory(c, this); };
-            nav.appendChild(a);
-        });
-    }
+  function setupFilters() {
+    const sel = document.getElementById('categoryFilter');
+    const nav = document.getElementById('categoryNav');
+    
+    // १. तुम्हाला हवा असलेला क्रम येथे निश्चित करा (हवे तसे बदलू शकता)
+    const customOrder = [
+        'कादंबरी', 'ललित', 'वैचारिक', 'चरित्र', 
+        'आत्मचरित्र', 'बालसाहित्य', 'इतिहास', 
+        'धार्मिक', 'कविता', 'नाटक', 'English', 'इतर'
+    ];
 
+    // २. शीटमधील सर्व विभाग मिळवा
+    const sheetCats = [...new Set(allBooks.map(b => b.Class))].filter(Boolean);
+
+    // ३. क्रमवारी लावलेली नवीन यादी तयार करा
+    let finalCats = [];
+    
+    // आधी customOrder मधील विभाग घ्या (जे शीटमध्ये उपलब्ध आहेत)
+    customOrder.forEach(orderCat => {
+        if (sheetCats.includes(orderCat)) {
+            finalCats.push(orderCat);
+        }
+    });
+
+    // जर शीटमध्ये असा एखादा नवीन विभाग असेल जो customOrder मध्ये नाही, तो शेवटी जोडा
+    sheetCats.forEach(sheetCat => {
+        if (!finalCats.includes(sheetCat)) {
+            finalCats.push(sheetCat);
+        }
+    });
+
+    // ४. ड्रॉपडाऊन आणि नेव्हिगेशन बारमध्ये बटणे जोडा
+    finalCats.forEach(c => {
+        // ड्रॉपडाऊन (Select) साठी
+        let o = document.createElement('option'); 
+        o.value = o.innerText = c; 
+        sel.appendChild(o);
+        
+        // नेव्हिगेशन बार (Links) साठी
+        let a = document.createElement('a'); 
+        a.href = "javascript:void(0)"; 
+        a.innerText = c;
+        a.onclick = function() { filterByCategory(c, this); };
+        nav.appendChild(a);
+    });
+}
 function applyFilters() {
     const s = document.getElementById('searchInput').value.toLowerCase();
     const c = document.getElementById('categoryFilter').value;
