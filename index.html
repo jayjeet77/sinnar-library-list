@@ -148,7 +148,7 @@
    
     <a href="javascript:void(0)" onclick="showSection('contact-section', this)">संपर्क</a>
     <a href="javascript:void(0)" style="background: #ce062b; color: white;" data-bs-toggle="modal" data-bs-target="#memberModal">वाचक सभासद व्हा</a>
-    <a href="javascript:void(0)" class="more-btn" onclick="toggleMoreMenu()">More ▾</a>
+    <a href="javascript:void(0)" class="more-btn" onclick="toggleMoreMenu(event)">More ▾</a>
 </div>
 
  <div id="home-section" class="content-section active">
@@ -582,14 +582,11 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    function toggleMoreMenu() {
+    function toggleMoreMenu(event) {
+    event.stopPropagation();   // 🔥 important
     const menu = document.getElementById('moreMenu');
-
-    if (menu.style.display === 'block') {
-        menu.style.display = 'none';
-    } else {
-        menu.style.display = 'block';
-    }
+    menu.classList.toggle('show');
+}
 }
     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1zskDx0OIbMyzY5Sj_7GBS1iokrZY_5KnPn9jsW3dDNc/gviz/tq?tqx=out:csv';
     let allBooks = [], filteredBooks = [], currentPage = 1, pageSize = 50;
