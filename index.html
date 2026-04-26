@@ -601,11 +601,37 @@ filteredBooks = allBooks.filter(b => {
     }
 
     function showSection(id, el) {
-        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
+    // १. सर्व सेक्शन्स लपवा
+    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+    
+    // २. निवडलेला सेक्शन (Home, Digital List, इ.) दाखवा
+    const targetSection = document.getElementById(id);
+    if (targetSection) {
+        targetSection.classList.add('active');
+    }
+
+    // ३. मेनू बारमधील 'active' क्लास अपडेट करा
+    document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
+    if (el) {
         el.classList.add('active');
     }
+
+    // ४. बाऊन्स अ‍ॅनिमेशन (फक्त डिजिटल सूची उघडल्यावर)
+    if (id === 'portal-section') {
+        setTimeout(() => {
+            const nav = document.getElementById('categoryNav');
+            if (nav) {
+                // उजवीकडे ६० पिक्सेल सरकवा
+                nav.scrollTo({ left: 60, behavior: 'smooth' });
+                
+                // ५०० मिलीसेकंदांनंतर परत डावीकडे (मूळ जागी) आणा
+                setTimeout(() => {
+                    nav.scrollTo({ left: 0, behavior: 'smooth' });
+                }, 500);
+            }
+        }, 400); // सेक्शन व्यवस्थित लोड झाल्यावर अ‍ॅनिमेशन सुरू होईल
+    }
+}
 
 function changePage(v) {
     const maxPage = Math.ceil(filteredBooks.length / pageSize) || 1;
