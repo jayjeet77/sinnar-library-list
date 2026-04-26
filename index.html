@@ -714,6 +714,18 @@ async function loadDinvishesh() {
     const modal = new bootstrap.Modal(document.getElementById('imageModal'));
     modal.show();
 }
+window.addEventListener('load', () => {
+        const topNav = document.querySelector('.nav-scroll');
+        if (topNav) {
+            setTimeout(() => {
+                topNav.scrollTo({ left: 40, behavior: 'smooth' });
+                setTimeout(() => {
+                    topNav.scrollTo({ left: 0, behavior: 'smooth' });
+                }, 500);
+            }, 1000); 
+        }
+    });
+    // --- कोड संपला ---
 </script>
     <div class="modal fade" id="imageModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg">
