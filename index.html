@@ -645,21 +645,28 @@ function showSection(id, el) {
     document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
     if (el) el.classList.add('active');
 
-    // ४. हिस्टरी मॅनेजमेंट (बॅक बटनसाठी)
-    if (id !== 'home-section') {
-        // प्रत्येक वेळी नवीन नोंद न करता replaceState वापरा, जेणेकरून एक्झिट सोपे होईल
-        history.pushState({ sectionId: id }, "");
+    // ४. हिस्टरी मॅनेजमेंट (Smart Exit Logic)
+    if (id === 'home-section') {
+        // जर युजर होमवर असेल, तर हिस्टरीमध्ये मागे जाण्यासाठी काहीही ठेवू नका (Exit साठी)
+        history.replaceState({ sectionId: 'home-section' }, "");
+    } else {
+        // जर युजर होम सोडून दुसऱ्या टॅबवर असेल:
+        // 'replaceState' मुळे जुन्या टॅबची गर्दी होणार नाही, फक्त सध्याचा टॅब राहील
+        history.replaceState({ sectionId: id }, "");
+        
+        // जर आपण होमवरून नवीन आलो असू, तरच एक बॅक स्टेप द्या
+        if (history.state?.pushed !== true) {
+            history.pushState({ sectionId: id, pushed: true }, "");
+        }
     }
 
-    // ५. बाऊन्स अ‍ॅनिमेशन (फक्त डिजिटल सूची उघडल्यावर)
+    // ५. तुमचा बाऊन्स अ‍ॅनिमेशन कोड ( portal-section साठी )
     if (id === 'portal-section') {
         setTimeout(() => {
             const nav = document.getElementById('categoryNav');
             if (nav) {
                 nav.scrollTo({ left: 60, behavior: 'smooth' });
-                setTimeout(() => {
-                    nav.scrollTo({ left: 0, behavior: 'smooth' });
-                }, 500);
+                setTimeout(() => nav.scrollTo({ left: 0, behavior: 'smooth' }), 500);
             }
         }, 400);
     }
