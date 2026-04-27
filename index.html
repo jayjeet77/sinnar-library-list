@@ -631,24 +631,34 @@ filteredBooks = allBooks.filter(b => {
         el.classList.add('active'); applyFilters();
     }
 
-    function showSection(id, el) {
-    // १. सर्व सेक्शन्स लपवा
+   function showSection(id, el) {
+    // १. सर्व सेक्शन्स लपवणे
     document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
     
-    // २. निवडलेला सेक्शन (Home, Digital List, इ.) दाखवा
+    // २. निवडलेला सेक्शन दाखवणे
     const targetSection = document.getElementById(id);
     if (targetSection) {
         targetSection.classList.add('active');
     }
-if (id !== 'home-section') {
-        history.replaceState({ sectionId: id }, "");
-    }
-    // ३. मेनू बारमधील 'active' क्लास अपडेट करा
-    document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
-    if (el) {
-        el.classList.add('active');
-    }
 
+    // ३. मेनू बारमधील 'active' क्लास अपडेट करणे
+    document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
+    if (el) el.classList.add('active');
+
+    // ४. हिस्टरी मॅनेजमेंट (Smart Logic)
+    if (id === 'home-section') {
+        // जर युजर स्वतः होमवर क्लिक करत असेल, तर हिस्टरी रिप्लेस करा
+        history.replaceState({ sectionId: 'home-section' }, "");
+    } else {
+        // प्रथम 'replaceState' करून सध्याचा टॅब सेट करणे
+        history.replaceState({ sectionId: id }, "");
+        
+        // जर हिस्टरीमध्ये 'Home' नंतरची ही पहिलीच एन्ट्री असेल तरच pushState करा
+        // यामुळे कितीही टॅब बदलले तरी बॅक बटन एकदाच दाबावे लागेल
+        if (history.state?.sectionId !== id) {
+            history.pushState({ sectionId: id }, "");
+        }
+    }
     // ४. बाऊन्स अ‍ॅनिमेशन (फक्त डिजिटल सूची उघडल्यावर)
     if (id === 'portal-section') {
         setTimeout(() => {
