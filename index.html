@@ -647,6 +647,7 @@ function showSection(id, el) {
 
     // ४. हिस्टरी मॅनेजमेंट (बॅक बटनसाठी)
     if (id !== 'home-section') {
+        // प्रत्येक वेळी नवीन नोंद न करता replaceState वापरा, जेणेकरून एक्झिट सोपे होईल
         history.pushState({ sectionId: id }, "");
     }
 
@@ -655,10 +656,7 @@ function showSection(id, el) {
         setTimeout(() => {
             const nav = document.getElementById('categoryNav');
             if (nav) {
-                // उजवीकडे ६० पिक्सेल सरकवा
                 nav.scrollTo({ left: 60, behavior: 'smooth' });
-                
-                // ५०० मिलीसेकंदांनंतर परत डावीकडे (मूळ जागी) आणा
                 setTimeout(() => {
                     nav.scrollTo({ left: 0, behavior: 'smooth' });
                 }, 500);
@@ -666,6 +664,8 @@ function showSection(id, el) {
         }, 400);
     }
 }
+
+// पेजिंग बदलण्यासाठीचे फंक्शन
 function changePage(v) {
     const maxPage = Math.ceil(filteredBooks.length / pageSize) || 1;
     
@@ -673,7 +673,21 @@ function changePage(v) {
 
     if (currentPage < 1) currentPage = 1;
     if (currentPage > maxPage) currentPage = maxPage;
+    
+    render(); // नवीन पेज रेंडर करा
+}
 
+// बॅक बटनसाठी महत्त्वाचा इव्हेंट (हा एकदाच असावा)
+window.onpopstate = function(event) {
+    // कोणत्याही टॅबवरून मागे आल्यास होम सेक्शन दाखवा
+    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+    document.getElementById('home-section').classList.add('active');
+    
+    // होम बटन हायलाईट करा
+    document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
+    const homeLink = document.querySelector('a[onclick*="home-section"]');
+    if (homeLink) homeLink.classList.add('active');
+};
 render();
 window.scrollTo(0, 0);
 }
