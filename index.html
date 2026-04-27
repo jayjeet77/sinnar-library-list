@@ -631,7 +631,7 @@ filteredBooks = allBooks.filter(b => {
         el.classList.add('active'); applyFilters();
     }
 
-function showSection(id, el) {
+ffunction showSection(id, el) {
     // १. सर्व सेक्शन्स लपवणे
     document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
     
@@ -645,13 +645,12 @@ function showSection(id, el) {
     document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
     if (el) el.classList.add('active');
 
-    // ४. हिस्टरी मॅनेजमेंट (अत्यंत सोपे लॉजिक)
+    // ४. हिस्टरी मॅनेजमेंट (बॅक बटनसाठी)
     if (id !== 'home-section') {
-        // जेव्हा युजर होम सोडून कुठेही जाईल, तेव्हा एक 'Back Step' तयार करा
         history.pushState({ sectionId: id }, "");
     }
-}
-    // ४. बाऊन्स अ‍ॅनिमेशन (फक्त डिजिटल सूची उघडल्यावर)
+
+    // ५. बाऊन्स अ‍ॅनिमेशन (फक्त डिजिटल सूची उघडल्यावर)
     if (id === 'portal-section') {
         setTimeout(() => {
             const nav = document.getElementById('categoryNav');
@@ -664,10 +663,9 @@ function showSection(id, el) {
                     nav.scrollTo({ left: 0, behavior: 'smooth' });
                 }, 500);
             }
-        }, 400); // सेक्शन व्यवस्थित लोड झाल्यावर अ‍ॅनिमेशन सुरू होईल
+        }, 400);
     }
 }
-
 function changePage(v) {
     const maxPage = Math.ceil(filteredBooks.length / pageSize) || 1;
     
