@@ -641,7 +641,7 @@ filteredBooks = allBooks.filter(b => {
         targetSection.classList.add('active');
     }
 if (id !== 'home-section') {
-        history.pushState({ sectionId: id }, "");
+        history.replaceState({ sectionId: id }, "");
     }
     // ३. मेनू बारमधील 'active' क्लास अपडेट करा
     document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
