@@ -2,7 +2,7 @@
   "name": "सिन्नर सार्वजनिक वाचनालय",
   "short_name": "वाचनालय",
   "description": "सिन्नर सार्वजनिक वाचनालयाची डिजिटल ग्रंथसूची आणि सभासद नोंदणी.",
-  "start_url": "index.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f6f2e9",
   "theme_color": "#9d4d27",
