@@ -530,17 +530,19 @@ let currentPage = 1;
 const pageSize = 50;
 
 /* ===================== INIT ===================== */
-window.onload = () => {
-    fetchBooks();
+window.onload = function () {
+
+    fetchData();
     loadDinvishesh();
     setTodayDate();
 
     document.getElementById('searchInput')
-        .addEventListener('input', debounce(applyFilters, 300));
+        .addEventListener('input', applyFilters);
 
-    history.replaceState({ sectionId: "home-section" }, "", "");
+    // 🔥 enable back button trapping
+    history.pushState(null, "", "");
+
 };
-
 /* ===================== FETCH BOOKS ===================== */
 async function fetchBooks() {
     try {
@@ -702,12 +704,40 @@ function showSection(id, el, fromPop = false) {
 /* ===================== BACK BUTTON EXIT ===================== */
 let lastBackPress = 0;
 
-window.onpopstate = (event) => {
-    if (event.state?.sectionId) {
-        showSection(event.state.sectionId, null, true);
+let lastBackPress = 0;
+
+window.addEventListener("popstate", function () {
+
+    const homeSection = document.getElementById("home-section");
+
+    // 🔹 check: आपण home वर आहोत का?
+    if (!homeSection.classList.contains("active")) {
+        // 👉 NOT HOME → go to HOME
+        showSection("home-section");
         return;
     }
 
+    // 🔹 HOME वर आहे
+    const now = Date.now();
+
+    if (now - lastBackPress < 1500) {
+        // ✅ EXIT
+       window.close() || history.back();
+    } else {
+        // ⚠️ toast
+        const toast = document.getElementById("exitToast");
+        toast.style.display = "block";
+
+        setTimeout(() => {
+            toast.style.display = "none";
+        }, 1200);
+
+        lastBackPress = now;
+
+        // 🔥 important: push dummy state
+        history.pushState(null, "", "");
+    }
+});
     const now = Date.now();
 
     if (now - lastBackPress < 1500) {
@@ -720,7 +750,7 @@ window.onpopstate = (event) => {
 
         setTimeout(() => toast.style.display = "none", 1200);
 
-        history.pushState(null, "", location.href);
+      
     }
 };
 
