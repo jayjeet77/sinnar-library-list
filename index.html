@@ -631,48 +631,41 @@ filteredBooks = allBooks.filter(b => {
         el.classList.add('active'); applyFilters();
     }
 
-function showSection(id, el) {
-    // १. सर्व सेक्शन्स लपवणे
+    function showSection(id, el) {
+    // १. सर्व सेक्शन्स लपवा
     document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
     
-    // २. निवडलेला सेक्शन दाखवणे
+    // २. निवडलेला सेक्शन (Home, Digital List, इ.) दाखवा
     const targetSection = document.getElementById(id);
     if (targetSection) {
         targetSection.classList.add('active');
     }
-
-    // ३. मेनू बार अपडेट करणे
+if (id !== 'home-section') {
+        history.pushState({ sectionId: id }, "");
+    }
+    // ३. मेनू बारमधील 'active' क्लास अपडेट करा
     document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
-    if (el) el.classList.add('active');
-
-    // ४. हिस्टरी मॅनेजमेंट (Smart Exit Logic)
-    if (id === 'home-section') {
-        // जर युजर होमवर असेल, तर हिस्टरीमध्ये मागे जाण्यासाठी काहीही ठेवू नका (Exit साठी)
-        history.replaceState({ sectionId: 'home-section' }, "");
-    } else {
-        // जर युजर होम सोडून दुसऱ्या टॅबवर असेल:
-        // 'replaceState' मुळे जुन्या टॅबची गर्दी होणार नाही, फक्त सध्याचा टॅब राहील
-        history.replaceState({ sectionId: id }, "");
-        
-        // जर आपण होमवरून नवीन आलो असू, तरच एक बॅक स्टेप द्या
-        if (history.state?.pushed !== true) {
-            history.pushState({ sectionId: id, pushed: true }, "");
-        }
+    if (el) {
+        el.classList.add('active');
     }
 
-    // ५. तुमचा बाऊन्स अ‍ॅनिमेशन कोड ( portal-section साठी )
+    // ४. बाऊन्स अ‍ॅनिमेशन (फक्त डिजिटल सूची उघडल्यावर)
     if (id === 'portal-section') {
         setTimeout(() => {
             const nav = document.getElementById('categoryNav');
             if (nav) {
+                // उजवीकडे ६० पिक्सेल सरकवा
                 nav.scrollTo({ left: 60, behavior: 'smooth' });
-                setTimeout(() => nav.scrollTo({ left: 0, behavior: 'smooth' }), 500);
+                
+                // ५०० मिलीसेकंदांनंतर परत डावीकडे (मूळ जागी) आणा
+                setTimeout(() => {
+                    nav.scrollTo({ left: 0, behavior: 'smooth' });
+                }, 500);
             }
-        }, 400);
+        }, 400); // सेक्शन व्यवस्थित लोड झाल्यावर अ‍ॅनिमेशन सुरू होईल
     }
 }
 
-// पेजिंग बदलण्यासाठीचे फंक्शन
 function changePage(v) {
     const maxPage = Math.ceil(filteredBooks.length / pageSize) || 1;
     
@@ -680,21 +673,7 @@ function changePage(v) {
 
     if (currentPage < 1) currentPage = 1;
     if (currentPage > maxPage) currentPage = maxPage;
-    
-    render(); // नवीन पेज रेंडर करा
-}
 
-// बॅक बटनसाठी महत्त्वाचा इव्हेंट (हा एकदाच असावा)
-window.onpopstate = function(event) {
-    // कोणत्याही टॅबवरून मागे आल्यास होम सेक्शन दाखवा
-    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-    document.getElementById('home-section').classList.add('active');
-    
-    // होम बटन हायलाईट करा
-    document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
-    const homeLink = document.querySelector('a[onclick*="home-section"]');
-    if (homeLink) homeLink.classList.add('active');
-};
 render();
 window.scrollTo(0, 0);
 }
