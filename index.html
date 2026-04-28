@@ -3,6 +3,8 @@
     <meta name="google-site-verification" content="M5e4PusgUX9TKphxzyZ-Ql2D6_ERHiHxTOzlrS-hmX0" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#494C3B">
     
     <title>सिन्नर सार्वजनिक वाचनालय | Sinnar Public Library</title>
     <meta name="description" content="सिन्नर सार्वजनिक वाचनालय आणि अभ्यासिका. Sinnar Public Library, Study Room, and Digital Resource Center in Sinnar, Nashik.">
@@ -484,7 +486,20 @@
       </div>
     </div>
 </div>
-
+<div id="exitToast" style="
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    display: none;
+    z-index: 9999;">
+    पुन्हा back दाबा exit साठी
+</div>
 <footer style="background-color: #494C3B; color: white; text-align: center; padding: 25px 0; margin-top: 0px; border-top: 1px solid rgba(255,255,255,0.1);">
     <div class="container">
         <p style="margin-bottom: 5px; font-weight: normal; font-size: 0.9rem;">© सिन्नर सार्वजनिक वाचनालय</p>
@@ -639,9 +654,7 @@ filteredBooks = allBooks.filter(b => {
     if (targetSection) {
         targetSection.classList.add('active');
     }
-if (id !== 'home-section' && !fromPop) {
-    history.pushState({ sectionId: id }, "");
-}
+
     // ३. मेनू बारमधील 'active' क्लास अपडेट करा
     document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
     if (el) {
@@ -764,13 +777,70 @@ window.addEventListener('load', () => {
     }
 });
     // --- कोड संपला ---
+let lastBackPress = 0;
 window.onpopstate = function(event) {
-    if (event.state && event.state.sectionId) {
-        showSection(event.state.sectionId, null, true);
-    } else {
+    const homeSection = document.getElementById('home-section');
+
+    // Home नाही → Home वर आण
+    if (!homeSection.classList.contains('active')) {
         showSection('home-section', null, true);
+        history.replaceState({ sectionId: "home-section" }, "", "");
+    } 
+    else {
+        const now = new Date().getTime();
+
+        if (now - lastBackPress < 2000) {
+            window.close(); // दुसऱ्यांदा back → exit
+        } else {
+            lastBackPress = now;
+
+            const toast = document.getElementById("exitToast");
+            toast.style.display = "block";
+
+            setTimeout(() => {
+                toast.style.display = "none";
+            }, 2000);
+
+            history.pushState({ sectionId: "home-section" }, "", "");
+        }
     }
 };
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .then(reg => console.log("Service Worker registered"))
+      .catch(err => console.log("Service Worker failed", err));
+  });
+}
+
+// Install button code
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  const installBtn = document.createElement("button");
+  installBtn.innerText = "📲 App Install करा";
+  installBtn.className = "btn btn-success";
+  installBtn.style.position = "fixed";
+  installBtn.style.bottom = "80px";
+  installBtn.style.right = "20px";
+  installBtn.style.zIndex = "9999";
+
+  document.body.appendChild(installBtn);
+
+  installBtn.addEventListener("click", () => {
+    installBtn.remove();
+    deferredPrompt.prompt();
+
+    deferredPrompt.userChoice.then(choiceResult => {
+      deferredPrompt = null;
+    });
+  });
+});
+
 </script>
     <div class="modal fade" id="imageModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg">
