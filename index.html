@@ -520,198 +520,217 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1zskDx0OIbMyzY5Sj_7GBS1iokrZY_5KnPn9jsW3dDNc/gviz/tq?tqx=out:csv';
-    let allBooks = [], filteredBooks = [], currentPage = 1, pageSize = 50;
-
-    async function fetchData() {
-        try {
-            const resp = await fetch(SHEET_URL);
-            const csvText = await resp.text();
-            const rows = csvText.split(/\r?\n/).slice(1);
-            allBooks = rows.map(r => {
-                const cols = r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/^"|"$/g, '').trim());
-                return { 
-    SNo: cols[0], 
-    Class: cols[1], 
-    Name: cols[2], 
-    Author: cols[3]?.trim() || '---',
-    Publisher: cols[4]?.trim() ? cols[4].trim() : '---'
-};
-            }).filter(b => b.Name);
-            setupFilters();
-            applyFilters();
-        } catch (e) { document.getElementById('searchCount').innerText = 'डेटा लोड होऊ शकला नाही.'; }
-    }
-
-function setupFilters() {
-    const sel = document.getElementById('categoryFilter');
-    const nav = document.getElementById('categoryNav');
-    
-    // १. तुमच्या मागणीनुसार अचूक क्रमवारी
-    const customOrder = [
-        'कादंबरी', 'इतिहास', 'कथा', 'कथासंग्रह', 'चरित्र', 
-        'आत्मचरित्र', 'ललित', 'बालसाहित्य', 'कविता', 
-        'नाटक', 'संदर्भ', 'राजकीय', 'शास्त्रीय', 'English', 'इतर'
-    ];
-
-    const sheetCats = [...new Set(allBooks.map(b => b.Class))].filter(Boolean);
-    let finalCats = [];
-    
-    // customOrder नुसार विभाग लावणे
-    customOrder.forEach(orderCat => {
-        if (sheetCats.includes(orderCat)) {
-            finalCats.push(orderCat);
-        }
-    });
-
-    // जर शीटमध्ये असा एखादा विभाग असेल जो customOrder मध्ये नाही, तो 'English' च्या आधी जोडला जाईल
-    sheetCats.forEach(sheetCat => {
-        if (!finalCats.includes(sheetCat) && sheetCat !== 'English' && sheetCat !== 'इतर') {
-            // English आणि इतर च्या मागे नवीन विभाग ढकलणे
-            const insertIndex = finalCats.indexOf('English') !== -1 ? finalCats.indexOf('English') : finalCats.length;
-            finalCats.splice(insertIndex, 0, sheetCat);
-        }
-    });
-
-    // २. नेव्हिगेशन आणि ड्रॉपडाऊनमध्ये विभाग जोडणे
-    finalCats.forEach(c => {
-        let o = document.createElement('option'); 
-        o.value = o.innerText = c; 
-        sel.appendChild(o);
-        
-        let a = document.createElement('a'); 
-        a.href = "javascript:void(0)"; 
-        a.innerText = c;
-        a.onclick = function() { filterByCategory(c, this); };
-        nav.appendChild(a);
-    });
-}
-function applyFilters() {
-    const s = document.getElementById('searchInput').value.toLowerCase();
-    const c = document.getElementById('categoryFilter').value;
-    
-filteredBooks = allBooks.filter(b => {
-    const isNumberSearch = /^\d+$/.test(s);
-
-    if (isNumberSearch) {
-        const searchNum = parseInt(s, 10);
-
-        return (
-            !isNaN(parseInt(b.SNo, 10)) &&
-            parseInt(b.SNo, 10) === searchNum &&
-            (c === 'All' || b.Class === c)
-        );
-    } else {
-        return (
-            (
-                b.Name.toLowerCase().includes(s) || 
-                b.Author.toLowerCase().includes(s) || 
-                b.Publisher.toLowerCase().includes(s)
-            ) &&
-            (c === 'All' || b.Class === c)
-        );
-    }
-});
-    
-    document.getElementById('searchCount').innerText = `एकूण ${filteredBooks.length} पुस्तके सापडली`;
-    currentPage = 1; 
-    render();
-}
-    function render() {
-        const list = document.getElementById('bookList'); list.innerHTML = '';
-        const items = filteredBooks.slice((currentPage-1)*pageSize, currentPage*pageSize);
-        items.forEach(b => {
-            list.innerHTML += `
-                <div class="book-card">
-                    <div class="sno-badge">${b.SNo}</div>
-                    <div class="book-info w-100">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <h6 class="fw-bold mb-1">${b.Name}</h6>
-                            <span class="cat-tag">${b.Class}</span>
-                        </div>
-                        <p class="small mb-0 text-muted">लेखक: ${b.Author}</p>
-                        <p class="small mb-0 text-secondary" style="font-size: 0.75rem;">
-                    प्रकाशक: ${b.Publisher}</p>
-                
-                    </div>
-                </div>`;
-        });
-        document.getElementById('pageIndicator').innerText = `${currentPage} / ${Math.ceil(filteredBooks.length/pageSize) || 1}`;
-    }
-
-    function filterByCategory(c, el) {
-        document.getElementById('categoryFilter').value = c;
-        document.querySelectorAll('.category-nav a').forEach(a => a.classList.remove('active'));
-        el.classList.add('active'); applyFilters();
-    }
-
-    function showSection(id, el, fromPop = false) {
-    // १. सर्व सेक्शन्स लपवा
-    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-    
-    // २. निवडलेला सेक्शन (Home, Digital List, इ.) दाखवा
-    const targetSection = document.getElementById(id);
-    if (targetSection) {
-        targetSection.classList.add('active');
-    }
-
-    // ३. मेनू बारमधील 'active' क्लास अपडेट करा
-    document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
-    if (el) {
-        el.classList.add('active');
-    }
-
-    // ४. बाऊन्स अ‍ॅनिमेशन (फक्त डिजिटल सूची उघडल्यावर)
-    if (id === 'portal-section') {
-        setTimeout(() => {
-            const nav = document.getElementById('categoryNav');
-            if (nav) {
-                // उजवीकडे ६० पिक्सेल सरकवा
-                nav.scrollTo({ left: 60, behavior: 'smooth' });
-                
-                // ५०० मिलीसेकंदांनंतर परत डावीकडे (मूळ जागी) आणा
-                setTimeout(() => {
-                    nav.scrollTo({ left: 0, behavior: 'smooth' });
-                }, 500);
-            }
-        }, 400); // सेक्शन व्यवस्थित लोड झाल्यावर अ‍ॅनिमेशन सुरू होईल
-    }
-}
-
-function changePage(v) {
-    const maxPage = Math.ceil(filteredBooks.length / pageSize) || 1;
-    
-    currentPage += v;
-
-    if (currentPage < 1) currentPage = 1;
-    if (currentPage > maxPage) currentPage = maxPage;
-
-render();
-window.scrollTo(0, 0);
-}
-
+/* ===================== CONFIG ===================== */
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1zskDx0OIbMyzY5Sj_7GBS1iokrZY_5KnPn9jsW3dDNc/gviz/tq?tqx=out:csv';
 const DINVISHESH_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1TLkkdF6v006Wuq8N6hVLwOg4biA0GP7seF0Fo_sZp6b4Y_tVcVzPCSYIQn6QLzHVGdQ2Vem-Ho4F/pub?output=csv';
 
-window.onload = function () {
-    fetchData();
+let allBooks = [];
+let filteredBooks = [];
+let currentPage = 1;
+const pageSize = 50;
+
+/* ===================== INIT ===================== */
+window.onload = () => {
+    fetchBooks();
     loadDinvishesh();
     setTodayDate();
 
     document.getElementById('searchInput')
-        .addEventListener('input', applyFilters);
-history.replaceState({ sectionId: "home-section" }, "", "");
+        .addEventListener('input', debounce(applyFilters, 300));
+
+    history.replaceState({ sectionId: "home-section" }, "", "");
 };
 
-function setTodayDate() {
-    const today = new Date();
+/* ===================== FETCH BOOKS ===================== */
+async function fetchBooks() {
+    try {
+        const resp = await fetch(SHEET_URL);
+        const csv = await resp.text();
 
-    const formatted = today.toLocaleDateString('mr-IN', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
+        const rows = csv.split(/\r?\n/).slice(1);
+
+        allBooks = rows.map(r => {
+            const cols = r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
+                .map(v => v.replace(/^"|"$/g, '').trim());
+
+            return {
+                SNo: cols[0],
+                Class: cols[1],
+                Name: cols[2],
+                Author: cols[3] || '---',
+                Publisher: cols[4] || '---'
+            };
+        }).filter(b => b.Name);
+
+        setupFilters();
+        applyFilters();
+
+    } catch {
+        document.getElementById('searchCount').innerText = 'डेटा लोड होऊ शकला नाही.';
+    }
+}
+
+/* ===================== FILTER SETUP ===================== */
+function setupFilters() {
+    const sel = document.getElementById('categoryFilter');
+    const nav = document.getElementById('categoryNav');
+
+    const customOrder = [
+        'कादंबरी','इतिहास','कथा','कथासंग्रह','चरित्र',
+        'आत्मचरित्र','ललित','बालसाहित्य','कविता',
+        'नाटक','संदर्भ','राजकीय','शास्त्रीय','English','इतर'
+    ];
+
+    const sheetCats = [...new Set(allBooks.map(b => b.Class))].filter(Boolean);
+    let finalCats = [];
+
+    customOrder.forEach(cat => {
+        if (sheetCats.includes(cat)) finalCats.push(cat);
     });
 
-    document.getElementById('todayDate').innerText = formatted;
+    sheetCats.forEach(cat => {
+        if (!finalCats.includes(cat)) {
+            const idx = finalCats.indexOf('English');
+            finalCats.splice(idx !== -1 ? idx : finalCats.length, 0, cat);
+        }
+    });
+
+    finalCats.forEach(c => {
+        sel.appendChild(new Option(c, c));
+
+        const a = document.createElement('a');
+        a.href = "#";
+        a.innerText = c;
+        a.onclick = () => filterByCategory(c, a);
+        nav.appendChild(a);
+    });
+}
+
+/* ===================== FILTER ===================== */
+function applyFilters() {
+    const s = document.getElementById('searchInput').value.toLowerCase();
+    const c = document.getElementById('categoryFilter').value;
+
+    const isNumber = /^\d+$/.test(s);
+
+    filteredBooks = allBooks.filter(b => {
+        if (isNumber) {
+            return parseInt(b.SNo) === parseInt(s) &&
+                (c === 'All' || b.Class === c);
+        }
+
+        return (
+            (b.Name.toLowerCase().includes(s) ||
+             b.Author.toLowerCase().includes(s) ||
+             b.Publisher.toLowerCase().includes(s)) &&
+            (c === 'All' || b.Class === c)
+        );
+    });
+
+    document.getElementById('searchCount').innerText =
+        `एकूण ${filteredBooks.length} पुस्तके सापडली`;
+
+    currentPage = 1;
+    render();
+}
+
+/* ===================== RENDER ===================== */
+function render() {
+    const list = document.getElementById('bookList');
+    list.innerHTML = '';
+
+    const items = filteredBooks.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+    items.forEach(b => {
+        list.innerHTML += `
+        <div class="book-card">
+            <div class="sno-badge">${b.SNo}</div>
+            <div class="w-100">
+                <div class="d-flex justify-content-between">
+                    <h6 class="fw-bold">${b.Name}</h6>
+                    <span class="cat-tag">${b.Class}</span>
+                </div>
+                <p class="small mb-0 text-muted">लेखक: ${b.Author}</p>
+                <p class="small text-secondary">प्रकाशक: ${b.Publisher}</p>
+            </div>
+        </div>`;
+    });
+
+    const max = Math.ceil(filteredBooks.length / pageSize) || 1;
+    document.getElementById('pageIndicator').innerText = `${currentPage} / ${max}`;
+}
+
+/* ===================== PAGINATION ===================== */
+function changePage(v) {
+    const max = Math.ceil(filteredBooks.length / pageSize) || 1;
+
+    currentPage = Math.min(Math.max(currentPage + v, 1), max);
+    render();
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ===================== CATEGORY ===================== */
+function filterByCategory(c, el) {
+    document.getElementById('categoryFilter').value = c;
+    document.querySelectorAll('.category-nav a').forEach(a => a.classList.remove('active'));
+    el.classList.add('active');
+    applyFilters();
+}
+
+/* ===================== SECTION NAV ===================== */
+function showSection(id, el, fromPop = false) {
+    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id)?.classList.add('active');
+
+    document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
+    el?.classList.add('active');
+
+    if (!fromPop) {
+        history.pushState({ sectionId: id }, "", "#" + id);
+    }
+
+    if (id === 'portal-section') {
+        setTimeout(() => {
+            const nav = document.getElementById('categoryNav');
+            nav?.scrollTo({ left: 60, behavior: 'smooth' });
+            setTimeout(() => nav?.scrollTo({ left: 0, behavior: 'smooth' }), 500);
+        }, 400);
+    }
+}
+
+/* ===================== BACK BUTTON EXIT ===================== */
+let lastBackPress = 0;
+
+window.onpopstate = (event) => {
+    if (event.state?.sectionId) {
+        showSection(event.state.sectionId, null, true);
+        return;
+    }
+
+    const now = Date.now();
+
+    if (now - lastBackPress < 1500) {
+        window.close();
+    } else {
+        lastBackPress = now;
+
+        const toast = document.getElementById("exitToast");
+        toast.style.display = "block";
+
+        setTimeout(() => toast.style.display = "none", 1200);
+
+        history.pushState(null, "", location.href);
+    }
+};
+
+/* ===================== DINVISHESH ===================== */
+function setTodayDate() {
+    const today = new Date().toLocaleDateString('mr-IN', {
+        day: 'numeric', month: 'long', year: 'numeric'
+    });
+
+    document.getElementById('todayDate').innerText = today;
 }
 
 async function loadDinvishesh() {
@@ -720,21 +739,14 @@ async function loadDinvishesh() {
         const csv = await resp.text();
 
         const rows = csv.split(/\r?\n/).slice(1);
-
         const today = new Date();
-        const dd = String(today.getDate()).padStart(2, '0');
-        const mm = String(today.getMonth() + 1).padStart(2, '0');
-        const todayStr = `${dd}-${mm}`;
+        const key = `${String(today.getDate()).padStart(2, '0')}-${String(today.getMonth()+1).padStart(2,'0')}`;
 
         let found = false;
 
         rows.forEach(r => {
-            const cols = r.split(',');
-            const date = cols[0]?.trim();
-            const title = cols[1]?.trim();
-            const desc = cols[2]?.trim();
-
-            if (date === todayStr) {
+            const [date, title, desc] = r.split(',');
+            if (date === key) {
                 document.getElementById('dinvisheshContent').innerHTML =
                     `<strong>${title}</strong><br>${desc}`;
                 found = true;
@@ -742,107 +754,63 @@ async function loadDinvishesh() {
         });
 
         if (!found) {
-            document.getElementById('dinvisheshContent').innerText =
-                "आज खास दिनविशेष नाही.";
+            document.getElementById('dinvisheshContent').innerText = "आज खास दिनविशेष नाही.";
         }
 
-    } catch (e) {
-        document.getElementById('dinvisheshContent').innerText =
-            "दिनविशेष लोड होऊ शकला नाही.";
+    } catch {
+        document.getElementById('dinvisheshContent').innerText = "दिनविशेष लोड होऊ शकला नाही.";
     }
-}    function openImage(img) {
-    const modalImg = document.getElementById("modalImage");
-    const caption = img.nextElementSibling.innerText;
-
-    modalImg.src = img.src;
-    document.getElementById("modalCaption").innerText = caption;
-
-    const modal = new bootstrap.Modal(document.getElementById('imageModal'));
-    modal.show();
 }
-window.addEventListener('load', () => {
-    // आपण ID वापरून Main Nav ला टार्गेट करूया
-    const mainBar = document.getElementById('mainNav');
-    
-    if (mainBar) {
-        setTimeout(() => {
-            // १०० पिक्सेल उजवीकडे सरकवा (मोबाईलवर स्पष्ट दिसण्यासाठी)
-            mainBar.scrollTo({ left: 100, behavior: 'smooth' });
-            
-            // ६०० मिलीसेकंदांनंतर परत डावीकडे आणा
-            setTimeout(() => {
-                mainBar.scrollTo({ left: 0, behavior: 'smooth' });
-            }, 600);
-        }, 1500); // पेज लोड झाल्यावर १.५ सेकंदाने सुरू होईल
-    }
-});
-    // --- कोड संपला ---
-let lastBackPress = 0;
-window.onpopstate = function(event) {
-    const homeSection = document.getElementById('home-section');
 
-    // Home नाही → Home वर आण
-    if (!homeSection.classList.contains('active')) {
-        showSection('home-section', null, true);
-        history.replaceState({ sectionId: "home-section" }, "", "");
-    } 
-    else {
-        const now = new Date().getTime();
+/* ===================== IMAGE MODAL ===================== */
+function openImage(img) {
+    document.getElementById("modalImage").src = img.src;
+    document.getElementById("modalCaption").innerText = img.nextElementSibling.innerText;
+    new bootstrap.Modal(document.getElementById('imageModal')).show();
+}
 
-        if (now - lastBackPress < 2000) {
-            window.close(); // दुसऱ्यांदा back → exit
-        } else {
-            lastBackPress = now;
+/* ===================== HELPERS ===================== */
+function debounce(fn, delay) {
+    let t;
+    return (...args) => {
+        clearTimeout(t);
+        t = setTimeout(() => fn(...args), delay);
+    };
+}
 
-            const toast = document.getElementById("exitToast");
-            toast.style.display = "block";
-
-            setTimeout(() => {
-                toast.style.display = "none";
-            }, 2000);
-
-            history.pushState({ sectionId: "home-section" }, "", "");
-        }
-    }
-};
-
+/* ===================== SERVICE WORKER ===================== */
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js")
-      .then(reg => console.log("Service Worker registered"))
-      .catch(err => console.log("Service Worker failed", err));
-  });
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js");
+    });
 }
 
-// Install button code
+/* ===================== INSTALL BUTTON ===================== */
 let deferredPrompt;
 
 window.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
+    e.preventDefault();
+    deferredPrompt = e;
 
-  const installBtn = document.createElement("button");
-  installBtn.innerText = "📲 App Install करा";
-  installBtn.className = "btn btn-success";
-  installBtn.style.position = "fixed";
-  installBtn.style.bottom = "80px";
-  installBtn.style.right = "20px";
-  installBtn.style.zIndex = "9999";
-
-  document.body.appendChild(installBtn);
-
-  installBtn.addEventListener("click", () => {
-    installBtn.remove();
-    deferredPrompt.prompt();
-
-    deferredPrompt.userChoice.then(choiceResult => {
-      deferredPrompt = null;
+    const btn = document.createElement("button");
+    btn.innerText = "📲 App Install करा";
+    btn.className = "btn btn-success";
+    Object.assign(btn.style, {
+        position: "fixed",
+        bottom: "80px",
+        right: "20px",
+        zIndex: "9999"
     });
-  });
-});
 
-</script>
-    <div class="modal fade" id="imageModal" tabindex="-1">
+    document.body.appendChild(btn);
+
+    btn.onclick = () => {
+        btn.remove();
+        deferredPrompt.prompt();
+        deferredPrompt = null;
+    };
+});
+</script>    <div class="modal fade" id="imageModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content bg-dark border-0">
      <div class="modal-body text-center p-2 position-relative">
