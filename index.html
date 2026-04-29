@@ -696,13 +696,9 @@ function showSection(id, el, isBack = false) {
     // ४. हिस्टरी मॅनेजमेंट (Smart Logic)
     if (!isBack) {
         if (id === 'home-section') {
-            // होमवर असताना हिस्टरीमध्ये नवीन स्टेप जोडू नका
             history.replaceState({ sectionId: 'home-section' }, "");
         } else {
-            // टॅब बदलताना 'replaceState' वापरा जेणेकरून हिस्टरीची साखळी लांब होणार नाही
             history.replaceState({ sectionId: id }, "");
-            
-            // जर आपण होमवरून नवीन आलो असू, तरच एक बॅक स्टेप द्या
             if (history.state?.pushed !== true) {
                 history.pushState({ sectionId: id, pushed: true }, "");
             }
@@ -720,20 +716,16 @@ function showSection(id, el, isBack = false) {
         }, 400);
     }
 }
-/* ===================== BACK BUTTON EXIT ===================== */
-let lastBackPress = 0;
 
-let lastBackPress = 0;
+/* ===================== BACK BUTTON EXIT ===================== */
+let lastBackPress = 0; // ही ओळ आता एकदाच आहे
 
 window.onpopstate = function(event) {
     const homeSection = document.getElementById('home-section');
     
     // १. जर युजर सध्या होमवर नसेल, तर त्याला होमवर न्या
     if (!homeSection.classList.contains('active')) {
-        // आपण मघाशी सुधारलेले showSection फंक्शन इथे वापरतोय (isBack = true सह)
         showSection('home-section', document.querySelector('a[onclick*="home-section"]'), true);
-        
-        // हिस्टरी व्यवस्थित सेट करा जेणेकरून पुढच्या वेळी बॅक दाबल्यावर एक्झिटचा मेसेज येईल
         history.replaceState({ sectionId: 'home-section' }, "");
         return;
     }
@@ -741,123 +733,52 @@ window.onpopstate = function(event) {
     // २. जर युजर आधीच होमवर असेल, तर एक्झिट मेसेज दाखवा
     const now = Date.now();
     
-    // जर २ सेकंदांच्या आत पुन्हा बॅक बटन दाबले तरच बाहेर पडेल
     if (now - lastBackPress < 2000) {
-        // मोबाईल ब्राउझरमध्ये पूर्ण बाहेर पडण्यासाठी हे मदत करेल
         history.back(); 
     } else {
         lastBackPress = now;
-        
-        // तुमचा 'exitToast' मेसेज दाखवा
         const toast = document.getElementById("exitToast");
         if (toast) {
             toast.style.display = "block";
             setTimeout(() => toast.style.display = "none", 1500);
         }
-        
-        // हिस्टरीमध्ये एक पाऊल ठेवा जेणेकरून पुढच्या बॅकवर मेसेज दिसेल
         history.pushState({ sectionId: 'home-section' }, "", location.href);
     }
 };
+
 /* ===================== DINVISHESH ===================== */
 function setTodayDate() {
     const today = new Date().toLocaleDateString('mr-IN', {
         day: 'numeric', month: 'long', year: 'numeric'
     });
-
-    document.getElementById('todayDate').innerText = today;
+    const dateEl = document.getElementById('todayDate');
+    if(dateEl) dateEl.innerText = today;
 }
 
 async function loadDinvishesh() {
     try {
         const resp = await fetch(DINVISHESH_URL);
         const csv = await resp.text();
-
         const rows = csv.split(/\r?\n/).slice(1);
         const today = new Date();
         const key = `${String(today.getDate()).padStart(2, '0')}-${String(today.getMonth()+1).padStart(2,'0')}`;
-
         let found = false;
 
         rows.forEach(r => {
             const [date, title, desc] = r.split(',');
             if (date === key) {
-                document.getElementById('dinvisheshContent').innerHTML =
-                    `<strong>${title}</strong><br>${desc}`;
+                const contentEl = document.getElementById('dinvisheshContent');
+                if(contentEl) contentEl.innerHTML = `<strong>${title}</strong><br>${desc}`;
                 found = true;
             }
         });
 
         if (!found) {
-            document.getElementById('dinvisheshContent').innerText = "आज खास दिनविशेष नाही.";
+            const contentEl = document.getElementById('dinvisheshContent');
+            if(contentEl) contentEl.innerText = "आज खास दिनविशेष नाही.";
         }
-
     } catch {
-        document.getElementById('dinvisheshContent').innerText = "दिनविशेष लोड होऊ शकला नाही.";
+        const contentEl = document.getElementById('dinvisheshContent');
+        if(contentEl) contentEl.innerText = "दिनविशेष लोड होऊ शकला नाही.";
     }
 }
-
-/* ===================== IMAGE MODAL ===================== */
-function openImage(img) {
-    document.getElementById("modalImage").src = img.src;
-    document.getElementById("modalCaption").innerText = img.nextElementSibling.innerText;
-    new bootstrap.Modal(document.getElementById('imageModal')).show();
-}
-
-/* ===================== HELPERS ===================== */
-function debounce(fn, delay) {
-    let t;
-    return (...args) => {
-        clearTimeout(t);
-        t = setTimeout(() => fn(...args), delay);
-    };
-}
-
-/* ===================== SERVICE WORKER ===================== */
-if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./sw.js");
-    });
-}
-
-/* ===================== INSTALL BUTTON ===================== */
-let deferredPrompt;
-
-window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-
-    const btn = document.createElement("button");
-    btn.innerText = "📲 App Install करा";
-    btn.className = "btn btn-success";
-    Object.assign(btn.style, {
-        position: "fixed",
-        bottom: "80px",
-        right: "20px",
-        zIndex: "9999"
-    });
-
-    document.body.appendChild(btn);
-
-    btn.onclick = () => {
-        btn.remove();
-        deferredPrompt.prompt();
-        deferredPrompt = null;
-    };
-});
-</script>    <div class="modal fade" id="imageModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content bg-dark border-0">
-     <div class="modal-body text-center p-2 position-relative">
-
-    <!-- Close Button -->
-    <button type="button" class="btn-close btn-close-black position-absolute top-0 end-0 m-2" data-bs-dismiss="modal"></button>
-
-    <img id="modalImage" src="" class="img-fluid rounded">
-    <p id="modalCaption" class="text-white small mt-2 mb-0"></p>
-</div>
-    </div>
-  </div>
-</div>
-</body>
-</html>
