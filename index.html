@@ -679,51 +679,86 @@ function filterByCategory(c, el) {
 }
 
 /* ===================== SECTION NAV ===================== */
-function showSection(id, el, fromPop = false) {
+function showSection(id, el, isBack = false) {
+    // १. सर्व सेक्शन्स लपवणे
     document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-    document.getElementById(id)?.classList.add('active');
-
-    document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
-    el?.classList.add('active');
-
-    if (!fromPop) {
-        history.pushState({ sectionId: id }, "", "#" + id);
+    
+    // २. निवडलेला सेक्शन दाखवणे
+    const targetSection = document.getElementById(id);
+    if (targetSection) {
+        targetSection.classList.add('active');
     }
 
+    // ३. मेनू बार अपडेट करणे (Active class लावणे)
+    document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active'));
+    if (el) el.classList.add('active');
+
+    // ४. हिस्टरी मॅनेजमेंट (Smart Logic)
+    if (!isBack) {
+        if (id === 'home-section') {
+            // होमवर असताना हिस्टरीमध्ये नवीन स्टेप जोडू नका
+            history.replaceState({ sectionId: 'home-section' }, "");
+        } else {
+            // टॅब बदलताना 'replaceState' वापरा जेणेकरून हिस्टरीची साखळी लांब होणार नाही
+            history.replaceState({ sectionId: id }, "");
+            
+            // जर आपण होमवरून नवीन आलो असू, तरच एक बॅक स्टेप द्या
+            if (history.state?.pushed !== true) {
+                history.pushState({ sectionId: id, pushed: true }, "");
+            }
+        }
+    }
+
+    // ५. बाऊन्स अ‍ॅनिमेशन (फक्त पोर्टल सेक्शनसाठी)
     if (id === 'portal-section') {
         setTimeout(() => {
             const nav = document.getElementById('categoryNav');
-            nav?.scrollTo({ left: 60, behavior: 'smooth' });
-            setTimeout(() => nav?.scrollTo({ left: 0, behavior: 'smooth' }), 500);
+            if (nav) {
+                nav.scrollTo({ left: 60, behavior: 'smooth' });
+                setTimeout(() => nav.scrollTo({ left: 0, behavior: 'smooth' }), 500);
+            }
         }, 400);
     }
 }
-
 /* ===================== BACK BUTTON EXIT ===================== */
 let lastBackPress = 0;
 
-window.onpopstate = (event) => {
-    if (event.state?.sectionId) {
-        showSection(event.state.sectionId, null, true);
+let lastBackPress = 0;
+
+window.onpopstate = function(event) {
+    const homeSection = document.getElementById('home-section');
+    
+    // १. जर युजर सध्या होमवर नसेल, तर त्याला होमवर न्या
+    if (!homeSection.classList.contains('active')) {
+        // आपण मघाशी सुधारलेले showSection फंक्शन इथे वापरतोय (isBack = true सह)
+        showSection('home-section', document.querySelector('a[onclick*="home-section"]'), true);
+        
+        // हिस्टरी व्यवस्थित सेट करा जेणेकरून पुढच्या वेळी बॅक दाबल्यावर एक्झिटचा मेसेज येईल
+        history.replaceState({ sectionId: 'home-section' }, "");
         return;
     }
 
+    // २. जर युजर आधीच होमवर असेल, तर एक्झिट मेसेज दाखवा
     const now = Date.now();
-
-    if (now - lastBackPress < 1500) {
-        window.close();
+    
+    // जर २ सेकंदांच्या आत पुन्हा बॅक बटन दाबले तरच बाहेर पडेल
+    if (now - lastBackPress < 2000) {
+        // मोबाईल ब्राउझरमध्ये पूर्ण बाहेर पडण्यासाठी हे मदत करेल
+        history.back(); 
     } else {
         lastBackPress = now;
-
+        
+        // तुमचा 'exitToast' मेसेज दाखवा
         const toast = document.getElementById("exitToast");
-        toast.style.display = "block";
-
-        setTimeout(() => toast.style.display = "none", 1200);
-
-        history.pushState(null, "", location.href);
+        if (toast) {
+            toast.style.display = "block";
+            setTimeout(() => toast.style.display = "none", 1500);
+        }
+        
+        // हिस्टरीमध्ये एक पाऊल ठेवा जेणेकरून पुढच्या बॅकवर मेसेज दिसेल
+        history.pushState({ sectionId: 'home-section' }, "", location.href);
     }
 };
-
 /* ===================== DINVISHESH ===================== */
 function setTodayDate() {
     const today = new Date().toLocaleDateString('mr-IN', {
