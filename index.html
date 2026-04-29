@@ -751,34 +751,100 @@ function setTodayDate() {
     const today = new Date().toLocaleDateString('mr-IN', {
         day: 'numeric', month: 'long', year: 'numeric'
     });
-    const dateEl = document.getElementById('todayDate');
-    if(dateEl) dateEl.innerText = today;
+
+    document.getElementById('todayDate').innerText = today;
 }
 
 async function loadDinvishesh() {
     try {
         const resp = await fetch(DINVISHESH_URL);
         const csv = await resp.text();
+
         const rows = csv.split(/\r?\n/).slice(1);
         const today = new Date();
         const key = `${String(today.getDate()).padStart(2, '0')}-${String(today.getMonth()+1).padStart(2,'0')}`;
+
         let found = false;
 
         rows.forEach(r => {
             const [date, title, desc] = r.split(',');
             if (date === key) {
-                const contentEl = document.getElementById('dinvisheshContent');
-                if(contentEl) contentEl.innerHTML = `<strong>${title}</strong><br>${desc}`;
+                document.getElementById('dinvisheshContent').innerHTML =
+                    `<strong>${title}</strong><br>${desc}`;
                 found = true;
             }
         });
 
         if (!found) {
-            const contentEl = document.getElementById('dinvisheshContent');
-            if(contentEl) contentEl.innerText = "आज खास दिनविशेष नाही.";
+            document.getElementById('dinvisheshContent').innerText = "आज खास दिनविशेष नाही.";
         }
+
     } catch {
-        const contentEl = document.getElementById('dinvisheshContent');
-        if(contentEl) contentEl.innerText = "दिनविशेष लोड होऊ शकला नाही.";
+        document.getElementById('dinvisheshContent').innerText = "दिनविशेष लोड होऊ शकला नाही.";
     }
 }
+
+/* ===================== IMAGE MODAL ===================== */
+function openImage(img) {
+    document.getElementById("modalImage").src = img.src;
+    document.getElementById("modalCaption").innerText = img.nextElementSibling.innerText;
+    new bootstrap.Modal(document.getElementById('imageModal')).show();
+}
+
+/* ===================== HELPERS ===================== */
+function debounce(fn, delay) {
+    let t;
+    return (...args) => {
+        clearTimeout(t);
+        t = setTimeout(() => fn(...args), delay);
+    };
+}
+
+/* ===================== SERVICE WORKER ===================== */
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js");
+    });
+}
+
+/* ===================== INSTALL BUTTON ===================== */
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+
+    const btn = document.createElement("button");
+    btn.innerText = "📲 App Install करा";
+    btn.className = "btn btn-success";
+    Object.assign(btn.style, {
+        position: "fixed",
+        bottom: "80px",
+        right: "20px",
+        zIndex: "9999"
+    });
+
+    document.body.appendChild(btn);
+
+    btn.onclick = () => {
+        btn.remove();
+        deferredPrompt.prompt();
+        deferredPrompt = null;
+    };
+});
+</script>    <div class="modal fade" id="imageModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-dark border-0">
+     <div class="modal-body text-center p-2 position-relative">
+
+    <!-- Close Button -->
+    <button type="button" class="btn-close btn-close-black position-absolute top-0 end-0 m-2" data-bs-dismiss="modal"></button>
+
+    <img id="modalImage" src="" class="img-fluid rounded">
+    <p id="modalCaption" class="text-white small mt-2 mb-0"></p>
+</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
