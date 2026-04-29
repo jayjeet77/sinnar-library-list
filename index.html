@@ -725,7 +725,7 @@ window.onpopstate = function(event) {
     
     // १. जर युजर सध्या होमवर नसेल, तर त्याला होमवर न्या
     if (!homeSection.classList.contains('active')) {
-        showSection('home-section', document.querySelector('a[onclick*="home-section"]'), true);
+    
         history.replaceState({ sectionId: 'home-section' }, "");
         return;
     }
