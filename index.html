@@ -698,7 +698,7 @@ function showSection(id, el, skipPush = false) {
 
     // ✅ safe push
     if (!skipPush) {
-        history.pushState({ section: id }, "", "#" + id);
+        history.pushState({ section: id, manual: true }, "", "#" + id);
     }
 
     // portal animation
@@ -719,20 +719,20 @@ let lastBackPress = 0;
 
 window.addEventListener("popstate", function (event) {
 
-    // 👉 If state exists → go to section
-    if (event.state && event.state.section) {
+    if (!event.state) return;
+
+    if (event.state.manual) {
         showSection(event.state.section, null, true);
         return;
     }
 
-    // 👉 fallback: go home if not already
     const home = document.getElementById('home-section');
+
     if (!home.classList.contains('active')) {
         showSection('home-section', null, true);
         return;
     }
 
-    // 👉 exit logic
     const now = Date.now();
 
     if (now - lastBackPress < 1500) {
@@ -750,10 +750,9 @@ window.addEventListener("popstate", function (event) {
             setTimeout(() => toast.style.display = "none", 1200);
         }
 
-        history.pushState({ section: 'home-section' }, "", "#home");
+        history.pushState({ section: 'home-section', manual: true }, "", "#home");
     }
 });
-
 
 /* ===================== INITIAL LOAD ===================== */
 window.addEventListener("load", () => {
