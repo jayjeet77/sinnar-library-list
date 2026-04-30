@@ -700,9 +700,9 @@ function showSection(id, el, skipPush = false) {
     if (el) el.classList.add('active');
 
     // Push state (only when needed)
-    if (!skipPush) {
-        history.pushState({ page: id }, "", "");
-    }
+if (!skipPush) {
+    history.pushState({ section: id }, "", "");
+}
 
     // Portal scroll animation
     if (id === 'portal-section') {
@@ -722,18 +722,17 @@ function showSection(id, el, skipPush = false) {
 /* ===================== BACK BUTTON ===================== */
 let lastBackPress = 0;
 
-window.addEventListener("popstate", function () {
+window.addEventListener("popstate", function (event) {
 
-    const isHome = document.getElementById('home-section')
-        .classList.contains('active');
+    const state = event.state;
 
-    // 👉 section → HOME
-    if (!isHome) {
-        showSection('home-section', null, true);
+    // 👉 If history has section → go there
+    if (state && state.section) {
+        showSection(state.section, null, true);
         return;
     }
 
-    // 👉 HOME → EXIT
+    // 👉 If no state → HOME exit logic
     const now = Date.now();
 
     if (now - lastBackPress < 1500) {
@@ -751,15 +750,13 @@ window.addEventListener("popstate", function () {
             setTimeout(() => toast.style.display = "none", 1200);
         }
 
-        history.pushState(null, "", "");
+        history.pushState({ section: 'home-section' }, "", "");
     }
 });
-
 /* ===================== INITIAL LOAD ===================== */
 window.addEventListener("load", () => {
-    if (!history.state) {
-        history.replaceState(null, "", "");
-    }
+window.addEventListener("load", () => {
+    history.replaceState({ section: 'home-section' }, "", "");
 });
 
 /* ===================== DINVISHESH ===================== */
