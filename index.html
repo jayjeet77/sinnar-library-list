@@ -685,34 +685,29 @@ function filterByCategory(c, el) {
 /* ===================== SECTION NAV ===================== */
 function showSection(id, el, skipPush = false) {
 
-    // Hide all
     document.querySelectorAll('.content-section')
         .forEach(s => s.classList.remove('active'));
 
-    // Show selected
     const target = document.getElementById(id);
     if (target) target.classList.add('active');
 
-    // Nav active
     document.querySelectorAll('#mainNav a')
         .forEach(a => a.classList.remove('active'));
 
     if (el) el.classList.add('active');
 
-    // Push state (only when needed)
-if (!skipPush) {
-    history.pushState({ section: id }, "", "");
-}
+    // ✅ safe push
+    if (!skipPush) {
+        history.pushState({ section: id }, "", "#" + id);
+    }
 
-    // Portal scroll animation
+    // portal animation
     if (id === 'portal-section') {
         setTimeout(() => {
             const nav = document.getElementById('categoryNav');
             if (nav) {
                 nav.scrollTo({ left: 60, behavior: 'smooth' });
-                setTimeout(() => {
-                    nav.scrollTo({ left: 0, behavior: 'smooth' });
-                }, 500);
+                setTimeout(() => nav.scrollTo({ left: 0, behavior: 'smooth' }), 500);
             }
         }, 400);
     }
@@ -724,15 +719,20 @@ let lastBackPress = 0;
 
 window.addEventListener("popstate", function (event) {
 
-    const state = event.state;
-
-    // 👉 If history has section → go there
-    if (state && state.section) {
-        showSection(state.section, null, true);
+    // 👉 If state exists → go to section
+    if (event.state && event.state.section) {
+        showSection(event.state.section, null, true);
         return;
     }
 
-    // 👉 If no state → HOME exit logic
+    // 👉 fallback: go home if not already
+    const home = document.getElementById('home-section');
+    if (!home.classList.contains('active')) {
+        showSection('home-section', null, true);
+        return;
+    }
+
+    // 👉 exit logic
     const now = Date.now();
 
     if (now - lastBackPress < 1500) {
@@ -750,15 +750,20 @@ window.addEventListener("popstate", function (event) {
             setTimeout(() => toast.style.display = "none", 1200);
         }
 
-        history.pushState({ section: 'home-section' }, "", "");
+        history.pushState({ section: 'home-section' }, "", "#home");
     }
 });
+
+
 /* ===================== INITIAL LOAD ===================== */
 window.addEventListener("load", () => {
-window.addEventListener("load", () => {
-    history.replaceState({ section: 'home-section' }, "", "");
-});
 
+    // ✅ always start from home safely
+    history.replaceState({ section: 'home-section' }, "", "#home-section");
+
+    // optional: force home visible
+    showSection('home-section', null, true);
+});
 /* ===================== DINVISHESH ===================== */
 function setTodayDate() {
     const today = new Date().toLocaleDateString('mr-IN', {
