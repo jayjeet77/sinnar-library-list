@@ -63,6 +63,20 @@
     border-radius: 4px;
     margin-bottom: 8px;
 }
+     .content-section.active .container {
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+    }
+    
+    /* वेळेच्या बॉक्सच्या खाली असलेली जागा काढण्यासाठी */
+    .row.g-2.mt-1 {
+        margin-bottom: 0 !important;
+    }
+
+    /* फुटरच्या वरील अनावश्यक गॅप काढण्यासाठी */
+    footer {
+        margin-top: 0 !important;
+    }   
     </style>
 </head>
 <body>
@@ -86,7 +100,7 @@
 </div>
 
  <div id="home-section" class="content-section active">
-    <div class="container text-center pt-1 pb-3">
+    <div class="container text-center pt-1 pb-0 mb-0">
         <h3 class="fw-normal fs-6 mb-1" style="color: var(--title-color);">
             सिन्नर सार्वजनिक वाचनालयात आपले स्वागत आहे!
         </h3>
