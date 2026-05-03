@@ -1114,101 +1114,41 @@ async function loadFeedback() {
         const resp = await fetch(FEEDBACK_SHEET_URL);
         const csv = await resp.text();
 
-        const rows = csv.split(/\r?\n/).slice(1);
+        const rows = csv.split(/\r?\n/).filter(r => r.trim() !== "");
 
-        let feedbacks = rows.map(r => {
-            const cols = r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
+        let feedbacks = [];
+
+        for (let i = 1; i < rows.length; i++) {
+            const cols = rows[i]
+                .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
                 .map(v => v.replace(/^"|"$/g, '').trim());
 
-            return {
-                name: cols[1],
-                post: cols[2],
-                date: cols[3],
-                feedback: cols[4],
-                image: cols[5]
-            };
-        }).filter(f => f.name);
+            if (cols.length < 5) continue;
+
+            feedbacks.push({
+                name: cols[1] || "",
+                post: cols[2] || "",
+                date: cols[3] || "",
+                feedback: cols[4] || "",
+                image: cols[5] || ""
+            });
+        }
+
+        console.log("Feedback loaded:", feedbacks); // 🔍 debug
+
+        if (feedbacks.length === 0) {
+            document.getElementById('feedbackTabContent').innerHTML =
+                "<p class='text-center text-danger'>कोणतीही प्रतिक्रिया उपलब्ध नाही</p>";
+            return;
+        }
 
         renderFeedback(feedbacks);
 
     } catch (e) {
         console.error("Feedback load error:", e);
-    }
-}
 
-function renderFeedback(data) {
-
-    const perPage = 8;
-    const container = document.getElementById('feedbackTabContent');
-    const pagination = document.getElementById('feedbackTab');
-
-    container.innerHTML = '';
-    pagination.innerHTML = '';
-
-    let pageCount = Math.ceil(data.length / perPage);
-
-    for (let p = 0; p < pageCount; p++) {
-
-        let pageId = "page" + (p + 1);
-
-        let pageHTML = `
-        <div class="tab-pane fade ${p===0 ? 'show active' : ''}" id="${pageId}">
-            <div class="row g-3">
-        `;
-
-        let slice = data.slice(p * perPage, (p + 1) * perPage);
-
-        slice.forEach(f => {
-            pageHTML += `
-            <div class="col-12 col-md-6">
-                <div class="p-2 rounded shadow-sm border-start border-3 bg-white h-100"
-                     style="border-color: var(--accent-color); font-size: 0.8rem;">
-                    
-                    <div class="row g-2">
-                        
-                        <div class="col-4 text-center">
-                            <img src="letters/${f.image}" 
-                                 class="img-fluid rounded border"
-                                 style="max-height:70px;cursor:pointer;"
-                                 onclick="openImage(this)">
-                        </div>
-
-                        <div class="col-8">
-                            
-                            <div class="fw-bold" style="color: var(--title-color); font-size:0.85rem;">
-                                ${f.name}
-                            </div>
-
-                            <div class="text-muted" style="font-size:0.7rem;">
-                                ${f.post}
-                            </div>
-
-                            <div class="text-end text-muted" style="font-size:0.65rem;">
-                                ${f.date}
-                            </div>
-
-                            <p class="mb-0 mt-1" style="font-size:0.75rem; text-align: justify;">
-                                "${f.feedback}"
-                            </p>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            `;
-        });
-
-        pageHTML += `</div></div>`;
-        container.innerHTML += pageHTML;
-
-        pagination.innerHTML += `
-        <li class="nav-item">
-            <button class="nav-link ${p===0 ? 'active' : ''} btn-sm border"
-                    data-bs-toggle="tab"
-                    data-bs-target="#${pageId}">
-                ${p+1}
-            </button>
-        </li>`;
+        document.getElementById('feedbackTabContent').innerHTML =
+            "<p class='text-center text-danger'>डेटा लोड झाला नाही</p>";
     }
 }
 function toggleSidebar() {
