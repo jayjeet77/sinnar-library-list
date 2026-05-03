@@ -750,7 +750,77 @@ window.onload = () => {
 
     history.replaceState({ sectionId: "home-section" }, "", "");
 };
+function renderFeedback(data) {
 
+    const perPage = 8;
+    const container = document.getElementById('feedbackTabContent');
+    const pagination = document.getElementById('feedbackTab');
+
+    if (!container || !pagination) {
+        console.error("Feedback container not found");
+        return;
+    }
+
+    container.innerHTML = '';
+    pagination.innerHTML = '';
+
+    let pageCount = Math.ceil(data.length / perPage);
+
+    for (let p = 0; p < pageCount; p++) {
+
+        let pageId = "page" + (p + 1);
+
+        let pageHTML = `
+        <div class="tab-pane fade ${p===0 ? 'show active' : ''}" id="${pageId}">
+            <div class="row g-3">
+        `;
+
+        let slice = data.slice(p * perPage, (p + 1) * perPage);
+
+        slice.forEach(f => {
+            pageHTML += `
+            <div class="col-12 col-md-6">
+                <div class="p-2 rounded shadow-sm border-start border-3 bg-white h-100">
+                    
+                    <div class="row g-2">
+                        
+                        <div class="col-4 text-center">
+                            <img src="letters/${f.image}" 
+                                 class="img-fluid rounded border"
+                                 style="max-height:80px;cursor:pointer;"
+                                 onclick="openImage(this)">
+                        </div>
+
+                        <div class="col-8">
+                            
+                            <div class="fw-bold">${f.name}</div>
+                            <div class="text-muted small">${f.post}</div>
+                            <div class="text-end text-muted small">${f.date}</div>
+
+                            <p class="mt-1 small" style="text-align: justify;">
+                                "${f.feedback}"
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+        });
+
+        pageHTML += `</div></div>`;
+        container.innerHTML += pageHTML;
+
+        pagination.innerHTML += `
+        <li class="nav-item">
+            <button class="nav-link ${p===0 ? 'active' : ''} btn-sm border"
+                    data-bs-toggle="tab"
+                    data-bs-target="#${pageId}">
+                ${p+1}
+            </button>
+        </li>`;
+    }
+}
 /* ===================== FETCH BOOKS ===================== */
 async function fetchBooks() {
     try {
