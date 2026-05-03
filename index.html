@@ -33,11 +33,97 @@
         .header-section img { max-width: 80px; }
         .header-section h2 { color: var(--title-color); font-weight: bold; font-size: 1.5rem; margin: 5px 0 0; }
 
-        .main-nav { background: var(--footer-bg); display: flex; overflow-x: auto; padding: 8px; position: sticky; top: 0; z-index: 1050; gap: 8px; scrollbar-width: none; }
-        .main-nav::-webkit-scrollbar { display: none; }
-        .main-nav a { color: #f6f2e9; text-decoration: none; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; white-space: nowrap; }
-        .main-nav a.active { background: var(--accent-color); color: white; }
+       /* जुन्या .main-nav च्या जागी हा कोड टाका */
+.main-nav {
+    background: var(--footer-bg);
+    display: flex;
+    flex-direction: column; /* आडव्याऐवजी उभ्या रांगेत */
+    padding: 70px 10px;
+    position: fixed; /* एका जागी स्थिर */
+    top: 0;
+    left: 0;
+    height: 100vh; /* पूर्ण उंची */
+    width: 200px; /* बाजूची रुंदी */
+    z-index: 1050;
+    gap: 12px;
+    overflow-y: auto; /* जास्त विभाग असल्यास स्क्रोल होईल */
+}
 
+/* मुख्य मजकूर साईडबारच्या उजवीकडे ढकलण्यासाठी */
+body { 
+    padding-left: 200px; /* साईडबारसाठी जागा सोडली */
+}
+
+/* मोबाईलसाठी सेटिंग्ज */
+@media (max-width: 768px) {
+    .main-nav {
+        width: 140px; /* मोबाईलवर थोडी कमी रुंदी */
+    }
+    body {
+        padding-left: 140px;
+    }
+    .main-nav a {
+        font-size: 0.75rem;
+        padding: 8px;
+    }
+}
+
+.main-nav a {
+    color: #f6f2e9;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: block; /* पूर्ण रुंदी घेईल */
+}
+/* साईडबार सुरुवातीला लपवण्यासाठी */
+.main-nav {
+    transform: translateX(-100%); /* स्क्रीनच्या बाहेर नेले */
+    transition: transform 0.3s ease; /* स्मूथ ॲनिमेशन */
+    width: 250px;
+}
+
+/* साईडबार उघडल्यावर दिसण्यासाठी */
+.main-nav.active-sidebar {
+    transform: translateX(0);
+}
+
+/* मोबाईलवर मजकूर साईडबारच्या मागे जाऊ नये म्हणून body पॅडिंग काढून टाका */
+body { 
+    padding-left: 0 !important; 
+}
+
+/* मेनु बटणची स्टाईल */
+.menu-toggle-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1100;
+    background: var(--title-color);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+/* मेनु बटणमुळे मजकूर झाकला जाऊ नये म्हणून */
+.header-section { 
+    padding-top: 50px !important; /* वरून थोडी जागा सोडली */
+}
+
+/* मोबाईलवर मेनु बटणची जागा व्यवस्थित करण्यासाठी */
+@media (max-width: 768px) {
+    .menu-toggle-btn {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+    }
+}
+@media (max-width: 768px) {
+    .main-nav {
+        box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+        width: 200px; /* मोबाईलवर थोडा मोठा ठेवा म्हणजे नावे नीट दिसतील */
+    }
+}
         .category-nav { background: #5a5e4a; display: flex; overflow-x: auto; padding: 10px; gap: 8px; scrollbar-width: none; }
         .category-nav::-webkit-scrollbar { display: none; }
         .category-nav a { color: #f6f2e9; text-decoration: none; padding: 5px 12px; border-radius: 15px; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.2); white-space: nowrap; }
@@ -77,9 +163,20 @@
     footer {
         margin-top: 0 !important;
     }   
+#feedbackTab .nav-link {
+    color: var(--title-color);
+    background-color: #fff;
+}
+#feedbackTab .nav-link.active {
+    background-color: #494C3B !important; /* फुटरचा रंग */
+    color: white !important;
+}
     </style>
 </head>
 <body>
+<button class="menu-toggle-btn" onclick="toggleSidebar()">
+    <i class="bi bi-list"></i> मेनू
+</button>
 
 <div class="header-section">
     <img src="logo.png" alt="Logo" onerror="this.src='https://via.placeholder.com/80';">
@@ -96,11 +193,13 @@
      <a href="javascript:void(0)" onclick="showSection('rates-section', this)">वर्गणी दरपत्रक</a>
     <a href="javascript:void(0)" onclick="showSection('directors-section', this)">संचालक मंडळ</a>
     <a href="javascript:void(0)" onclick="showSection('contact-section', this)">संपर्क</a>
-    <a href="javascript:void(0)" style="background: #ce062b; color: white;" data-bs-toggle="modal" data-bs-target="#memberModal">वाचक सभासद व्हा</a>
+    <a href="javascript:void(0)" onclick="showSection('feedback-section', this)">मान्यवरांच्या प्रतिक्रिया</a>
+    <a href="javascript:void(0)" onclick="showSection('staff-section', this)">कर्मचारी वृंद</a>
+    <a href="javascript:void(0)" style="background: #50604d; color: white;" data-bs-toggle="modal" data-bs-target="#memberModal">वाचक सभासद व्हा</a>
 </div>
 
  <div id="home-section" class="content-section active">
-    <div class="container text-center pt-1 pb-0 mb-0">
+    <div class="container text-center pt-5 pb-0 mb-0">
         <h3 class="fw-normal fs-6 mb-1" style="color: var(--title-color);">
             सिन्नर सार्वजनिक वाचनालयात आपले स्वागत आहे!
         </h3>
@@ -124,7 +223,7 @@
         <div class="mt-2 p-2 bg-white rounded shadow-sm mb-0 pb-0" style="border: 1px solid #eee;">
     <!-- lead क्लास काढून font-size लहान केला आहे -->
     <p style="color: var(--text-dark); font-weight: 400; font-size: 0.85rem; margin-bottom: 0; text-align: center;">
-        आपल्या समृद्ध ग्रंथसंपदेचा लाभ घेण्यासाठी वरील 'पुस्तक सूची' विभागात जावे.
+        आपल्या समृद्ध ग्रंथसंपदेचा लाभ घेण्यासाठी मेनू वरील 'पुस्तक सूची' विभागात जावे.
             </p>
             
             <div class="row g-2 mt-1 px-1">
@@ -502,8 +601,89 @@
     </div>
 </div>
     </div>
+<div id="feedback-section" class="container">
+    <div class="card p-4 border-0 shadow-sm" style="background-color: #fdfaf4;">
+        <h4 class="fw-bold text-center mb-4" style="color: var(--title-color);">मान्यवरांच्या प्रतिक्रिया</h4>
+        
+        <!-- इथे प्रतिक्रिया लोड होतील -->
+        <div id="feedback-container">
+            <p class="text-center">माहिती लोड होत आहे...</p>
+        </div>
 
-<div class="modal fade" id="memberModal" tabindex="-1">
+        <!-- Pagination बटणे -->
+        <div id="pagination-controls" class="d-flex justify-content-center mt-4"></div>
+    </div>
+</div>
+</div><div id="staff-section" class="content-section container">
+    <div class="card p-4 border-0 shadow-sm" style="background-color: #fdfaf4;">
+        <h4 class="fw-bold text-center mb-4" style="color: var(--title-color);">कर्मचारी वृंद</h4>
+        
+        <div class="row row-cols-2 row-cols-md-4 g-4 text-center">
+            
+            <!-- कर्मचारी १: छाया पिले -->
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm p-2" style="background: #ffffff;">
+                    <img src="staff1.jpg" alt="छाया पिले" class="card-img-top rounded-3 border" 
+    	 style="aspect-ratio: 2/3; height: 120px; width: auto; object-fit: cover; margin: 0 auto; display: block; cursor: pointer;"
+    	 onclick="openImage(this)">
+                    <div class="card-body p-2 mt-2">
+                        <h6 class="fw-bold mb-1" style="color: var(--title-color); font-size: 0.9rem;">छाया पिले</h6>
+                        <div class="py-1 px-2 rounded" style="background-color: #494C3B; color: #ffffff; font-size: 0.7rem;">
+                            ग्रंथपाल
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- कर्मचारी २: विकास ऊकाडे -->
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm p-2" style="background: #ffffff;">
+                    <img src="staff1.jpg" alt="छाया पिले" class="card-img-top rounded-3 border" 
+    	 style="aspect-ratio: 2/3; height: 120px; width: auto; object-fit: cover; margin: 0 auto; display: block; cursor: pointer;"
+    	 onclick="openImage(this)">
+                    <div class="card-body p-2 mt-2">
+                        <h6 class="fw-bold mb-1" style="color: var(--title-color); font-size: 0.9rem;">छाया पिले</h6>
+                        <div class="py-1 px-2 rounded" style="background-color: #494C3B; color: #ffffff; font-size: 0.7rem;">
+                            ग्रंथपाल
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- कर्मचारी ३: कविता काळे -->
+          <div class="col">
+                <div class="card h-100 border-0 shadow-sm p-2" style="background: #ffffff;">
+                    <img src="staff1.jpg" alt="छाया पिले" class="card-img-top rounded-3 border" 
+    	 style="aspect-ratio: 2/3; height: 120px; width: auto; object-fit: cover; margin: 0 auto; display: block; cursor: pointer;"
+    	 onclick="openImage(this)">
+                    <div class="card-body p-2 mt-2">
+                        <h6 class="fw-bold mb-1" style="color: var(--title-color); font-size: 0.9rem;">छाया पिले</h6>
+                        <div class="py-1 px-2 rounded" style="background-color: #494C3B; color: #ffffff; font-size: 0.7rem;">
+                            ग्रंथपाल
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- कर्मचारी ४: सचिन पांगारकर -->
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm p-2" style="background: #ffffff;">
+                    <img src="staff1.jpg" alt="छाया पिले" class="card-img-top rounded-3 border" 
+    	 style="aspect-ratio: 2/3; height: 120px; width: auto; object-fit: cover; margin: 0 auto; display: block; cursor: pointer;"
+    	 onclick="openImage(this)">
+                    <div class="card-body p-2 mt-2">
+                        <h6 class="fw-bold mb-1" style="color: var(--title-color); font-size: 0.9rem;">छाया पिले</h6>
+                        <div class="py-1 px-2 rounded" style="background-color: #494C3B; color: #ffffff; font-size: 0.7rem;">
+                            ग्रंथपाल
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div><div class="modal fade" id="memberModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header" style="background: var(--title-color); color: white;">
@@ -924,7 +1104,129 @@ window.addEventListener("beforeinstallprompt", (e) => {
         deferredPrompt = null;
     };
 });
-</script>    <div class="modal fade" id="imageModal" tabindex="-1">
+/* ===================== SIDEBAR FUNCTIONS ===================== */
+/* ===================== SIDEBAR FUNCTIONS ===================== */
+function toggleSidebar() {
+    const nav = document.getElementById('mainNav');
+    if (nav) {
+        nav.classList.toggle('active-sidebar');
+    }
+}
+
+// मेनुच्या बाहेर क्लिक केल्यावर तो बंद होण्यासाठी
+document.addEventListener('click', function(event) {
+    const nav = document.getElementById('mainNav');
+    const menuBtn = document.querySelector('.menu-toggle-btn');
+    
+    if (nav && menuBtn) {
+        if (!nav.contains(event.target) && !menuBtn.contains(event.target)) {
+            nav.classList.remove('active-sidebar');
+        }
+    }
+});
+
+// कोणत्याही लिंकवर क्लिक केल्यावर साईडबार आपोआप बंद व्हावा
+document.querySelectorAll('.main-nav a').forEach(link => {
+    link.addEventListener('click', () => {
+        const nav = document.getElementById('mainNav');
+        if (nav) {
+            nav.classList.remove('active-sidebar');
+        }
+    });
+});
+
+/* ===================== FEEDBACK SYSTEM ===================== */
+const sheetId = '1OOOhj0lJ2VbG_N5kqV5_Iq98IXwq12Tv1s_jgcCicbo';
+const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
+
+let allData = [];
+const itemsPerPage = 5;
+let feedbackCurrentPage = 1;
+
+async function fetchFeedbacks() {
+    try {
+        const response = await fetch(base);
+        const data = await response.text();
+        const json = JSON.parse(data.substr(47).slice(0, -2));
+        
+        allData = json.table.rows.map(row => ({
+            srNo: row.c[0]?.v,
+            name: row.c[1]?.v,
+            designation: row.c[2]?.v,
+            date: row.c[3]?.v,
+            content: row.c[4]?.v,
+            photo: row.c[5]?.v
+        }));
+
+        displayFeedbacks(1);
+        setupPagination();
+    } catch (error) {
+        const container = document.getElementById('feedback-container');
+        if(container) container.innerHTML = "माहिती लोड करताना त्रुटी आली.";
+    }
+}
+
+function displayFeedbacks(page) {
+    feedbackCurrentPage = page;
+    const start = (page - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const paginatedItems = allData.slice(start, end);
+
+    let html = '';
+    paginatedItems.forEach(item => {
+        html += `
+            <div class="col-12 mb-4">
+                <div class="row align-items-start g-3">
+                    <div class="col-4 col-md-3 text-center">
+                        <img src="${item.photo}" class="img-fluid rounded border shadow-sm" 
+                             style="max-height: 150px; width: 100%; object-fit: contain; background: #fff;">
+                    </div>
+                    <div class="col-8 col-md-9">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="mb-2">
+                                <h5 class="fw-bold mb-0" style="color: var(--title-color); font-size: 1.2rem;">${item.name}</h5>
+                                <span class="text-secondary" style="font-size: 0.95rem;">${item.designation}</span>
+                            </div>
+                            <small class="text-muted">${item.date}</small>
+                        </div>
+                        <p class="mt-2 mb-0" style="color: #2c2e24; text-align: justify; line-height: 1.6; font-size: 1.1rem;">
+                            "${item.content}"
+                        </p>
+                    </div>
+                </div>
+                <hr class="mt-4" style="border-top: 1px solid var(--accent-color); opacity: 0.3;">
+            </div>`;
+    });
+    const container = document.getElementById('feedback-container');
+    if(container) container.innerHTML = html;
+}
+
+function setupPagination() {
+    const pageCount = Math.ceil(allData.length / itemsPerPage);
+    let navHtml = '<ul class="nav nav-pills">';
+    for (let i = 1; i <= pageCount; i++) {
+        navHtml += `<li class="nav-item">
+            <button class="nav-link btn-sm me-1 border ${i === feedbackCurrentPage ? 'active' : ''}" 
+                    onclick="displayFeedbacks(${i}); updatePaginationUI(${i})">${i}</button>
+        </li>`;
+    }
+    navHtml += '</ul>';
+    const controls = document.getElementById('pagination-controls');
+    if(controls) controls.innerHTML = navHtml;
+}
+
+function updatePaginationUI(page) {
+    const buttons = document.querySelectorAll('#pagination-controls button');
+    buttons.forEach((btn, index) => {
+        if (index + 1 === page) btn.classList.add('active');
+        else btn.classList.remove('active');
+    });
+}
+
+// फिडबॅक लोड करणे
+fetchFeedbacks();
+</script>    
+<div class="modal fade" id="imageModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content bg-dark border-0">
      <div class="modal-body text-center p-2 position-relative">
