@@ -601,7 +601,7 @@ body {
     </div>
 </div>
     </div>
-<div id="feedback-section" class="container">
+<div id="feedback-section" class="content-section container" style="display:none;">
     <div class="card p-4 border-0 shadow-sm" style="background-color: #fdfaf4;">
         <h4 class="fw-bold text-center mb-4" style="color: var(--title-color);">मान्यवरांच्या प्रतिक्रिया</h4>
         
@@ -848,7 +848,13 @@ function setupFilters() {
 
 /* ===================== FILTER ===================== */
 function applyFilters() {
+  // सर्च सुरू झाल्यावर इतर सर्व विभाग लपवण्यासाठी (खात्री करण्यासाठी)
+    if (document.getElementById('portal-section').classList.contains('active')) {
+        document.getElementById('feedback-section').classList.remove('active');
+    }
+    
     const s = document.getElementById('searchInput').value.toLowerCase();
+	const s = document.getElementById('searchInput').value.toLowerCase();
     const c = document.getElementById('categoryFilter').value;
 
     const isNumber = /^\d+$/.test(s);
@@ -1173,32 +1179,41 @@ function displayFeedbacks(page) {
     const paginatedItems = allData.slice(start, end);
 
     let html = '';
-    paginatedItems.forEach(item => {
+    paginatedItems.forEach((item, index) => {
+        // जर तुमच्या फाईल्सचे नाव letter1.jpg, letter2.jpg असे असेल तर:
+        // 'index + 1 + start' मुळे प्रत्येक प्रतिक्रियेला योग्य नंबर मिळेल
+        const photoName = `letter${index + 1 + start}.jpg`; 
+
         html += `
             <div class="col-12 mb-4">
                 <div class="row align-items-start g-3">
-                    <div class="col-4 col-md-3 text-center">
-                        <img src="${item.photo}" class="img-fluid rounded border shadow-sm" 
-                             style="max-height: 150px; width: 100%; object-fit: contain; background: #fff;">
+                    <div class="col-12 col-md-4 text-center">
+                        <!-- फोटोवर क्लिक केल्यावर तो मोठा दिसावा यासाठी a tag -->
+                        <a href="images/${photoName}" target="_blank">
+                            <img src="images/${photoName}" class="img-fluid rounded border shadow-sm" 
+                                 alt="प्रतिक्रिया पत्र"
+                                 style="max-height: 250px; width: 100%; object-fit: contain; background: #f8f9fa;">
+                        </a>
+                        <p class="small text-muted mt-1">पत्राची मूळ प्रत पाहण्यासाठी फोटोवर क्लिक करा</p>
                     </div>
-                    <div class="col-8 col-md-9">
+                    <div class="col-12 col-md-8">
                         <div class="d-flex justify-content-between align-items-start">
                             <div class="mb-2">
-                                <h5 class="fw-bold mb-0" style="color: var(--title-color); font-size: 1.2rem;">${item.name}</h5>
-                                <span class="text-secondary" style="font-size: 0.95rem;">${item.designation}</span>
+                                <h5 class="fw-bold mb-0" style="color: #b31d1d;">${item.name}</h5>
+                                <span class="text-secondary">${item.designation}</span>
                             </div>
                             <small class="text-muted">${item.date}</small>
                         </div>
-                        <p class="mt-2 mb-0" style="color: #2c2e24; text-align: justify; line-height: 1.6; font-size: 1.1rem;">
+                        <hr>
+                        <p class="mt-2 mb-0" style="text-align: justify; line-height: 1.6; font-size: 1.1rem; color: #333;">
                             "${item.content}"
                         </p>
                     </div>
                 </div>
-                <hr class="mt-4" style="border-top: 1px solid var(--accent-color); opacity: 0.3;">
+                <hr class="mt-4" style="border-top: 2px solid #eee;">
             </div>`;
     });
-    const container = document.getElementById('feedback-container');
-    if(container) container.innerHTML = html;
+    document.getElementById('feedback-container').innerHTML = html;
 }
 
 function setupPagination() {
