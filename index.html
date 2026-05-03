@@ -1113,21 +1113,16 @@ window.addEventListener("beforeinstallprompt", (e) => {
 /* ===================== SIDEBAR FUNCTIONS ===================== */
 /* ===================== SIDEBAR FUNCTIONS ===================== */
 function toggleSidebar() {
-    const nav = document.getElementById('mainNav');
-    if (nav) {
-        nav.classList.toggle('active-sidebar');
-    }
+    var nav = document.getElementById("mainNav");
+    nav.classList.toggle("active-sidebar");
 }
 
-// मेनुच्या बाहेर क्लिक केल्यावर तो बंद होण्यासाठी
+// मेनुच्या बाहेर क्लिक केल्यावर तो बंद होण्यासाठी खालील कोड वापरा
 document.addEventListener('click', function(event) {
     const nav = document.getElementById('mainNav');
     const menuBtn = document.querySelector('.menu-toggle-btn');
-    
-    if (nav && menuBtn) {
-        if (!nav.contains(event.target) && !menuBtn.contains(event.target)) {
-            nav.classList.remove('active-sidebar');
-        }
+    if (!nav.contains(event.target) && !menuBtn.contains(event.target)) {
+        nav.classList.remove('active-sidebar');
     }
 });
 
