@@ -33,97 +33,11 @@
         .header-section img { max-width: 80px; }
         .header-section h2 { color: var(--title-color); font-weight: bold; font-size: 1.5rem; margin: 5px 0 0; }
 
-       /* जुन्या .main-nav च्या जागी हा कोड टाका */
-.main-nav {
-    background: var(--footer-bg);
-    display: flex;
-    flex-direction: column; /* आडव्याऐवजी उभ्या रांगेत */
-    padding: 70px 10px;
-    position: fixed; /* एका जागी स्थिर */
-    top: 0;
-    left: 0;
-    height: 100vh; /* पूर्ण उंची */
-    width: 200px; /* बाजूची रुंदी */
-    z-index: 1050;
-    gap: 12px;
-    overflow-y: auto; /* जास्त विभाग असल्यास स्क्रोल होईल */
-}
+        .main-nav { background: var(--footer-bg); display: flex; overflow-x: auto; padding: 8px; position: sticky; top: 0; z-index: 1050; gap: 8px; scrollbar-width: none; }
+        .main-nav::-webkit-scrollbar { display: none; }
+        .main-nav a { color: #f6f2e9; text-decoration: none; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; white-space: nowrap; }
+        .main-nav a.active { background: var(--accent-color); color: white; }
 
-/* मुख्य मजकूर साईडबारच्या उजवीकडे ढकलण्यासाठी */
-body { 
-    padding-left: 200px; /* साईडबारसाठी जागा सोडली */
-}
-
-/* मोबाईलसाठी सेटिंग्ज */
-@media (max-width: 768px) {
-    .main-nav {
-        width: 140px; /* मोबाईलवर थोडी कमी रुंदी */
-    }
-    body {
-        padding-left: 140px;
-    }
-    .main-nav a {
-        font-size: 0.75rem;
-        padding: 8px;
-    }
-}
-
-.main-nav a {
-    color: #f6f2e9;
-    text-decoration: none;
-    padding: 10px 15px;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    display: block; /* पूर्ण रुंदी घेईल */
-}
-/* साईडबार सुरुवातीला लपवण्यासाठी */
-.main-nav {
-    transform: translateX(-100%); /* स्क्रीनच्या बाहेर नेले */
-    transition: transform 0.3s ease; /* स्मूथ ॲनिमेशन */
-    width: 250px;
-}
-
-/* साईडबार उघडल्यावर दिसण्यासाठी */
-.main-nav.active-sidebar {
-    transform: translateX(0);
-}
-
-/* मोबाईलवर मजकूर साईडबारच्या मागे जाऊ नये म्हणून body पॅडिंग काढून टाका */
-body { 
-    padding-left: 0 !important; 
-}
-
-/* मेनु बटणची स्टाईल */
-.menu-toggle-btn {
-    position: fixed;
-    top: 15px;
-    left: 15px;
-    z-index: 1100;
-    background: var(--title-color);
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-/* मेनु बटणमुळे मजकूर झाकला जाऊ नये म्हणून */
-.header-section { 
-    padding-top: 50px !important; /* वरून थोडी जागा सोडली */
-}
-
-/* मोबाईलवर मेनु बटणची जागा व्यवस्थित करण्यासाठी */
-@media (max-width: 768px) {
-    .menu-toggle-btn {
-        padding: 5px 10px;
-        font-size: 0.8rem;
-    }
-}
-@media (max-width: 768px) {
-    .main-nav {
-        box-shadow: 5px 0 15px rgba(0,0,0,0.3);
-        width: 200px; /* मोबाईलवर थोडा मोठा ठेवा म्हणजे नावे नीट दिसतील */
-    }
-}
         .category-nav { background: #5a5e4a; display: flex; overflow-x: auto; padding: 10px; gap: 8px; scrollbar-width: none; }
         .category-nav::-webkit-scrollbar { display: none; }
         .category-nav a { color: #f6f2e9; text-decoration: none; padding: 5px 12px; border-radius: 15px; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.2); white-space: nowrap; }
@@ -141,42 +55,9 @@ body {
         .about-text { line-height: 1.8; text-align: justify; white-space: pre-line; color: #333; }
         .footer { text-align: center; padding: 20px; background: var(--footer-bg); color: #f6f2e9; margin-top: 20px; }
         .card-img-top { background: #eee; aspect-ratio: 3/4; object-fit: cover; }
-        .form-note {
-    font-size: 12px;
-    color: #666;
-    padding: 6px 8px;
-    background: #f1f3f5;
-    border-radius: 4px;
-    margin-bottom: 8px;
-}
-     .content-section.active .container {
-        padding-bottom: 0 !important;
-        margin-bottom: 0 !important;
-    }
-    
-    /* वेळेच्या बॉक्सच्या खाली असलेली जागा काढण्यासाठी */
-    .row.g-2.mt-1 {
-        margin-bottom: 0 !important;
-    }
-
-    /* फुटरच्या वरील अनावश्यक गॅप काढण्यासाठी */
-    footer {
-        margin-top: 0 !important;
-    }   
-#feedbackTab .nav-link {
-    color: var(--title-color);
-    background-color: #fff;
-}
-#feedbackTab .nav-link.active {
-    background-color: #494C3B !important; /* फुटरचा रंग */
-    color: white !important;
-}
     </style>
 </head>
 <body>
-<button class="menu-toggle-btn" onclick="toggleSidebar()">
-    <i class="bi bi-list"></i> मेनू
-</button>
 
 <div class="header-section">
     <img src="logo.png" alt="Logo" onerror="this.src='https://via.placeholder.com/80';">
@@ -193,14 +74,12 @@ body {
      <a href="javascript:void(0)" onclick="showSection('rates-section', this)">वर्गणी दरपत्रक</a>
     <a href="javascript:void(0)" onclick="showSection('directors-section', this)">संचालक मंडळ</a>
     <a href="javascript:void(0)" onclick="showSection('contact-section', this)">संपर्क</a>
-    <a href="javascript:void(0)" onclick="showSection('feedback-section', this)">मान्यवरांच्या प्रतिक्रिया</a>
-    <a href="javascript:void(0)" onclick="showSection('staff-section', this)">कर्मचारी वृंद</a>
-    <a href="javascript:void(0)" style="background: #50604d; color: white;" data-bs-toggle="modal" data-bs-target="#memberModal">वाचक सभासद व्हा</a>
+    <a href="javascript:void(0)" style="background: #ce062b; color: white;" data-bs-toggle="modal" data-bs-target="#memberModal">वाचक सभासद व्हा</a>
 </div>
 
  <div id="home-section" class="content-section active">
-    <div class="container text-center pt-5 pb-0 mb-0">
-        <h3 class="fw-normal fs-6 mb-1" style="color: var(--title-color);">
+    <div class="container text-center py-4">
+        <h3 class="fw-normal fs-6 mb-3" style="color: var(--title-color);">
             सिन्नर सार्वजनिक वाचनालयात आपले स्वागत आहे!
         </h3>
         
@@ -211,33 +90,32 @@ body {
         <div id="dinvisheshBox" class="mt-3 p-2 rounded shadow-sm text-center"
      style="background:#fff8dc; border-left:3px solid #d9a441;">
     
-  <h6 class="fw-bold mt-1 mb-1" style="color:#9d4d27;font-size: 0.9rem;">
+  <h6 class="fw-bold mb-1" style="color:#9d4d27;">
     आजचा दिनविशेष (<span id="todayDate"></span>)
 </h6>
     
-   <div id="dinvisheshContent" style="font-size: 0.85rem; line-height: 1.3; color: #444;">
-    लोड होत आहे...
+    <div id="dinvisheshContent" style="font-size:0.9rem;">
+        लोड होत आहे...
     </div>
 
 </div>
-        <div class="mt-2 p-2 bg-white rounded shadow-sm mb-0 pb-0" style="border: 1px solid #eee;">
-    <!-- lead क्लास काढून font-size लहान केला आहे -->
-    <p style="color: var(--text-dark); font-weight: 400; font-size: 0.85rem; margin-bottom: 0; text-align: center;">
-        आपल्या समृद्ध ग्रंथसंपदेचा लाभ घेण्यासाठी मेनू वरील 'पुस्तक सूची' विभागात जावे.
+        <div class="mt-4 p-3 bg-white rounded shadow-sm">
+            <p class="lead" style="color: var(--text-dark); font-weight: 400;">
+                आपल्या समृद्ध ग्रंथसंपदेचा लाभ घेण्यासाठी वरील 'डिजिटल सूची' विभागात जावे.
             </p>
             
-            <div class="row g-2 mt-1 px-1">
+            <div class="row g-2 mt-4 px-3">
                 <div class="col-6">
-                    <div class="p-2 border rounded bg-white shadow-sm style="height: 100%;">
-                        <h6 class="fw-bold mb-1 small" style="color: var(--title-color);font-size: 0.75rem;">वाचनालय वेळ</h6>
-                        <p class="small mb-0" style="color: var(--text-dark);font-size: 0.7rem;">स.१०.०० ते सायं ७:३०</p>
-                        <p class="small mb-0" style="color: var(--text-dark);font-size: 0.7rem;">बुधवार सुटी</p>
+                    <div class="p-2 border rounded bg-white shadow-sm">
+                        <h6 class="fw-bold mb-1 small" style="color: var(--title-color);">वाचनालय वेळ</h6>
+                        <p class="small mb-0" style="color: var(--text-dark);">सकाळी १०.०० ते सायं ७:३०</p>
+                        <p class="small mb-0" style="color: var(--text-dark);">बुधवार सुटी</p>
                     </div>
                 </div>
                 <div class="col-6">
-                    <div class="p-2 border rounded bg-white shadow-sm" style="height: 100%;">
-                <h6 class="fw-bold mb-1" style="color: var(--title-color); font-size: 0.75rem;">अभ्यासिका वेळ</h6>
-                <p class="mb-0" style="color: var(--text-dark); font-size: 0.7rem;">सकाळी ६ ते रात्री १०</p>
+                    <div class="p-2 border rounded bg-white shadow-sm">
+                        <h6 class="fw-bold mb-1 small" style="color: var(--title-color);">अभ्यासिका वेळ</h6>
+                        <p class="small mb-0" style="color: var(--text-dark);">सकाळी ६:०० ते रात्री १०:००</p>
                     </div>
                 </div>
             </div>
@@ -335,7 +213,7 @@ body {
 
     <div class="col">
         <div class="card shadow-sm border-0">
-            <img src="photo1.jpg" class="img-fluid rounded-top" सिन्नर सार्वजनिक वाचनालय ऐतिहासिक फोटो"
+            <img src="photo1.jpg" class="img-fluid rounded-top" alt="Photo 1"
             onclick="openImage(this)"
      style="cursor:pointer;">
             <p class="small mb-0 text-truncate" style="max-width: 150px; margin: 0 auto;">सुरुवातीच्या काळातील वाचनालयाची भाडेतत्वावरील इमारत </p>
@@ -487,25 +365,7 @@ body {
                 </tbody>
             </table>
         </div>
-        <!-- नवीन जोडलेली नियमावली -->
-        <div class="mt-4 p-3 rounded" style="background: #fdfaf4; border-left: 5px solid #d9a441;">
-            <h5 class="fw-bold mb-3" style="color: var(--title-color); font-size: 1.1rem;">
-                वाचनालयाचे नियम व अटी
-            </h5>
-            <ul style="font-size: 0.85rem; line-height: 1.8; color: #333; padding-left: 20px;">
-	<li>सिन्नर शहर आणि परिसरातील रहिवाशांना वाचनालयाचे वाचक सभासद होता येईल. </li>
-                <li>पुस्तके घरी नेण्यासाठी विहित नमुन्यातील सभासद अर्ज भरणे आवश्यक आहे.</li>
-	<li>सभासदांनी आपली वर्गणी महिन्याच्या ३० तारखे पर्यंत भरणे आवश्यक आहे.</li>
-                <li>दिलेल्या मुदतीत म्हणजे १५ दिवसात पुस्तके परत करणे अनिवार्य आहे, अन्यथा विलंब शुल्क आकारले जाईल.</li>
-                <li>पुस्तकाची हाताळणी काळजीपूर्वक करावी; नुकसान झाल्यास नुकसान भरपाई घेतली जाईल.</li>
-	<li>सभासदाने आपली वर्गणी सलग तीन महिने थकविल्यास वा पुस्तक वारंवार आठवण (फोन, sms वगैरे द्वारे) करुनही परत न केल्यास,
-	अथवा हरवलेले पुस्तक दुर्मिळ असेल व त्याचे पुनर्मुद्रण झालेले नसल्यास कोणतेही कारण न देता सभासदत्व रदृ करण्याचा अधिकार कार्यकारणीला आहे.</li>
-	<li>मुख्य शाखेमध्ये वाचकांना पुस्तकांपर्यंत मुक्त प्रवेश आहे. वाचक हवे असलेले पुस्तक त्या त्या विभागात ते स्वत: शोधू शकतात. 
-	तसेच संगणकीय प्रणाली नुसार किंवा  उपलब्ध याद्या पाहून पुस्तक शोध घेता येतो. तरीही पुस्तक न मिळाल्यास कर्मचा-यांची सहाय्यता घेउ शकतात वा ग्रंथपालाला सांगू शकतात..</li>
-                <li>सभासदत्व रद्द करताना ठेव पावती (Receipt) सादर करणे आवश्यक आहे.</li>
-	<li>वाचनालय हे सरस्वतीचे मंदिर आहे. वाचनामुळे आपण सुसंस्कृत बनतो आणि म्हणूनच वाचकांनी पुस्तकांची काळजी घेणे आवश्यक आहे.</li>
-            </ul>
-        </div>
+        
         <div class="mt-3">
             <p class="fw-normal fs-6 mb-3" style="color: #333;">अधिक माहितीसाठी वाचनालयाच्या कार्यालयात संपर्क साधावा .</p>
         </div>
@@ -536,18 +396,18 @@ body {
         <p class="mb-2 text-dark fw-bold" style="font-size: 0.85rem; letter-spacing: 1px; opacity: 0.8;">संपर्क व पत्ता</p>
         
        <div class="contact-info">
-            <h4 class="fw-bold mb-2" style="color: var(--title-color); font-size: 1.6rem; line-height: 1.1;margin-bottom: 5px;">
+            <h4 class="fw-bold mb-2" style="color: var(--title-color); font-size: 1.6rem; line-height: 1.3;">
                 सिन्नर सार्वजनिक वाचनालय
             </h4>
-    <p class="mb-1 text-dark" style="font-size: 1.25rem; font-weight: 600; margin-bottom: 2px; line-height: 1.2;">राजा फत्तेसिंग मार्ग,</p>
-    <p class="mb-1 text-dark" style="font-size: 1.25rem; font-weight: 600;margin-bottom: 2px; line-height: 1.2;">छ.शिवाजी महाराज चौक,</p>
-    <p class="mb-1 text-dark" style="font-size: 1.25rem; font-weight: 600;margin-bottom: 2px; line-height: 1.2;">सिन्नर (जि. नाशिक) पिन - ४२२१०३</p>
-    <p class="text-dark" style="font-size: 1.1rem; margin-top: 5px;">
+    <p class="mb-1 text-dark" style="font-size: 1.25rem; font-weight: 600;">राजा फत्तेसिंग मार्ग,</p>
+    <p class="mb-1 text-dark" style="font-size: 1.25rem; font-weight: 600;">छ.शिवाजी महाराज चौक,</p>
+    <p class="mb-1 text-dark" style="font-size: 1.25rem; font-weight: 600;">सिन्नर (जि. नाशिक) पिन - ४२२१०३</p>
+    <p class="text-dark" style="font-size: 1.1rem; margin-top: 10px;">
         <strong>फोन:</strong> ९३७०२ ८३३४६ | <strong>ईमेल:</strong>
     </p>
 </div>
 
-        <div class="ratio ratio-16x9 border rounded shadow-sm overflow-hidden mb-2">
+        <div class="ratio ratio-16x9 border rounded shadow-sm overflow-hidden mb-3">
             <iframe 
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3753.948270503023!2d73.99180777508933!3d19.800072081561022!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd3badbabf181e7%3A0x958421f21c939d76!2sSarvajanik%20Vachanalaya!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
                 style="border:0;" 
@@ -565,7 +425,7 @@ body {
                style="border-radius: 20px;">
                 <i class="bi bi-geo-alt-fill"></i> गूगल मॅपवर दिशा पहा
             </a>
-                <div class="mt-2 p-2 border-top">
+                <div class="mt-4 p-3 border-top">
     
     <a href="https://www.instagram.com/sinnar_sarvajnik_vachnalay?igsh=aDE0MjBlNGcxZW10" target="_blank" class="text-decoration-none" style="color: #E1306C;">
         <div class="d-inline-flex align-items-center bg-white border p-2 px-3 rounded-pill shadow-sm">
@@ -576,8 +436,8 @@ body {
        </div>
     </a>
         
-      <div class="mt-2 p-2 border rounded bg-white shadow-sm">
-    <h6 class="fw-bold mb-2 text-center" style="color: var(--title-color);">तुमची प्रतिक्रिया / सूचना नोंदवा</h6>
+      <div class="mt-4 p-3 border rounded bg-white shadow-sm">
+    <h6 class="fw-bold mb-3 text-center" style="color: var(--title-color);">तुमची प्रतिक्रिया / सूचना नोंदवा</h6>
     
     <div class="ratio shadow-sm" style="--bs-aspect-ratio: 150%; overflow: hidden; border-radius: 10px;">
         <iframe 
@@ -601,89 +461,8 @@ body {
     </div>
 </div>
     </div>
-<div id="feedback-section" class="content-section container" style="display:none;">
-    <div class="card p-4 border-0 shadow-sm" style="background-color: #fdfaf4;">
-        <h4 class="fw-bold text-center mb-4" style="color: var(--title-color);">मान्यवरांच्या प्रतिक्रिया</h4>
-        
-        <!-- इथे प्रतिक्रिया लोड होतील -->
-        <div id="feedback-container">
-            <p class="text-center">माहिती लोड होत आहे...</p>
-        </div>
 
-        <!-- Pagination बटणे -->
-        <div id="pagination-controls" class="d-flex justify-content-center mt-4"></div>
-    </div>
-</div>
-</div><div id="staff-section" class="content-section container">
-    <div class="card p-4 border-0 shadow-sm" style="background-color: #fdfaf4;">
-        <h4 class="fw-bold text-center mb-4" style="color: var(--title-color);">कर्मचारी वृंद</h4>
-        
-        <div class="row row-cols-2 row-cols-md-4 g-4 text-center">
-            
-            <!-- कर्मचारी १: छाया पिले -->
-            <div class="col">
-                <div class="card h-100 border-0 shadow-sm p-2" style="background: #ffffff;">
-                    <img src="staff1.jpg" alt="छाया पिले" class="card-img-top rounded-3 border" 
-    	 style="aspect-ratio: 2/3; height: 120px; width: auto; object-fit: cover; margin: 0 auto; display: block; cursor: pointer;"
-    	 onclick="openImage(this)">
-                    <div class="card-body p-2 mt-2">
-                        <h6 class="fw-bold mb-1" style="color: var(--title-color); font-size: 0.9rem;">छाया पिले</h6>
-                        <div class="py-1 px-2 rounded" style="background-color: #494C3B; color: #ffffff; font-size: 0.7rem;">
-                            ग्रंथपाल
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- कर्मचारी २: विकास ऊकाडे -->
-            <div class="col">
-                <div class="card h-100 border-0 shadow-sm p-2" style="background: #ffffff;">
-                    <img src="staff1.jpg" alt="छाया पिले" class="card-img-top rounded-3 border" 
-    	 style="aspect-ratio: 2/3; height: 120px; width: auto; object-fit: cover; margin: 0 auto; display: block; cursor: pointer;"
-    	 onclick="openImage(this)">
-                    <div class="card-body p-2 mt-2">
-                        <h6 class="fw-bold mb-1" style="color: var(--title-color); font-size: 0.9rem;">छाया पिले</h6>
-                        <div class="py-1 px-2 rounded" style="background-color: #494C3B; color: #ffffff; font-size: 0.7rem;">
-                            ग्रंथपाल
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- कर्मचारी ३: कविता काळे -->
-          <div class="col">
-                <div class="card h-100 border-0 shadow-sm p-2" style="background: #ffffff;">
-                    <img src="staff1.jpg" alt="छाया पिले" class="card-img-top rounded-3 border" 
-    	 style="aspect-ratio: 2/3; height: 120px; width: auto; object-fit: cover; margin: 0 auto; display: block; cursor: pointer;"
-    	 onclick="openImage(this)">
-                    <div class="card-body p-2 mt-2">
-                        <h6 class="fw-bold mb-1" style="color: var(--title-color); font-size: 0.9rem;">छाया पिले</h6>
-                        <div class="py-1 px-2 rounded" style="background-color: #494C3B; color: #ffffff; font-size: 0.7rem;">
-                            ग्रंथपाल
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- कर्मचारी ४: सचिन पांगारकर -->
-            <div class="col">
-                <div class="card h-100 border-0 shadow-sm p-2" style="background: #ffffff;">
-                    <img src="staff1.jpg" alt="छाया पिले" class="card-img-top rounded-3 border" 
-    	 style="aspect-ratio: 2/3; height: 120px; width: auto; object-fit: cover; margin: 0 auto; display: block; cursor: pointer;"
-    	 onclick="openImage(this)">
-                    <div class="card-body p-2 mt-2">
-                        <h6 class="fw-bold mb-1" style="color: var(--title-color); font-size: 0.9rem;">छाया पिले</h6>
-                        <div class="py-1 px-2 rounded" style="background-color: #494C3B; color: #ffffff; font-size: 0.7rem;">
-                            ग्रंथपाल
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-</div><div class="modal fade" id="memberModal" tabindex="-1">
+<div class="modal fade" id="memberModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header" style="background: var(--title-color); color: white;">
@@ -692,9 +471,6 @@ body {
         </div>
         <div class="modal-body">
             <form id="membershipForm">
-                 <p class="form-note">
-            ⚠️ तुमची माहिती केवळ सभासद नोंदणीसाठी वापरली जाईल.
-        </p>
     <div class="row g-2">
         <div class="col-12"><label class="form-label small">पूर्ण नाव <span class="mandatory">*</span></label><input type="text" id="m_name" class="form-control form-control-sm" required placeholder="आडनाव नाव वडिलांचे नाव"></div>
         <div class="col-md-6"><label class="form-label small">मोबाईल <span class="mandatory">*</span></label><input type="tel" id="m_mobile" class="form-control form-control-sm" required pattern="[0-9]{10}"></div>
@@ -740,20 +516,20 @@ body {
     z-index: 9999;">
     पुन्हा back दाबा exit साठी
 </div>
-</div> <!-- तुमचा मजकूर इथे संपतो -->
-
-<footer style="background-color: #494C3B; color: white; text-align: center; padding: 10px 0; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.1);">
+<footer style="background-color: #494C3B; color: white; text-align: center; padding: 25px 0; margin-top: 0px; border-top: 1px solid rgba(255,255,255,0.1);">
     <div class="container">
-        <p style="margin-bottom: 5px; font-weight: normal; font-size: 0.9rem;">© 2026 सिन्नर सार्वजनिक वाचनालय</p>
-        
-        <!-- तुम्ही दिलेला नवीन डिस्क्लेमर मजकूर -->
-        <p style="margin-bottom: 05px; font-size: 0.75rem; opacity: 0.65; padding: 0 20px; line-height: 1.5; max-width: 900px; margin-left: auto; margin-right: auto;">
-             या संकेतस्थळावरील मजकूर, फोटो व इतर सामग्री यांचे सर्व हक्क राखीव.
-        </p>
+        <p style="margin-bottom: 5px; font-weight: normal; font-size: 0.9rem;">© सिन्नर सार्वजनिक वाचनालय</p>
+        <p style="margin-bottom: 15px; font-size: 0.8rem; opacity: 0.7;">वेबसाइट डिझाईन व सूचीकरण: जितेंद्र जगताप</p>
 
-        <p style="margin-bottom: 05px; font-size: 0.9rem; opacity: 0.8;">वेबसाइट डिझाईन व सूचीकरण: जितेंद्र जगताप</p>
-
-      
+        <div style="margin-top: 10px; background: rgba(255,255,255,0.05); d-inline-block; padding: 10px; border-radius: 8px;">
+            <div id="sfc1a5b8dydj9fxf8nmcan327ytla6yu5cf"></div>
+            <script type="text/javascript" src="https://counter1.optistats.ovh/private/counter.js?c=1a5b8dydj9fxf8nmcan327ytla6yu5cf&down=async" async></script>
+            <noscript>
+                <a href="https://www.freecounterstat.com" title="website counter">
+                    <img src="https://counter1.optistats.ovh/private/freecounterstat.php?c=1a5b8dydj9fxf8nmcan327ytla6yu5cf" border="0" title="website counter" alt="website counter">
+                </a>
+            </noscript>
+        </div>
     </div>
 </footer>
 
@@ -848,13 +624,7 @@ function setupFilters() {
 
 /* ===================== FILTER ===================== */
 function applyFilters() {
-  // सर्च सुरू झाल्यावर इतर सर्व विभाग लपवण्यासाठी (खात्री करण्यासाठी)
-    if (document.getElementById('portal-section').classList.contains('active')) {
-        document.getElementById('feedback-section').classList.remove('active');
-    }
-    
     const s = document.getElementById('searchInput').value.toLowerCase();
-	const s = document.getElementById('searchInput').value.toLowerCase();
     const c = document.getElementById('categoryFilter').value;
 
     const isNumber = /^\d+$/.test(s);
@@ -1110,133 +880,7 @@ window.addEventListener("beforeinstallprompt", (e) => {
         deferredPrompt = null;
     };
 });
-/* ===================== SIDEBAR FUNCTIONS ===================== */
-/* ===================== SIDEBAR FUNCTIONS ===================== */
-function toggleSidebar() {
-    var nav = document.getElementById("mainNav");
-    nav.classList.toggle("active-sidebar");
-}
-
-// मेनुच्या बाहेर क्लिक केल्यावर तो बंद होण्यासाठी खालील कोड वापरा
-document.addEventListener('click', function(event) {
-    const nav = document.getElementById('mainNav');
-    const menuBtn = document.querySelector('.menu-toggle-btn');
-    if (!nav.contains(event.target) && !menuBtn.contains(event.target)) {
-        nav.classList.remove('active-sidebar');
-    }
-});
-
-// कोणत्याही लिंकवर क्लिक केल्यावर साईडबार आपोआप बंद व्हावा
-document.querySelectorAll('.main-nav a').forEach(link => {
-    link.addEventListener('click', () => {
-        const nav = document.getElementById('mainNav');
-        if (nav) {
-            nav.classList.remove('active-sidebar');
-        }
-    });
-});
-
-/* ===================== FEEDBACK SYSTEM ===================== */
-const sheetId = '1OOOhj0lJ2VbG_N5kqV5_Iq98IXwq12Tv1s_jgcCicbo';
-const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
-
-let allData = [];
-const itemsPerPage = 5;
-let feedbackCurrentPage = 1;
-
-async function fetchFeedbacks() {
-    try {
-        const response = await fetch(base);
-        const data = await response.text();
-        const json = JSON.parse(data.substr(47).slice(0, -2));
-        
-        allData = json.table.rows.map(row => ({
-            srNo: row.c[0]?.v,
-            name: row.c[1]?.v,
-            designation: row.c[2]?.v,
-            date: row.c[3]?.v,
-            content: row.c[4]?.v,
-            photo: row.c[5]?.v
-        }));
-
-        displayFeedbacks(1);
-        setupPagination();
-    } catch (error) {
-        const container = document.getElementById('feedback-container');
-        if(container) container.innerHTML = "माहिती लोड करताना त्रुटी आली.";
-    }
-}
-
-function displayFeedbacks(page) {
-    feedbackCurrentPage = page;
-    const start = (page - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    const paginatedItems = allData.slice(start, end);
-
-    let html = '';
-    paginatedItems.forEach((item, index) => {
-        // जर तुमच्या फाईल्सचे नाव letter1.jpg, letter2.jpg असे असेल तर:
-        // 'index + 1 + start' मुळे प्रत्येक प्रतिक्रियेला योग्य नंबर मिळेल
-        const photoName = `letter${index + 1 + start}.jpg`; 
-
-        html += `
-            <div class="col-12 mb-4">
-                <div class="row align-items-start g-3">
-                    <div class="col-12 col-md-4 text-center">
-                        <!-- फोटोवर क्लिक केल्यावर तो मोठा दिसावा यासाठी a tag -->
-                        <a href="images/${photoName}" target="_blank">
-                            <img src="images/${photoName}" class="img-fluid rounded border shadow-sm" 
-                                 alt="प्रतिक्रिया पत्र"
-                                 style="max-height: 250px; width: 100%; object-fit: contain; background: #f8f9fa;">
-                        </a>
-                        <p class="small text-muted mt-1">पत्राची मूळ प्रत पाहण्यासाठी फोटोवर क्लिक करा</p>
-                    </div>
-                    <div class="col-12 col-md-8">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div class="mb-2">
-                                <h5 class="fw-bold mb-0" style="color: #b31d1d;">${item.name}</h5>
-                                <span class="text-secondary">${item.designation}</span>
-                            </div>
-                            <small class="text-muted">${item.date}</small>
-                        </div>
-                        <hr>
-                        <p class="mt-2 mb-0" style="text-align: justify; line-height: 1.6; font-size: 1.1rem; color: #333;">
-                            "${item.content}"
-                        </p>
-                    </div>
-                </div>
-                <hr class="mt-4" style="border-top: 2px solid #eee;">
-            </div>`;
-    });
-    document.getElementById('feedback-container').innerHTML = html;
-}
-
-function setupPagination() {
-    const pageCount = Math.ceil(allData.length / itemsPerPage);
-    let navHtml = '<ul class="nav nav-pills">';
-    for (let i = 1; i <= pageCount; i++) {
-        navHtml += `<li class="nav-item">
-            <button class="nav-link btn-sm me-1 border ${i === feedbackCurrentPage ? 'active' : ''}" 
-                    onclick="displayFeedbacks(${i}); updatePaginationUI(${i})">${i}</button>
-        </li>`;
-    }
-    navHtml += '</ul>';
-    const controls = document.getElementById('pagination-controls');
-    if(controls) controls.innerHTML = navHtml;
-}
-
-function updatePaginationUI(page) {
-    const buttons = document.querySelectorAll('#pagination-controls button');
-    buttons.forEach((btn, index) => {
-        if (index + 1 === page) btn.classList.add('active');
-        else btn.classList.remove('active');
-    });
-}
-
-// फिडबॅक लोड करणे
-fetchFeedbacks();
-</script>    
-<div class="modal fade" id="imageModal" tabindex="-1">
+</script>    <div class="modal fade" id="imageModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content bg-dark border-0">
      <div class="modal-body text-center p-2 position-relative">
