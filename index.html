@@ -1210,27 +1210,31 @@ async function loadFeedback() {
         const resp = await fetch(FEEDBACK_SHEET_URL);
         const csv = await resp.text();
 
+        // रिकाम्या ओळी काढून टाकणे
         const rows = csv.split(/\r?\n/).filter(r => r.trim() !== "");
 
         let feedbacks = [];
 
         for (let i = 1; i < rows.length; i++) {
+            // ही पद्धत मजकुरातील स्वल्पविराम (Comma) व्यवस्थित हाताळते
             const cols = rows[i]
                 .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
                 .map(v => v.replace(/^"|"$/g, '').trim());
 
-            if (cols.length < 5) continue;
+            // अट थोडी शिथिल केली आहे जेणेकरून कमी माहिती असलेली ओळ सुद्धा दिसेल
+            if (cols.length < 2) continue; 
 
             feedbacks.push({
-                name: cols[1] || "",
+                name: cols[1] || "नाव उपलब्ध नाही",
                 post: cols[2] || "",
                 date: cols[3] || "",
                 feedback: cols[4] || "",
-                image: cols[5] || ""
+                image: cols[5] || "" // जर फोटो नसेल तर रिकामे राहील
             });
         }
 
-        console.log("Feedback loaded:", feedbacks); // 🔍 debug
+        // ब्राउझर कन्सोलमध्ये तपासा किती प्रतिक्रिया लोड झाल्या आहेत
+        console.log("एकूण लोड झालेल्या प्रतिक्रिया:", feedbacks.length);
 
         if (feedbacks.length === 0) {
             document.getElementById('feedbackTabContent').innerHTML =
@@ -1238,6 +1242,15 @@ async function loadFeedback() {
             return;
         }
 
+        // प्रतिक्रिया रेंडर करण्यासाठी फंक्शन कॉल करा
+        renderFeedback(feedbacks);
+
+    } catch (e) {
+        console.error("डेटा लोड करताना चूक झाली:", e);
+        document.getElementById('feedbackTabContent').innerHTML =
+            "<p class='text-center text-danger'>तांत्रिक अडचणीमुळे माहिती दाखवता येत नाहीये.</p>";
+    }
+}
         renderFeedback(feedbacks);
 
     } catch (e) {
