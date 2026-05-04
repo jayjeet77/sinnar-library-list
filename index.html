@@ -602,19 +602,24 @@ body {
 </div>
     </div>
 <!-- मान्यवरांच्या प्रतिक्रिया विभाग -->
-<div id="feedback-section" class="content-section container">
-    <div class="card p-3 border-0 shadow-sm" style="background-color: #fdfaf4;">
+<div id="feedback-section" class="content-section container pt-0">
+    <div class="card p-2 border-0 shadow-sm" style="background-color: #fdfaf4; border-radius: 15px;">
+        
+        <!-- १. शीर्षक (वरची जागा कमी केली आहे) -->
         <h4 class="fw-bold text-center mt-1 mb-2" style="color: var(--title-color);">
             मान्यवरांच्या प्रतिक्रिया
         </h4>
 
-        <!-- Pagination Tabs -->
-        <ul id="feedbackTab" class="nav nav-pills justify-content-center mb-3"></ul>
-
-        <!-- Feedback Content -->
+        <!-- २. Feedback Content (मजकूर आता आधी दिसेल) -->
         <div id="feedbackTabContent" class="tab-content">
             <p class="text-center">माहिती लोड होत आहे...</p>
         </div>
+
+        <!-- ३. Pagination Tabs (पेज नंबर आता मजकुराच्या खाली येतील) -->
+        <ul id="feedbackTab" class="nav nav-pills justify-content-center mt-3 mb-1">
+            <!-- इथे तुमचे १, २, ३ नंबर दिसतील -->
+        </ul>
+
     </div>
 </div>
 
