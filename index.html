@@ -793,14 +793,17 @@ function renderFeedback(data) {
                         </div>
                         <!-- उजवी बाजू: मजकूर -->
                         <div class="col-8">
-                            <p class="mb-2" style="font-size: 1.0 rem; line-height: 1.6; text-align: justify; color: #333;">
-                                "${f.feedback}"
-                            </p>
-                            <div class="mt-2 pt-2 border-top">
-                                <div class="fw-bold text-dark" style="font-size: 1.1rem;">${f.name}</div>
-                                <div class="text-muted" style="font-size: 0.85rem;">${f.post}</div>
-                                <div class="text-end text-secondary mt-1" style="font-size: 0.85rem;">दि. ${f.date}</div>
-                            </div>
+                <!-- फीडबॅक मजकूर: तुमच्या थीमचा मुख्य गडद रंग वापरला आहे -->
+                <p class="mb-2" style="font-size: 1.1rem; line-height: 1.6; text-align: justify; color: var(--text-dark);">
+                    "${f.feedback}"
+                </p>
+                <div class="mt-2 pt-2 border-top" style="border-color: var(--accent-color) !important;">
+                    <!-- नाव: थीमचा टाइटल कलर (ठळक) -->
+                    <div class="fw-bold" style="font-size: 1.1rem; color: var(--title-color);">${f.name}</div>
+                    <!-- पद: थोडा फिकट तपकिरी रंग -->
+                    <div style="font-size: 0.85rem; color: #9d4d27cc;">${f.post}</div>
+                    <!-- तारीख: उजवीकडे, थीमच्या अ‍ॅक्सेंट रंगात -->
+                    <div class="text-end mt-1" style="font-size: 0.85rem; color: var(--accent-color);">दि. ${f.date}</div>                            </div>
                         </div>
                     </div>
                 </div>
