@@ -844,7 +844,8 @@ async function loadFeedback() {
                 image: cols[5] || ""               // Column F
             });
         }
-
+console.log("Full Data:", feedbacks); 
+        console.log("Total Items:", feedbacks.length);
         const container = document.getElementById('feedbackTabContent');
         if (feedbacks.length > 0) {
             renderFeedback(feedbacks);
@@ -1228,7 +1229,7 @@ async function loadFeedback() {
                 .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
                 .map(v => v.replace(/^"|"$/g, '').trim());
 
-            if (cols.length < 5) continue;
+            if (cols.length < 2) continue;
 
             feedbacks.push({
                 name: cols[1] || "",
