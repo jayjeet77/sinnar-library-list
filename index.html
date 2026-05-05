@@ -158,7 +158,15 @@ body {
     .row.g-2.mt-1 {
         margin-bottom: 0 !important;
     }
-
+.sidebar a.active {
+  background-color: #f39c12; /* सोनेरी/नारंगी रंग */
+  color: white;
+  font-weight: bold;
+}
+		.sidebar a {
+  padding: 15px 20px; /* १५ पिक्सेल वर आणि खाली अंतर */
+  line-height: 1.6;
+}
     /* फुटरच्या वरील अनावश्यक गॅप काढण्यासाठी */
     footer {
         margin-top: 0 !important;
@@ -1278,6 +1286,25 @@ function toggleSidebar() {
 
     nav.classList.toggle("active-sidebar");
 }
+	window.addEventListener('scroll', () => {
+  let current = "";
+  const sections = document.querySelectorAll("section");
+  const navLinks = document.querySelectorAll(".sidebar a");
+
+  sections.forEach((section) => {
+    const sectionTop = section.offsetTop;
+    if (pageYOffset >= sectionTop - 60) {
+      current = section.getAttribute("id");
+    }
+  });
+
+  navLinks.forEach((link) => {
+    link.classList.remove("active");
+    if (link.getAttribute("href").includes(current)) {
+      link.classList.add("active");
+    }
+  });
+});
 </script>    
 <div class="modal fade" id="imageModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg">
