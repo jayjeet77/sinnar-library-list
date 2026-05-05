@@ -67,23 +67,41 @@ body {
         padding-left: 140px;
     }
 /* मेनू मधील ओळींचे अंतर कमी करण्यासाठी */
-.main-nav a {
-    color: #f6f2e9;
-    text-decoration: none;
-    padding: 6px 15px !important; /* उभे अंतर कमी केले */
-    margin: 2px 0 !important;
-    border-radius: 8px;
-    font-size: 0.9rem;
+/* १. सर्व ठिकाणी टेक्स्ट पांढरा (White) दिसण्यासाठी */
+.main-nav a, 
+.main-nav a:link, 
+.main-nav a:visited {
+    color: #f6f2e9 !important; /* क्रीम/पांढरा रंग */
+    text-decoration: none !important;
     display: block;
+    padding: 8px 15px !important; /* डेस्कटॉपसाठी सुटसुटीत पॅडिंग */
+    margin: 4px 0 !important;
     line-height: 1.2 !important;
     transition: 0.3s;
+    font-size: 0.95rem;
 }
+
+/* २. जेव्हा बटणावर माऊस नेला जाईल (Desktop Hover) */
+.main-nav a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #f39c12 !important; /* माऊस नेल्यावर नारंगी रंग */
 }
-/* क्लिक केल्यावर हायलाईट होण्यासाठी हा क्लास */
+
+/* ३. ॲक्टिव्ह (Highlight) बटण फिक्स करण्यासाठी */
+.main-nav a.active-link, 
 .main-nav a.active {
-    background-color: #f39c12 !important; /* नारंगी रंग */
-    color: white !important;
+    background-color: #f39c12 !important; 
+    color: #ffffff !important;
     font-weight: bold !important;
+    border-left: 4px solid #ffffff;
+}
+
+/* ४. मोबाईलसाठी खास सुधारणा (Mobile Specific) */
+@media (max-width: 768px) {
+    .main-nav a {
+        padding: 6px 12px !important; /* मोबाईलवर थोडी कमी जागा */
+        font-size: 0.85rem;
+    }
 }
 
 /* साईडबार सुरुवातीला लपवण्यासाठी */
