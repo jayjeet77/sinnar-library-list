@@ -816,10 +816,10 @@ function renderFeedback(data) {
                     <div class="row g-3 align-items-start">
                         <!-- डावी बाजू: इमेज -->
                         <div class="col-4">
-                            <img src="${imageSrc}" 
+                            <img src="${imageSrc}" class="feedback-img" 
                                  class="img-fluid rounded shadow-sm border" 
                                  style="aspect-ratio: 1/1; object-fit: cover; width: 100%; cursor: pointer;"
-                                 onclick="openImage(this)"
+                                 
                                  onerror="this.src='https://via.placeholder.com/150?text=Letter';">
                         </div>
                         <!-- उजवी बाजू: मजकूर -->
@@ -891,6 +891,11 @@ console.log("Full Data:", feedbacks);
         document.getElementById('feedbackTabContent').innerHTML = "<p class='text-center text-danger'>डेटा लोड करताना त्रुटी आली.</p>";
     }
 }
+document.addEventListener("click", function(e) {
+    if (e.target.classList.contains("feedback-img")) {
+        openImage(e.target);
+    }
+});
 /* ===================== FETCH BOOKS ===================== */
 async function fetchBooks() {
     try {
