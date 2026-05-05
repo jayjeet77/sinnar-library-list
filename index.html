@@ -62,10 +62,17 @@ body {
     body {
         padding-left: 140px;
     }
-    .main-nav a {
-        font-size: 0.75rem;
-        padding: 8px;
-    }
+   .main-nav a {
+    color: #f6f2e9;
+    text-decoration: none;
+    padding: 5px 15px !important; /* ओळींमधील उभे अंतर कमी केले */
+    margin: 2px 0 !important;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: block;
+    line-height: 1.2 !important; /* टेक्स्टची उंची कमी केली */
+    transition: 0.3s;
+}
 }
 
 .main-nav a {
@@ -163,9 +170,11 @@ body {
   color: white;
   font-weight: bold;
 }
-		.sidebar a {
-  padding: 15px 20px; /* १५ पिक्सेल वर आणि खाली अंतर */
-  line-height: 1.6;
+main-nav a.active-link {
+    background-color: #f39c12 !important; 
+    color: #fff !important;
+    font-weight: bold;
+    border-left: 4px solid #fff;
 }
     /* फुटरच्या वरील अनावश्यक गॅप काढण्यासाठी */
     footer {
@@ -1277,33 +1286,32 @@ async function loadFeedback() {
     }
 }
 function toggleSidebar() {
-    var nav = document.getElementById("mainNav");
-
-    if (!nav) {
-        console.error("mainNav not found");
-        return;
-    }
-
-    nav.classList.toggle("active-sidebar");
+    const sidebar = document.querySelector('.main-nav');
+    sidebar.classList.toggle('active-sidebar');
 }
-	window.addEventListener('scroll', () => {
-  let current = "";
-  const sections = document.querySelectorAll("section");
-  const navLinks = document.querySelectorAll(".sidebar a");
 
-  sections.forEach((section) => {
-    const sectionTop = section.offsetTop;
-    if (pageYOffset >= sectionTop - 60) {
-      current = section.getAttribute("id");
-    }
-  });
+// स्क्रोल करताना मेनू हायलाईट करण्यासाठी नवीन कोड
+window.addEventListener('scroll', () => {
+    let current = "";
+    // तुमच्या फाईलमधील सर्व विभाग शोधा
+    const sections = document.querySelectorAll(".content-section");
+    const navLinks = document.querySelectorAll(".main-nav a");
 
-  navLinks.forEach((link) => {
-    link.classList.remove("active");
-    if (link.getAttribute("href").includes(current)) {
-      link.classList.add("active");
-    }
-  });
+    sections.forEach((section) => {
+        const sectionTop = section.offsetTop;
+        // स्क्रीनच्या वरून १०० पिक्सेल खाली आल्यावर सेक्शन बदलल्याचे समजेल
+        if (pageYOffset >= sectionTop - 100) {
+            current = section.getAttribute("id");
+        }
+    });
+
+    navLinks.forEach((link) => {
+        link.classList.remove("active-link");
+        // href लिंक आणि सेक्शन ID मॅच झाल्यास हायलाईट करा
+        if (link.getAttribute("href").includes(current) && current !== "") {
+            link.classList.add("active-link");
+        }
+    });
 });
 </script>    
 <div class="modal fade" id="imageModal" tabindex="-1">
