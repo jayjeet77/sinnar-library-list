@@ -62,27 +62,26 @@ body {
     body {
         padding-left: 140px;
     }
-   .main-nav a {
+/* मेनू मधील ओळींचे अंतर कमी करण्यासाठी */
+.main-nav a {
     color: #f6f2e9;
     text-decoration: none;
-    padding: 5px 15px !important; /* ओळींमधील उभे अंतर कमी केले */
+    padding: 6px 15px !important; /* उभे अंतर कमी केले */
     margin: 2px 0 !important;
     border-radius: 8px;
     font-size: 0.9rem;
     display: block;
-    line-height: 1.2 !important; /* टेक्स्टची उंची कमी केली */
+    line-height: 1.2 !important;
     transition: 0.3s;
 }
 }
-
-.main-nav a {
-    color: #f6f2e9;
-    text-decoration: none;
-    padding: 10px 15px;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    display: block; /* पूर्ण रुंदी घेईल */
+/* क्लिक केल्यावर हायलाईट होण्यासाठी हा क्लास */
+.main-nav a.active {
+    background-color: #f39c12 !important; /* नारंगी रंग */
+    color: white !important;
+    font-weight: bold !important;
 }
+
 /* साईडबार सुरुवातीला लपवण्यासाठी */
 .main-nav {
     transform: translateX(-100%); /* स्क्रीनच्या बाहेर नेले */
@@ -757,6 +756,7 @@ main-nav a.active-link {
 const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1zskDx0OIbMyzY5Sj_7GBS1iokrZY_5KnPn9jsW3dDNc/gviz/tq?tqx=out:csv';
 const DINVISHESH_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1TLkkdF6v006Wuq8N6hVLwOg4biA0GP7seF0Fo_sZp6b4Y_tVcVzPCSYIQn6QLzHVGdQ2Vem-Ho4F/pub?output=csv';
 const FEEDBACK_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs3dJSSeU4huVvlOPgYSn6KQgRozzNf2Du31eqmwBxoQgdtPv9j-KAmZN477WRtFLcKqnnyVFlmb-t/pub?output=csv";
+
 let allBooks = [];
 let filteredBooks = [];
 let currentPage = 1;
@@ -764,562 +764,240 @@ const pageSize = 50;
 
 /* ===================== INIT ===================== */
 window.onload = () => {
-    // १. सर्वात आधी तारीख दाखवा (तात्काळ)
     setTodayDate();
     
-    // २. इतर डेटा थोडा उशिराने लोड करा (वेबसाइट पटकन उघडण्यासाठी)
     setTimeout(() => {
         loadDinvishesh();
-        loadFeedback(); // प्रतिक्रिया फंक्शन एकदाच कॉल करा
+        loadFeedback();
     }, 400);
 
     setTimeout(() => {
-        fetchBooks(); // ४०,००० पुस्तकांचा मोठा डेटा शेवटी लोड करा
+        fetchBooks();
     }, 1000);
 
-    document.getElementById('searchInput')
-        .addEventListener('input', debounce(applyFilters, 300));
+    document.getElementById('searchInput').addEventListener('input', debounce(applyFilters, 300));
 
-    history.replaceState({ sectionId: "home-section" }, "", "");
+    // सुरुवातीला होम सेक्शन लोड करणे
+    history.replaceState({ section: 'home-section' }, "", "#home-section");
+    showSection('home-section', null, true);
 };
-function renderFeedback(data) {
-    const perPage = 8; // एका पानावर ८ प्रतिक्रिया
-    const container = document.getElementById('feedbackTabContent');
-    const pagination = document.getElementById('feedbackTab');
 
-    if (!container || !pagination) return;
-
-    container.innerHTML = '';
-    pagination.innerHTML = '';
-
-    let pageCount = Math.ceil(data.length / perPage);
-
-    for (let p = 0; p < pageCount; p++) {
-        let pageId = "fb_page_" + (p + 1);
-        let pageHTML = `<div class="tab-pane fade ${p === 0 ? 'show active' : ''}" id="${pageId}"><div class="row g-3">`;
-
-        let slice = data.slice(p * perPage, (p + 1) * perPage);
-
-        slice.forEach(f => {
-            // इमेज नाव रिकामे असल्यास किंवा चुकीचे असल्यास बॅकअप इमेज
-            let imageSrc = f.image ? `${f.image}.jpg` : 'https://via.placeholder.com/150?text=No+Image';
-
-            pageHTML += `
-            <div class="col-12 col-md-6">
-                <div class="p-3 rounded shadow-sm border bg-white h-100" style="border-radius: 15px !important;">
-                    <div class="row g-3 align-items-start">
-                        <!-- डावी बाजू: इमेज -->
-                        <div class="col-4">
-                            <img src="${imageSrc}" 
-                                 class="img-fluid rounded shadow-sm border" 
-                                 style="aspect-ratio: 1/1; object-fit: cover; width: 100%; cursor: pointer;"
-                                 onclick="openImage(this)"
-                                 onerror="this.src='https://via.placeholder.com/150?text=Letter';">
-                        </div>
-                        <!-- उजवी बाजू: मजकूर -->
-                        <div class="col-8">
-                <!-- फीडबॅक मजकूर: तुमच्या थीमचा मुख्य गडद रंग वापरला आहे -->
-                <p class="mb-2" style="font-size: 1.1rem; line-height: 1.6; text-align: justify; color: var(--text-dark);">
-                    "${f.feedback}"
-                </p>
-                <div class="mt-2 pt-2 border-top" style="border-color: var(--accent-color) !important;">
-                    <!-- नाव: थीमचा टाइटल कलर (ठळक) -->
-                    <div class="fw-bold" style="font-size: 1.1rem; color: var(--title-color);">${f.name}</div>
-                    <!-- पद: थोडा फिकट तपकिरी रंग -->
-                    <div style="font-size: 0.85rem; color: #9d4d27cc;">${f.post}</div>
-                    <!-- तारीख: उजवीकडे, थीमच्या अ‍ॅक्सेंट रंगात -->
-                    <div class="text-end mt-1" style="font-size: 0.85rem; color: var(--accent-color);">दि. ${f.date}</div>                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>`;
-        });
-
-        pageHTML += `</div></div>`;
-        container.innerHTML += pageHTML;
-
-        pagination.innerHTML += `
-        <li class="nav-item">
-            <button class="nav-link ${p === 0 ? 'active' : ''} btn-sm border m-1" 
-                    data-bs-toggle="tab" 
-                    data-bs-target="#${pageId}">
-                ${p + 1}
-            </button>
-        </li>`;
-    }
-}
-
-async function loadFeedback() {
-    try {
-        const resp = await fetch(FEEDBACK_SHEET_URL);
-        const csv = await resp.text();
-        const rows = csv.split(/\r?\n/).filter(r => r.trim() !== "");
-
-        let feedbacks = [];
-        for (let i = 1; i < rows.length; i++) {
-            const cols = rows[i]
-                .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
-                .map(v => v.replace(/^"|"$/g, '').trim());
-
-            // बदल: इथे अट ६ ऐवजी २ करा, जेणेकरून रिकामे रकाने असलेल्या ओळी पण दिसतील
-            if (cols.length < 2) continue; 
-
-            feedbacks.push({
-                name: cols[1] || "निनावी",         // Column B
-                post: cols[2] || "",               // Column C
-                date: cols[3] || "",               // Column D
-                feedback: cols[4] || "",           // Column E
-                image: cols[5] || ""               // Column F
-            });
-        }
-console.log("Full Data:", feedbacks); 
-        console.log("Total Items:", feedbacks.length);
-        const container = document.getElementById('feedbackTabContent');
-        if (feedbacks.length > 0) {
-            renderFeedback(feedbacks);
-        } else {
-            container.innerHTML = "<p class='text-center'>माहिती उपलब्ध नाही.</p>";
-        }
-    } catch (e) {
-        console.error("Error:", e);
-        document.getElementById('feedbackTabContent').innerHTML = "<p class='text-center text-danger'>डेटा लोड करताना त्रुटी आली.</p>";
-    }
-}
-/* ===================== FETCH BOOKS ===================== */
-async function fetchBooks() {
-    try {
-        const resp = await fetch(SHEET_URL);
-        const csv = await resp.text();
-
-        const rows = csv.split(/\r?\n/).slice(1);
-
-        allBooks = rows.map(r => {
-            const cols = r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
-                .map(v => v.replace(/^"|"$/g, '').trim());
-
-            return {
-                SNo: cols[0],
-                Class: cols[1],
-                Name: cols[2],
-                Author: cols[3] || '---',
-                Publisher: cols[4] || '---'
-            };
-        }).filter(b => b.Name);
-
-        setupFilters();
-        applyFilters();
-
-    } catch {
-        document.getElementById('searchCount').innerText = 'डेटा लोड होऊ शकला नाही.';
-    }
-}
-
-/* ===================== FILTER SETUP ===================== */
-function setupFilters() {
-    const sel = document.getElementById('categoryFilter');
-    const nav = document.getElementById('categoryNav');
-
-    const customOrder = [
-        'कादंबरी','इतिहास','कथा','कथासंग्रह','चरित्र',
-        'आत्मचरित्र','ललित','बालसाहित्य','कविता',
-        'नाटक','संदर्भ','राजकीय','शास्त्रीय','English','इतर'
-    ];
-
-    const sheetCats = [...new Set(allBooks.map(b => b.Class))].filter(Boolean);
-    let finalCats = [];
-
-    customOrder.forEach(cat => {
-        if (sheetCats.includes(cat)) finalCats.push(cat);
-    });
-
-    sheetCats.forEach(cat => {
-        if (!finalCats.includes(cat)) {
-            const idx = finalCats.indexOf('English');
-            finalCats.splice(idx !== -1 ? idx : finalCats.length, 0, cat);
-        }
-    });
-
-    finalCats.forEach(c => {
-        sel.appendChild(new Option(c, c));
-
-        const a = document.createElement('a');
-        a.href = "#";
-        a.innerText = c;
-        a.onclick = () => filterByCategory(c, a);
-        nav.appendChild(a);
-    });
-}
-
-/* ===================== FILTER ===================== */
-function applyFilters() {
-  // सर्च सुरू झाल्यावर इतर सर्व विभाग लपवण्यासाठी (खात्री करण्यासाठी)
-    if (document.getElementById('portal-section').classList.contains('active')) {
-        document.getElementById('feedback-section').classList.remove('active');
-    }
-    
-    const s = document.getElementById('searchInput').value.toLowerCase();
-	
-    const c = document.getElementById('categoryFilter').value;
-
-    const isNumber = /^\d+$/.test(s);
-
-    filteredBooks = allBooks.filter(b => {
-        if (isNumber) {
-            return parseInt(b.SNo) === parseInt(s) &&
-                (c === 'All' || b.Class === c);
-        }
-
-        return (
-            (b.Name.toLowerCase().includes(s) ||
-             b.Author.toLowerCase().includes(s) ||
-             b.Publisher.toLowerCase().includes(s)) &&
-            (c === 'All' || b.Class === c)
-        );
-    });
-
-    document.getElementById('searchCount').innerText =
-        `एकूण ${filteredBooks.length} पुस्तके सापडली`;
-
-    currentPage = 1;
-    render();
-}
-
-/* ===================== RENDER ===================== */
-function render() {
-    const list = document.getElementById('bookList');
-    list.innerHTML = '';
-
-    const items = filteredBooks.slice((currentPage - 1) * pageSize, currentPage * pageSize);
-
-    items.forEach(b => {
-        list.innerHTML += `
-        <div class="book-card">
-            <div class="sno-badge">${b.SNo}</div>
-            <div class="w-100">
-                <div class="d-flex justify-content-between">
-                    <h6 class="fw-bold">${b.Name}</h6>
-                    <span class="cat-tag">${b.Class}</span>
-                </div>
-                <p class="small mb-0 text-muted">लेखक: ${b.Author}</p>
-                <p class="small text-secondary">प्रकाशक: ${b.Publisher}</p>
-            </div>
-        </div>`;
-    });
-
-    const max = Math.ceil(filteredBooks.length / pageSize) || 1;
-    document.getElementById('pageIndicator').innerText = `${currentPage} / ${max}`;
-}
-
-/* ===================== PAGINATION ===================== */
-function changePage(v) {
-    const max = Math.ceil(filteredBooks.length / pageSize) || 1;
-
-    currentPage = Math.min(Math.max(currentPage + v, 1), max);
-    render();
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-/* ===================== CATEGORY ===================== */
-function filterByCategory(c, el) {
-    document.getElementById('categoryFilter').value = c;
-
-    document.querySelectorAll('.category-nav a')
-        .forEach(a => a.classList.remove('active'));
-
-    el.classList.add('active');
-    applyFilters();
-}
-
-
-/* ===================== SECTION NAV ===================== */
+/* ===================== SECTION NAV (HIGHLIGHTER FIX) ===================== */
 function showSection(id, el, skipPush = false) {
+    // १. सर्व विभाग लपवा
+    document.querySelectorAll('.content-section').forEach(s => {
+        s.classList.remove('active');
+        s.style.display = 'none';
+    });
 
-    document.querySelectorAll('.content-section')
-        .forEach(s => s.classList.remove('active'));
-
+    // २. निवडलेला विभाग दाखवा
     const target = document.getElementById(id);
-    if (target) target.classList.add('active');
+    if (target) {
+        target.classList.add('active');
+        target.style.display = 'block';
+    }
 
-    document.querySelectorAll('#mainNav a')
-        .forEach(a => a.classList.remove('active'));
+    // ३. मेनू हायलाईट अपडेट करा
+    document.querySelectorAll('#mainNav a').forEach(a => a.classList.remove('active-link', 'active'));
 
-    if (el) el.classList.add('active');
+    if (el) {
+        el.classList.add('active-link'); // क्लिक केलेल्या लिंकला हायलाईट करा
+    } else {
+        // जर बॅक बटन किंवा डायरेक्ट लोड झाले असेल, तर href मॅच करा
+        const autoLink = document.querySelector(`#mainNav a[onclick*="${id}"]`);
+        if (autoLink) autoLink.classList.add('active-link');
+    }
 
-    // ✅ safe push
     if (!skipPush) {
         history.pushState({ section: id, manual: true }, "", "#" + id);
     }
 
-    // portal animation
+    // मोबाईलवर साईडबार बंद करा
+    const nav = document.getElementById('mainNav');
+    if (nav) nav.classList.remove('active-sidebar');
+
+    // पोर्टल ॲनिमेशन
     if (id === 'portal-section') {
         setTimeout(() => {
-            const nav = document.getElementById('categoryNav');
-            if (nav) {
-                nav.scrollTo({ left: 60, behavior: 'smooth' });
-                setTimeout(() => nav.scrollTo({ left: 0, behavior: 'smooth' }), 500);
+            const cNav = document.getElementById('categoryNav');
+            if (cNav) {
+                cNav.scrollTo({ left: 60, behavior: 'smooth' });
+                setTimeout(() => cNav.scrollTo({ left: 0, behavior: 'smooth' }), 500);
             }
         }, 400);
     }
 }
 
+function toggleSidebar() {
+    const sidebar = document.getElementById('mainNav');
+    if (sidebar) sidebar.classList.toggle('active-sidebar');
+}
 
-/* ===================== BACK BUTTON ===================== */
-let lastBackPress = 0;
-
-window.addEventListener("popstate", function (event) {
-
-    if (!event.state) return;
-
-    if (event.state.manual) {
-        showSection(event.state.section, null, true);
-        return;
+/* ===================== FETCH & RENDER BOOKS ===================== */
+async function fetchBooks() {
+    try {
+        const resp = await fetch(SHEET_URL);
+        const csv = await resp.text();
+        const rows = csv.split(/\r?\n/).slice(1);
+        allBooks = rows.map(r => {
+            const cols = r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/^"|"$/g, '').trim());
+            return { SNo: cols[0], Class: cols[1], Name: cols[2], Author: cols[3] || '---', Publisher: cols[4] || '---' };
+        }).filter(b => b.Name);
+        setupFilters();
+        applyFilters();
+    } catch (e) {
+        document.getElementById('searchCount').innerText = 'डेटा लोड होऊ शकला नाही.';
     }
+}
 
-    const home = document.getElementById('home-section');
+function setupFilters() {
+    const sel = document.getElementById('categoryFilter');
+    const nav = document.getElementById('categoryNav');
+    if (!sel || !nav) return;
+    const customOrder = ['कादंबरी','इतिहास','कथा','कथासंग्रह','चरित्र','आत्मचरित्र','ललित','बालसाहित्य','कविता','नाटक','संदर्भ','राजकीय','शास्त्रीय','English','इतर'];
+    const sheetCats = [...new Set(allBooks.map(b => b.Class))].filter(Boolean);
+    let finalCats = [];
+    customOrder.forEach(cat => { if (sheetCats.includes(cat)) finalCats.push(cat); });
+    sheetCats.forEach(cat => { if (!finalCats.includes(cat)) finalCats.push(cat); });
 
-    if (!home.classList.contains('active')) {
-        showSection('home-section', null, true);
-        return;
-    }
+    finalCats.forEach(c => {
+        sel.appendChild(new Option(c, c));
+        const a = document.createElement('a');
+        a.href = "#"; a.innerText = c;
+        a.onclick = (e) => { e.preventDefault(); filterByCategory(c, a); };
+        nav.appendChild(a);
+    });
+}
 
-    const now = Date.now();
+function applyFilters() {
+    const s = document.getElementById('searchInput').value.toLowerCase();
+    const c = document.getElementById('categoryFilter').value;
+    const isNumber = /^\d+$/.test(s);
 
-    if (now - lastBackPress < 1500) {
-        try {
-            window.close();
-        } catch (e) {
-            history.back();
-        }
-    } else {
-        lastBackPress = now;
-
-        const toast = document.getElementById("exitToast");
-        if (toast) {
-            toast.style.display = "block";
-            setTimeout(() => toast.style.display = "none", 1200);
-        }
-
-        history.pushState({ section: 'home-section', manual: true }, "", "#home");
-    }
-});
-
-/* ===================== INITIAL LOAD ===================== */
-window.addEventListener("load", () => {
-
-    // ✅ always start from home safely
-    history.replaceState({ section: 'home-section' }, "", "#home-section");
-
-    // optional: force home visible
-    showSection('home-section', null, true);
-});
-/* ===================== DINVISHESH ===================== */
-function setTodayDate() {
-    const today = new Date().toLocaleDateString('mr-IN', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
+    filteredBooks = allBooks.filter(b => {
+        if (isNumber) return parseInt(b.SNo) === parseInt(s) && (c === 'All' || b.Class === c);
+        return (b.Name.toLowerCase().includes(s) || b.Author.toLowerCase().includes(s) || b.Publisher.toLowerCase().includes(s)) && (c === 'All' || b.Class === c);
     });
 
-    document.getElementById('todayDate').innerText = today;
+    document.getElementById('searchCount').innerText = `एकूण ${filteredBooks.length} पुस्तके सापडली`;
+    currentPage = 1;
+    render();
+}
+
+function render() {
+    const list = document.getElementById('bookList');
+    if (!list) return;
+    list.innerHTML = '';
+    const items = filteredBooks.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+    items.forEach(b => {
+        list.innerHTML += `<div class="book-card"><div class="sno-badge">${b.SNo}</div><div class="w-100"><div class="d-flex justify-content-between"><h6 class="fw-bold">${b.Name}</h6><span class="cat-tag">${b.Class}</span></div><p class="small mb-0 text-muted">लेखक: ${b.Author}</p><p class="small text-secondary">प्रकाशक: ${b.Publisher}</p></div></div>`;
+    });
+    const max = Math.ceil(filteredBooks.length / pageSize) || 1;
+    document.getElementById('pageIndicator').innerText = `${currentPage} / ${max}`;
+}
+
+function changePage(v) {
+    const max = Math.ceil(filteredBooks.length / pageSize) || 1;
+    currentPage = Math.min(Math.max(currentPage + v, 1), max);
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function filterByCategory(c, el) {
+    document.getElementById('categoryFilter').value = c;
+    document.querySelectorAll('.category-nav a').forEach(a => a.classList.remove('active'));
+    el.classList.add('active');
+    applyFilters();
+}
+
+/* ===================== DINVISHESH & FEEDBACK ===================== */
+function setTodayDate() {
+    const today = new Date().toLocaleDateString('mr-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+    if(document.getElementById('todayDate')) document.getElementById('todayDate').innerText = today;
 }
 
 async function loadDinvishesh() {
     try {
         const resp = await fetch(DINVISHESH_URL);
         const csv = await resp.text();
-
         const rows = csv.split(/\r?\n/).slice(1);
         const today = new Date();
-
         const key = `${String(today.getDate()).padStart(2, '0')}-${String(today.getMonth()+1).padStart(2,'0')}`;
-
         let found = false;
-
         rows.forEach(r => {
             const [date, title, desc] = r.split(',');
-
             if (date === key) {
-                document.getElementById('dinvisheshContent').innerHTML =
-                    `<strong>${title}</strong><br>${desc}`;
+                document.getElementById('dinvisheshContent').innerHTML = `<strong>${title}</strong><br>${desc}`;
                 found = true;
             }
         });
-
-        if (!found) {
-            document.getElementById('dinvisheshContent').innerText =
-                "आज खास दिनविशेष नाही.";
-        }
-
+        if (!found) document.getElementById('dinvisheshContent').innerText = "आज खास दिनविशेष नाही.";
     } catch {
-        document.getElementById('dinvisheshContent').innerText =
-            "दिनविशेष लोड होऊ शकला नाही.";
+        if(document.getElementById('dinvisheshContent')) document.getElementById('dinvisheshContent').innerText = "दिनविशेष लोड होऊ शकला नाही.";
     }
 }
-
-
-/* ===================== IMAGE MODAL ===================== */
-function openImage(img) {
-    document.getElementById("modalImage").src = img.src;
-    document.getElementById("modalCaption").innerText =
-        img.nextElementSibling.innerText;
-
-    new bootstrap.Modal(
-        document.getElementById('imageModal')
-    ).show();
-}
-
-
-/* ===================== HELPERS ===================== */
-function debounce(fn, delay) {
-    let t;
-    return (...args) => {
-        clearTimeout(t);
-        t = setTimeout(() => fn(...args), delay);
-    };
-}
-
-
-/* ===================== SERVICE WORKER ===================== */
-if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./sw.js");
-    });
-}
-
-
-/* ===================== INSTALL BUTTON ===================== */
-let deferredPrompt;
-
-window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-
-    const btn = document.createElement("button");
-    btn.innerText = "📲 App Install करा";
-    btn.className = "btn btn-success";
-
-    Object.assign(btn.style, {
-        position: "fixed",
-        bottom: "80px",
-        right: "20px",
-        zIndex: "9999"
-    });
-
-    document.body.appendChild(btn);
-
-    btn.onclick = () => {
-        btn.remove();
-        deferredPrompt.prompt();
-        deferredPrompt = null;
-    };
-});
-/* ===================== SIDEBAR FUNCTIONS ===================== */
-/* ===================== SIDEBAR FUNCTIONS ===================== */
-
-
-// मेनुच्या बाहेर क्लिक केल्यावर तो बंद होण्यासाठी खालील कोड वापरा
-document.addEventListener('click', function(event) {
-    const nav = document.getElementById('mainNav');
-    const menuBtn = document.querySelector('.menu-toggle-btn');
-
-    if (!nav) return;
-
-    if (!nav.contains(event.target) && (!menuBtn || !menuBtn.contains(event.target))) {
-        nav.classList.remove('active-sidebar');
-    }
-});
-
-// कोणत्याही लिंकवर क्लिक केल्यावर साईडबार आपोआप बंद व्हावा
-document.querySelectorAll('.main-nav a').forEach(link => {
-    link.addEventListener('click', () => {
-        const nav = document.getElementById('mainNav');
-        if (nav) {
-            nav.classList.remove('active-sidebar');
-        }
-    });
-});
-
-/* ===================== NEW FEEDBACK SYSTEM ===================== */
-
 
 async function loadFeedback() {
     try {
         const resp = await fetch(FEEDBACK_SHEET_URL);
         const csv = await resp.text();
-
         const rows = csv.split(/\r?\n/).filter(r => r.trim() !== "");
-
         let feedbacks = [];
-
         for (let i = 1; i < rows.length; i++) {
-            const cols = rows[i]
-                .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
-                .map(v => v.replace(/^"|"$/g, '').trim());
-
+            const cols = rows[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/^"|"$/g, '').trim());
             if (cols.length < 2) continue;
-
-            feedbacks.push({
-                name: cols[1] || "",
-                post: cols[2] || "",
-                date: cols[3] || "",
-                feedback: cols[4] || "",
-                image: cols[5] || ""
-            });
+            feedbacks.push({ name: cols[1] || "निनावी", post: cols[2] || "", date: cols[3] || "", feedback: cols[4] || "", image: cols[5] || "" });
         }
+        if (feedbacks.length > 0) renderFeedback(feedbacks);
+    } catch (e) { console.error("Feedback error", e); }
+}
 
-        console.log("Feedback loaded:", feedbacks); // 🔍 debug
-
-        if (feedbacks.length === 0) {
-            document.getElementById('feedbackTabContent').innerHTML =
-                "<p class='text-center text-danger'>कोणतीही प्रतिक्रिया उपलब्ध नाही</p>";
-            return;
-        }
-
-        renderFeedback(feedbacks);
-
-    } catch (e) {
-        console.error("Feedback load error:", e);
-
-        document.getElementById('feedbackTabContent').innerHTML =
-            "<p class='text-center text-danger'>डेटा लोड झाला नाही</p>";
+function renderFeedback(data) {
+    const perPage = 8;
+    const container = document.getElementById('feedbackTabContent');
+    const pagination = document.getElementById('feedbackTab');
+    if (!container || !pagination) return;
+    container.innerHTML = ''; pagination.innerHTML = '';
+    let pageCount = Math.ceil(data.length / perPage);
+    for (let p = 0; p < pageCount; p++) {
+        let pageId = "fb_page_" + (p + 1);
+        let pageHTML = `<div class="tab-pane fade ${p === 0 ? 'show active' : ''}" id="${pageId}"><div class="row g-3">`;
+        let slice = data.slice(p * perPage, (p + 1) * perPage);
+        slice.forEach(f => {
+            let imageSrc = f.image ? `${f.image}.jpg` : 'https://via.placeholder.com/150?text=No+Image';
+            pageHTML += `<div class="col-12 col-md-6"><div class="p-3 rounded shadow-sm border bg-white h-100" style="border-radius: 15px !important;"><div class="row g-3 align-items-start"><div class="col-4"><img src="${imageSrc}" class="img-fluid rounded shadow-sm border" style="aspect-ratio: 1/1; object-fit: cover; width: 100%; cursor: pointer;" onclick="openImage(this)" onerror="this.src='https://via.placeholder.com/150?text=Letter';"></div><div class="col-8"><p class="mb-2" style="font-size: 1.1rem; line-height: 1.4; text-align: justify; color: #333;">"${f.feedback}"</p><div class="mt-2 pt-2 border-top"><div class="fw-bold" style="color: #8b4513;">${f.name}</div><div style="font-size: 0.85rem; color: #666;">${f.post}</div><div class="text-end mt-1" style="font-size: 0.85rem; color: #8b4513;">दि. ${f.date}</div></div></div></div></div></div>`;
+        });
+        pageHTML += `</div></div>`;
+        container.innerHTML += pageHTML;
+        pagination.innerHTML += `<li class="nav-item"><button class="nav-link ${p === 0 ? 'active' : ''} btn-sm border m-1" data-bs-toggle="tab" data-bs-target="#${pageId}">${p + 1}</button></li>`;
     }
 }
-function toggleSidebar() {
-    const sidebar = document.querySelector('.main-nav');
-    sidebar.classList.toggle('active-sidebar');
+
+/* ===================== POPSTATE & HELPERS ===================== */
+window.addEventListener("popstate", (event) => {
+    if (event.state && event.state.section) {
+        showSection(event.state.section, null, true);
+    }
+});
+
+function openImage(img) {
+    document.getElementById("modalImage").src = img.src;
+    document.getElementById("modalCaption").innerText = img.nextElementSibling ? img.nextElementSibling.innerText : "";
+    new bootstrap.Modal(document.getElementById('imageModal')).show();
 }
 
-// स्क्रोल करताना मेनू हायलाईट करण्यासाठी नवीन कोड
-window.addEventListener('scroll', () => {
-    let current = "";
-    // तुमच्या फाईलमध्ये प्रत्येक विभागाला 'content-section' क्लास आहे याची खात्री करा
-    const sections = document.querySelectorAll(".content-section");
-    const navLinks = document.querySelectorAll(".main-nav a");
+function debounce(fn, delay) {
+    let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), delay); };
+}
 
-    sections.forEach((section) => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        
-        // स्क्रोल पोझिशन तपासणे
-        if (window.pageYOffset >= sectionTop - 150) {
-            current = section.getAttribute("id");
-        }
-    });
-
-    // तुम्ही स्क्रोल करता तेव्हा ब्राउझरच्या 'Console' मध्ये ID प्रिंट होईल (F12 दाबून तपासा)
-    console.log("Current Section ID:", current);
-
-    navLinks.forEach((link) => {
-        link.classList.remove("active-link");
-        const linkHref = link.getAttribute("href").replace("#", "");
-        
-        if (linkHref === current) {
-            link.classList.add("active-link");
-        }
-    });
-});</script>    
-<div class="modal fade" id="imageModal" tabindex="-1">
+document.addEventListener('click', function(event) {
+    const nav = document.getElementById('mainNav');
+    const menuBtn = document.querySelector('.menu-toggle-btn');
+    if (nav && !nav.contains(event.target) && (!menuBtn || !menuBtn.contains(event.target))) {
+        nav.classList.remove('active-sidebar');
+    }
+});
+</script><div class="modal fade" id="imageModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content bg-dark border-0">
      <div class="modal-body text-center p-2 position-relative">
