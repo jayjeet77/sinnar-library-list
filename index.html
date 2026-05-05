@@ -1293,27 +1293,32 @@ function toggleSidebar() {
 // स्क्रोल करताना मेनू हायलाईट करण्यासाठी नवीन कोड
 window.addEventListener('scroll', () => {
     let current = "";
-    // तुमच्या फाईलमधील सर्व विभाग शोधा
+    // तुमच्या फाईलमध्ये प्रत्येक विभागाला 'content-section' क्लास आहे याची खात्री करा
     const sections = document.querySelectorAll(".content-section");
     const navLinks = document.querySelectorAll(".main-nav a");
 
     sections.forEach((section) => {
         const sectionTop = section.offsetTop;
-        // स्क्रीनच्या वरून १०० पिक्सेल खाली आल्यावर सेक्शन बदलल्याचे समजेल
-        if (pageYOffset >= sectionTop - 100) {
+        const sectionHeight = section.clientHeight;
+        
+        // स्क्रोल पोझिशन तपासणे
+        if (window.pageYOffset >= sectionTop - 150) {
             current = section.getAttribute("id");
         }
     });
 
+    // तुम्ही स्क्रोल करता तेव्हा ब्राउझरच्या 'Console' मध्ये ID प्रिंट होईल (F12 दाबून तपासा)
+    console.log("Current Section ID:", current);
+
     navLinks.forEach((link) => {
         link.classList.remove("active-link");
-        // href लिंक आणि सेक्शन ID मॅच झाल्यास हायलाईट करा
-        if (link.getAttribute("href").includes(current) && current !== "") {
+        const linkHref = link.getAttribute("href").replace("#", "");
+        
+        if (linkHref === current) {
             link.classList.add("active-link");
         }
     });
-});
-</script>    
+});</script>    
 <div class="modal fade" id="imageModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content bg-dark border-0">
