@@ -34,25 +34,47 @@
         .header-section h2 { color: var(--title-color); font-weight: bold; font-size: 1.5rem; margin: 5px 0 0; }
 
        /* जुन्या .main-nav च्या जागी हा कोड टाका */
-
-.main-nav a {
-    transition: all 0.2s ease;
+.main-nav {
+    background: var(--footer-bg);
+    display: flex;
+    flex-direction: column; /* आडव्याऐवजी उभ्या रांगेत */
+    padding: 70px 10px;
+    position: fixed; /* एका जागी स्थिर */
+    top: 0;
+    left: 0;
+    height: 100vh; /* पूर्ण उंची */
+    width: 200px; /* बाजूची रुंदी */
+    z-index: 1050;
+    gap: 12px;
+    overflow-y: auto; /* जास्त विभाग असल्यास स्क्रोल होईल */
 }
-/* मुख्य मजकूर साईडबारच्या उजवीकडे ढकलण्यासाठी */
 
+/* मुख्य मजकूर साईडबारच्या उजवीकडे ढकलण्यासाठी */
+body { 
+    padding-left: 200px; /* साईडबारसाठी जागा सोडली */
+}
 
 /* मोबाईलसाठी सेटिंग्ज */
-
+@media (max-width: 768px) {
+    .main-nav {
+        width: 140px; /* मोबाईलवर थोडी कमी रुंदी */
+    }
+    body {
+        padding-left: 140px;
+    }
+    .main-nav a {
+        font-size: 0.75rem;
+        padding: 8px;
+    }
+}
 
 .main-nav a {
     color: #f6f2e9;
     text-decoration: none;
-    padding: 6px 12px;        /* 🔽 कमी केले */
-    border-radius: 6px;
-    font-size: 0.85rem;       /* 🔽 थोडा लहान */
-    line-height: 1.2;         /* 🔽 ओळी जवळ आणल्या */
-    display: block;
-    transition: all 0.2s ease;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: block; /* पूर्ण रुंदी घेईल */
 }
 /* साईडबार सुरुवातीला लपवण्यासाठी */
 .main-nav {
@@ -65,29 +87,11 @@
 .main-nav.active-sidebar {
     transform: translateX(0);
 }
-.main-nav {
-    background: var(--footer-bg);
-    display: flex;
-    flex-direction: column;
-    padding: 70px 10px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 230px;
-    z-index: 1050;
-    gap: 6px;
-    overflow-y: auto;
 
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-}
-
-/* open state */
-.main-nav.active-sidebar {
-    transform: translateX(0);
-}
 /* मोबाईलवर मजकूर साईडबारच्या मागे जाऊ नये म्हणून body पॅडिंग काढून टाका */
+body { 
+    padding-left: 0 !important; 
+}
 
 /* मेनु बटणची स्टाईल */
 .menu-toggle-btn {
@@ -167,11 +171,6 @@
     background-color: #494C3B !important; /* फुटरचा रंग */
     color: white !important;
 }
-.main-nav a.active {
-    background-color: var(--accent-color);
-    color: #fff !important;
-    font-weight: 600;
-}
     </style>
 </head>
 <body>
@@ -190,15 +189,15 @@
 </div>
 
 <div class="main-nav shadow-sm" id="mainNav">
-    <a href="javascript:void(0)" class="active" onclick="showSection('home-section', this); toggleSidebar()">होम</a>
-    <a href="javascript:void(0)" onclick="showSection('portal-section', this); toggleSidebar()">पुस्तक सूची</a>
-    <a href="javascript:void(0)" onclick="showSection('about-section', this); toggleSidebar()">आमची ओळख</a>
-    <a href="javascript:void(0)" onclick="showSection('gallery-section', this); toggleSidebar()">फोटो गॅलरी</a>
-     <a href="javascript:void(0)" onclick="showSection('rates-section', this); toggleSidebar()">वर्गणी दरपत्रक</a>
-    <a href="javascript:void(0)" onclick="showSection('directors-section', this); toggleSidebar()">संचालक मंडळ</a>
-    <a href="javascript:void(0)" onclick="showSection('contact-section', this); toggleSidebar()">संपर्क</a>
-    <a href="javascript:void(0)" onclick="showSection('feedback-section', this); toggleSidebar()">मान्यवरांच्या प्रतिक्रिया</a>
-    <a href="javascript:void(0)" onclick="showSection('staff-section', this); toggleSidebar()">कर्मचारी वृंद</a>
+    <a href="javascript:void(0)" class="active" onclick="showSection('home-section', this)">होम</a>
+    <a href="javascript:void(0)" onclick="showSection('portal-section', this)">पुस्तक सूची</a>
+    <a href="javascript:void(0)" onclick="showSection('about-section', this)">आमची ओळख</a>
+    <a href="javascript:void(0)" onclick="showSection('gallery-section', this)">फोटो गॅलरी</a>
+     <a href="javascript:void(0)" onclick="showSection('rates-section', this)">वर्गणी दरपत्रक</a>
+    <a href="javascript:void(0)" onclick="showSection('directors-section', this)">संचालक मंडळ</a>
+    <a href="javascript:void(0)" onclick="showSection('contact-section', this)">संपर्क</a>
+    <a href="javascript:void(0)" onclick="showSection('feedback-section', this)">मान्यवरांच्या प्रतिक्रिया</a>
+    <a href="javascript:void(0)" onclick="showSection('staff-section', this)">कर्मचारी वृंद</a>
     <a href="javascript:void(0)" style="background: #50604d; color: white;" data-bs-toggle="modal" data-bs-target="#memberModal">वाचक सभासद व्हा</a>
 </div>
 
@@ -271,8 +270,7 @@
     </div>
 </div>
 
-<div id="about-section" class="content-section pt-1">
-    <div class="container">
+<div id="about-section" class="content-section container">
     <div style="background: #ffffff; padding: 20px; border-radius: 8px; border-top: 6px solid #f39c12; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden;">
         
         <div class="text-center mb-4">
@@ -738,28 +736,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-document.addEventListener("keydown", function(e) {
-    if (e.key === "Escape") {
-        document.getElementById("mainNav").classList.remove("active-sidebar");
-    }
-});
-document.addEventListener("click", function(event) {
-    const sidebar = document.getElementById("mainNav");
-    const button = document.querySelector(".menu-toggle-btn");
-
-    // जर sidebar open असेल
-    if (sidebar.classList.contains("active-sidebar")) {
-
-        // क्लिक sidebar किंवा button वर नाही
-        if (!sidebar.contains(event.target) && !button.contains(event.target)) {
-            sidebar.classList.remove("active-sidebar");
-        }
-    }
-});
-function toggleSidebar() {
-    const sidebar = document.getElementById("mainNav");
-    sidebar.classList.toggle("active-sidebar");
-}
 /* ===================== CONFIG ===================== */
 const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1zskDx0OIbMyzY5Sj_7GBS1iokrZY_5KnPn9jsW3dDNc/gviz/tq?tqx=out:csv';
 const DINVISHESH_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1TLkkdF6v006Wuq8N6hVLwOg4biA0GP7seF0Fo_sZp6b4Y_tVcVzPCSYIQn6QLzHVGdQ2Vem-Ho4F/pub?output=csv';
@@ -817,9 +793,10 @@ function renderFeedback(data) {
                     <div class="row g-3 align-items-start">
                         <!-- डावी बाजू: इमेज -->
                         <div class="col-4">
-                           <img src="${imageSrc}" class="feedback-img img-fluid rounded shadow-sm border"
+                            <img src="${imageSrc}" 
+                                 class="img-fluid rounded shadow-sm border" 
                                  style="aspect-ratio: 1/1; object-fit: cover; width: 100%; cursor: pointer;"
-                                 
+                                 onclick="openImage(this)"
                                  onerror="this.src='https://via.placeholder.com/150?text=Letter';">
                         </div>
                         <!-- उजवी बाजू: मजकूर -->
@@ -891,11 +868,6 @@ console.log("Full Data:", feedbacks);
         document.getElementById('feedbackTabContent').innerHTML = "<p class='text-center text-danger'>डेटा लोड करताना त्रुटी आली.</p>";
     }
 }
-document.addEventListener("click", function(e) {
-    if (e.target.classList.contains("feedback-img")) {
-        openImage(e.target);
-    }
-});
 /* ===================== FETCH BOOKS ===================== */
 async function fetchBooks() {
     try {
