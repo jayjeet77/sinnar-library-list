@@ -199,7 +199,7 @@
     <a href="javascript:void(0)" onclick="showSection('contact-section', this); toggleSidebar()">संपर्क</a>
     <a href="javascript:void(0)" onclick="showSection('feedback-section', this); toggleSidebar()">मान्यवरांच्या प्रतिक्रिया</a>
     <a href="javascript:void(0)" onclick="showSection('staff-section', this); toggleSidebar()">कर्मचारी वृंद</a>
-    <a href="javascript:void(0)" style="background: #50604d; color: white;" data-bs-toggle="modal" data-bs-target="#memberModal">वाचक सभासद व्हा</a>
+    <a href="javascript:void(0)" onclick="showSection('admission-section', this); toggleSidebar()">प्रवेश अर्ज</a>
 </div>
 
  <div id="home-section" class="content-section active">
@@ -659,6 +659,61 @@
         </div>
     </div>
 
+</div>
+<div id="admission-section" class="content-section container">
+    <div class="card p-4 border-0 shadow-sm" style="background-color: #fdfaf4; border-radius: 15px;">
+        <h4 class="fw-bold text-center mb-4" style="color: var(--title-color);">
+            प्रवेश अर्ज व माहिती
+        </h4>
+
+        <div class="row row-cols-1 row-cols-md-2 g-3 mb-4">
+            <div class="col">
+                <div class="card border-0 shadow-sm">
+                    <img src="lib1.jpg" class="img-fluid rounded" style="aspect-ratio: 16/9; object-fit: cover; cursor: pointer;" onclick="openImage(this)">
+                    <p class="small text-center mt-2">अभ्यासिका अंतर्गत बैठक व्यवस्था</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card border-0 shadow-sm">
+                    <img src="lib2.jpg" class="img-fluid rounded" style="aspect-ratio: 16/9; object-fit: cover; cursor: pointer;" onclick="openImage(this)">
+                    <p class="small text-center mt-2">अभ्यासिका अंतर्गत बैठक व्यवस्था</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 text-center justify-content-center">
+            <div class="col-md-6">
+                <div class="p-3 rounded border bg-white h-100 shadow-sm">
+                    <h5 class="fw-bold" style="color: var(--title-color);">वाचक सभासद अर्ज</h5>
+                    <p class="small text-muted">वाचनालयाचे वाचक सभासद होण्यासाठी खालील अर्जावर क्लिक करा.</p>
+                    <a href="membership form final .html" target="_blank" class="btn btn-sm w-100 shadow-sm" style="background-color: #494C3B; color: white; border-radius: 8px;">
+                        <i class="bi bi-file-earmark-pdf"></i> अर्ज उघडा / डाउनलोड करा
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="p-3 rounded border bg-white h-100 shadow-sm">
+                    <h5 class="fw-bold" style="color: var(--title-color);">महिला अभ्यासिका अर्ज</h5>
+                    <p class="small text-muted">अभ्यासिकेत प्रवेश घेण्यासाठी खालील अर्जावर क्लिक करा.</p>
+                    <a href="mahila abhyasika form final.html" target="_blank" class="btn btn-sm w-100 shadow-sm" style="background-color: #9d4d27; color: white; border-radius: 8px;">
+                        <i class="bi bi-file-earmark-pdf"></i> अर्ज उघडा / डाउनलोड करा
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="p-3 rounded-pill shadow-sm text-center" style="background-color: #fff4e5; border: 1px solid #ffcc80;">
+                    <p class="mb-0 text-dark fw-bold" style="font-size: 0.9rem;">
+                        <i class="bi bi-info-circle-fill text-warning me-2"></i>
+                        सूचना: अर्ज भरून झाल्यावर त्याची पीडीएफ तयार होईल. ती डाउनलोड करून, प्रिंट काढून आणि आवश्यक कागदपत्रांसह सही करून वाचनालयाच्या कार्यालयात सादर करावी.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="modal fade" id="memberModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
