@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>सिन्नर सार्वजनिक वाचनालय - सभासद अर्ज</title>
+    <style>
+    @page {
+        size: A4;
+        margin: 15mm 15mm 10mm 25mm; /* मार्जिन कमी केले */
+    }
+    body { font-family: 'Arial', sans-serif; background: #f9f9f9; padding: 10px; color: #333; font-size: 14px; }
+    
+    .form-card { 
+        background: white; 
+        max-width: 800px; 
+        margin: auto; 
+        padding: 15px; /* पॅडिंग ३० वरून १५ केले */
+        border: 1px solid #ddd;
+    }
+
+    @media print {
+        body { background: white; padding: 0; }
+        .form-card { border: none; padding: 0; width: 100%; }
+        .no-print { display: none; }
+        input, textarea, select { 
+            border: 1px solid #000 !important; 
+            background: transparent; 
+            appearance: none;
+        }
+    }
+
+    .header-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+    .logo-placeholder { width: 80px; height: 80px; border: 1px dashed #000; display: flex; align-items: center; text-align: center; font-size: 10px; }
+    .header-text h1 { font-size: 20px; margin: 0; }
+    .title { font-size: 18px; font-weight: bold; margin-top: 5px; }
+    .photo-box { width: 100px; height: 110px; border: 1px solid #000; text-align: center; line-height: 110px; font-size: 12px; }
+
+    .field-label { font-weight: bold; margin-top: 6px; display: block; font-size: 13px; }
+    
+    input, select, textarea { 
+        width: 100%; padding: 4px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; margin-top: 2px;
+    }
+
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+    td { padding: 5px; width: 50%; font-size: 13px; }
+
+    .office-section { 
+        border: 1px solid #000; 
+        padding: 8px; 
+        margin-top: 8px; 
+        background-color: #fcfcfc;
+        page-break-inside: avoid;
+        font-size: 13px;
+    }
+    .office-section p { margin: 4px 0; }
+
+    .footer-row { display: flex; justify-content: space-between; margin-top: 20px; }
+/* हे बटन डिझाइन कोडमध्ये जोडा */
+.btn { 
+    background: #b35a03; /* प्रोफेशनल निळा रंग */
+    color: white; 
+    padding: 12px 35px; 
+    border: none; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-size: 17px; 
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background: #966e29; /* माउस नेल्यावर अधिक गडद होईल */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transform: translateY(-1px);
+}
+
+.btn-container { 
+    text-align: center; 
+    margin-top: 25px; 
+}
+.header-container { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    margin-bottom: 10px; 
+}
+
+/* मजकूर मध्यभागी करण्यासाठी हा विभाग महत्त्वाचा आहे */
+.header-text { 
+    text-align: center; 
+    flex-grow: 1; 
+}
+
+.header-text h1 { 
+    font-size: 22px; 
+    margin: 0; 
+}
+
+.header-text p { 
+    margin: 2px 0; 
+    font-size: 14px; 
+}
+
+.title { 
+    font-size: 18px; 
+    font-weight: bold; 
+    margin-top: 5px; 
+    text-decoration: underline; 
+    text-align: center; /* टायटल मध्यभागी करण्यासाठी */
+}
+</style>
+</head>
+<body>
+<div class="no-print" style="position: sticky; top: 0; background: #fff; padding: 10px; border-bottom: 1px solid #ddd; z-index: 9999;">
+    <button onclick="window.close();" style="background: #e74c3c; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold;">
+        ✕ बंद करा (Close)
+    </button>
+    <span style="font-size: 12px; color: #666; margin-left: 10px;">टॅब बंद करून मुख्य साईटवर जा</span>
+</div>
+<div class="form-card">
+    <div class="header-container">
+        <div class="logo-box">
+    <img src="logo.png" alt="वाचनालय लोगो" style="width: 80px; height: 80px; object-fit: contain;"></div>
+        <div class="header-text">
+            <h1 style="margin:0;">सिन्नर सार्वजनिक वाचनालय</h1>
+            <p style="margin:5px 0;">सिन्नर, जि. नाशिक | स्थापना : १९४५</p>
+            <div class="title">वाचक सभासद नोंदणी अर्ज</div>
+        </div>
+        <div class="photo-box">फोटो</div>
+    </div>
+
+    <form id="vachakForm">
+        <label class="field-label">१. अर्जदाराचे पूर्ण नाव <span class="required">*</span></label>
+        <input type="text" id="name" placeholder="आडनाव, प्रथम नाव, वडिलांचे/पतीचे नाव" required>
+
+        <label class="field-label">२. निवासाचा पत्ता <span class="required">*</span></label>
+        <textarea id="resAddr" rows="2" placeholder="येथे पत्ता लिहा..." oninput="syncAddress()" required></textarea>
+
+        <div class="checkbox-row no-print">
+            <input type="checkbox" id="sameAsRes" onclick="syncAddress()"> 
+            <label for="sameAsRes">कायमचा पत्ता निवासाच्या पत्त्याप्रमाणेच आहे.</label>
+        </div>
+
+        <label class="field-label">३. कायमचा पत्ता <span class="required">*</span></label>
+        <textarea id="permAddr" rows="2" placeholder="येथे कायमचा पत्ता लिहा..." required></textarea>
+
+        <table>
+            <tr>
+                <td><strong>४. जन्मतारीख <span class="required">*</span></strong><br><input type="date" required></td>
+                <td><strong>५. संपर्क क्रमांक <span class="required">*</span></strong><br><input type="tel" maxlength="10" required></td>
+            </tr>
+            <tr>
+                <td colspan="2"><strong>६. ईमेल पत्ता <span class="required">*</span></strong><br><input type="email" required></td>
+            </tr>
+            <tr>
+                <td><strong>७. आधार क्रमांक <span class="required">*</span></strong><br><input type="text" maxlength="12" required></td>
+                <td><strong>८. व्यवसाय <span class="required">*</span></strong><br><input type="text" required></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <strong>९. सभासद वर्ग निवडा <span class="required">*</span></strong><br>
+                    <select id="classSelect" onchange="updateOfficeClass()" required>
+                        <option value="">-- निवडा --</option>
+                        <option value="१">वर्ग १: १ पुस्तक (अनामत ३००/-, वर्गणी १०/-)</option>
+                        <option value="२">वर्ग २: २ पुस्तके (अनामत ४००/-, वर्गणी २०/-)</option>
+                        <option value="३">वर्ग ३: १ मासिक (अनामत १५/-, वर्गणी १५/-)</option>
+                        <option value="४">वर्ग ४: १ पुस्तक व १ मासिक (अनामत ३५०/-, वर्गणी २५/-)</option>
+                        <option value="५">वर्ग ५: २ पुस्तके व १ मासिक (अनामत ४५०/-, वर्गणी ३०/-)</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+
+        <p style="font-size: 12px; line-height: 1.0;">पुढील पानावर असलेले वाचनालयाचे सर्व नियम व अटी मी वाचल्या असून त्या मला मान्य आहेत. वाचनालयाचे नुकसान झाल्यास मी जबाबदार राहीन.</p>
+
+        <div class="footer-row">
+            <div>दिनांक: .....................</div>
+            <div style="text-align: center;">..........................................<br><b>अर्जदाराची स्वाक्षरी</b></div>
+        </div>
+
+        <div class="office-section">
+            <div style="font-weight: bold; text-decoration: underline; margin-bottom: 10px;">कार्यालयीन उपयोगासाठी:</div>
+            <div style="margin-bottom: 15px;">
+                <b>निवडलेला सभासद वर्ग:</b> <span id="officeClass" class="selected-class-display">-</span>
+            </div>
+            <p>नोंदणी क्रमांक: ............................. पावती क्रमांक: .............................</p>
+            <p>प्रवेश फी: ............. अनामत रक्कम: ............. मासिक वर्गणी: .............</p>
+            <p>अर्ज मंजूर / नाकारला</p>
+            <div style="text-align: right; margin-top: 10px;"><b>ग्रंथपाल स्वाक्षरी व शिक्का</b></div>
+        </div>
+
+        <div class="btn-container no-print">
+            <button type="submit" class="btn">अर्ज सबमिट आणि PDF डाउनलोड करा</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function syncAddress() {
+        const res = document.getElementById('resAddr');
+        const perm = document.getElementById('permAddr');
+        const checkbox = document.getElementById('sameAsRes');
+        if (checkbox.checked) {
+            perm.value = res.value;
+            perm.readOnly = true;
+        } else {
+            perm.readOnly = false;
+        }
+    }
+
+    function updateOfficeClass() {
+        const val = document.getElementById('classSelect').value;
+        document.getElementById('officeClass').innerText = val ? val : "-";
+    }
+
+    document.getElementById('vachakForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        window.print();
+    });
+</script>
+
+</body>
+</html>
