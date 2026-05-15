@@ -276,73 +276,28 @@ async function generatePDF() {
 </script>
 <script>
 
-async function saveMember() {
+function saveMember() {
 
-    const data = {
+    const formData = new FormData();
 
-        name: document.getElementById("name").value,
+    formData.append("name", document.getElementById("name").value);
+    formData.append("mobile", document.getElementById("mobile").value);
+    formData.append("address", document.getElementById("address").value);
+    formData.append("aadhaar", document.getElementById("aadhaar").value);
+    formData.append("membershipType", "महिला अभ्यासिका");
+    formData.append("months", document.getElementById("months").value);
 
-        mobile: document.getElementById("mobile").value,
+    fetch("https://script.google.com/macros/s/AKfycbwcs_KvY-9t63dj1CjHGieMqdgz9V-EyC8hcu5O9-fHje0O1zrW-BzQovwpHYFkuFA6iw/exec", {
 
-        address: document.getElementById("address").value,
+        method: "POST",
 
-        aadhaar: document.getElementById("aadhaar").value,
+        body: formData,
 
-        membershipType: "महिला अभ्यासिका",
+        mode: "no-cors"
 
-        months: document.getElementById("months").value
+    });
 
-    };
-
-    try {
-
-        const response = await fetch("https://script.google.com/macros/s/AKfycbwcs_KvY-9t63dj1CjHGieMqdgz9V-EyC8hcu5O9-fHje0O1zrW-BzQovwpHYFkuFA6iw/exec", {
-
-    method: "POST",
-
-    headers: {
-        "Content-Type": "text/plain;charset=utf-8"
-    },
-
-    body: JSON.stringify(data)
-
-});
-
-       const text = await response.text();
-
-if(text.startsWith("SUCCESS")){
-
-    const memberId = text.split("|")[1];
-
-   alert(
-        "Admission Saved Successfully!\n\n" +
-        "Member ID: " + memberId
-    );
-
-} else {
-    alert("Saving failed");
-}
-
-        if(result.success){
-
-            alert(
-                "Admission Saved Successfully!\n\n" +
-                "Member ID: " + result.memberId
-            );
-
-        } else {
-
-            alert("Saving failed");
-
-        }
-
-    } catch(error){
-
-        console.error(error);
-
-        alert("Connection Error");
-
-    }
+    alert("Admission Saved Successfully!");
 
 }
 
