@@ -265,7 +265,7 @@ async function generatePDF() {
     }
 }
 // तुमची गुगल वेब ॲप URL येथे पेस्ट करा
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyaS_B3jeKEHFYmAKzL8u01sfdzq2xvS9HxDtNVnQYTKVmtWA4Eqx7ouKZh0ZHl5CEd/exec"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxQnGAUNf2kePaWcn1g56lj_-DvHYFVDzx-2k4kYFjJpfPqVo462DrQ04KUfkqTGuHt/exec"; 
 
 let loggedInUser = "";
 
@@ -273,25 +273,27 @@ let loggedInUser = "";
 async function staffLogin() {
     const user = document.getElementById('username').value;
     const pass = document.getElementById('password').value;
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxQnGAUNf2kePaWcn1g56lj_-DvHYFVDzx-2k4kYFjJpfPqVo462DrQ04KUfkqTGuHt/execा"; // नवीन URL अपडेट करा
 
     if(!user || !pass) { alert("कृपया युजरनेम आणि पासवर्ड टाका"); return; }
 
     try {
-        const resp = await fetch(`${SCRIPT_URL}?action=login&username=${user}&password=${pass}`);
+        // थेट URL वर हिट करणे
+        const resp = await fetch(`${SCRIPT_URL}?action=login&username=${encodeURIComponent(user)}&password=${encodeURIComponent(pass)}`);
         const result = await resp.text();
 
-        if (result === "success") {
+        if (result.trim() === "success") {
             loggedInUser = user;
             document.getElementById('loginSection').classList.add('hidden');
             document.getElementById('staffControls').classList.remove('hidden');
             document.getElementById('welcomeMsg').innerText = "नमस्ते, " + user;
-            // लॉगिन झाल्यावर सामान्य डाउनलोड बटण लपवून 'सेव्ह' बटण दाखवू शकतो
             document.getElementById('downloadBtn').classList.add('hidden');
         } else {
             alert("चुकीचे युजरनेम किंवा पासवर्ड!");
         }
     } catch (e) {
-        alert("कनेक्शन त्रुटी! इंटरनेट तपासा.");
+        console.error(e);
+        alert("कनेक्शन त्रुटी! कृपया इंटरनेट तपासा किंवा काही वेळाने प्रयत्न करा.");
     }
 }
 
