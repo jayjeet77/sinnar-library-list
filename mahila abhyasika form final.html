@@ -270,19 +270,23 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzTuUCwYOZXsb9j3vLme
 let loggedInUser = "";
 
 // १. कर्मचारी लॉगिन तपासणे
-async function staffLogin() {
+    async function staffLogin() {
     const user = document.getElementById('username').value;
     const pass = document.getElementById('password').value;
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzTuUCwYOZXsb9j3vLme0mbhk6IcaH4tdl4kX6uSEmu9sCSeKBzw2D-yQiYqNRSxjRn/exec"; // नवीन URL अपडेट करा
 
     if(!user || !pass) { alert("कृपया युजरनेम आणि पासवर्ड टाका"); return; }
 
     try {
-        // थेट URL वर हिट करणे
-        const resp = await fetch(`${SCRIPT_URL}?action=login&username=${encodeURIComponent(user)}&password=${encodeURIComponent(pass)}`);
-        const result = await resp.text();
+        const resp = await fetch(`${SCRIPT_URL}?action=login&username=${encodeURIComponent(user)}&password=${encodeURIComponent(pass)}`, {
+            method: "GET",
+            mode: "cors",
+            redirect: "follow"
+        });
+        
+        let result = await resp.text();
+        result = result.trim(); // अत्यंत महत्त्वाचे
 
-        if (result.trim() === "success") {
+        if (result === "success") {
             loggedInUser = user;
             document.getElementById('loginSection').classList.add('hidden');
             document.getElementById('staffControls').classList.remove('hidden');
@@ -292,8 +296,8 @@ async function staffLogin() {
             alert("चुकीचे युजरनेम किंवा पासवर्ड!");
         }
     } catch (e) {
-        console.error(e);
-        alert("कनेक्शन त्रुटी! कृपया इंटरनेट तपासा किंवा काही वेळाने प्रयत्न करा.");
+        console.error("Login Error:", e);
+        alert("कनेक्शन त्रुटी! कृपया पुन्हा प्रयत्न करा.");
     }
 }
 
