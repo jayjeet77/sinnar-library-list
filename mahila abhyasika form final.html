@@ -296,7 +296,7 @@ async function saveMember() {
 
     try {
 
-        const response = await fetch("https://script.google.com/macros/s/AKfycbzRJ-LRu_1UIAfhRxG3pNqyoZPm5UfD_jjlMD9R2De4_Qgpwq-Ze31Kfml0UtGPH2bKGw/exec", {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbwcs_KvY-9t63dj1CjHGieMqdgz9V-EyC8hcu5O9-fHje0O1zrW-BzQovwpHYFkuFA6iw/exec", {
 
     method: "POST",
 
@@ -314,7 +314,10 @@ if(text.startsWith("SUCCESS")){
 
     const memberId = text.split("|")[1];
 
-    alert("Admission Saved Successfully!\nMember ID: " + memberId);
+   alert(
+        "Admission Saved Successfully!\n\n" +
+        "Member ID: " + memberId
+    );
 
 } else {
     alert("Saving failed");
