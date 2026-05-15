@@ -267,7 +267,7 @@ async function generatePDF() {
 // तुमची गुगल वेब ॲप URL येथे पेस्ट करा
 
 
-let loggedInUser = "";
+
 
 // १. कर्मचारी लॉगिन तपासणे
 // १. तुमची नवीन URL येथे टाका
@@ -286,7 +286,7 @@ function staffLogin() {
     const script = document.createElement('script');
     script.src = `${SCRIPT_URL}?action=login&username=${encodeURIComponent(user)}&password=${encodeURIComponent(pass)}&callback=handleLogin`;
     document.body.appendChild(script);
-    document.body.removeChild(script); // कामांतर स्क्रिप्ट काढून टाकणे
+    
 }
 
 // ३. लॉगिनचा रिझल्ट हाताळण्यासाठी हे फंक्शन जोडा
@@ -325,10 +325,15 @@ async function saveToSheet() {
     }
 
     try {
-        const resp = await fetch(SCRIPT_URL, {
-            method: "POST",
-            body: params
-        });
+       const resp = await fetch(SCRIPT_URL, {
+
+    method: "POST",
+
+    body: params,
+
+    mode: "cors"
+
+});
         const regNo = await resp.text();
 
        if (regNo.startsWith("SIN-")) {
@@ -352,13 +357,7 @@ async function saveToSheet() {
 function logout() {
     location.reload();
 }
-    <script>
-
-function staffLogin(){
-
-    alert("Login Working");
-
-}
+  
 
 </script>
 
