@@ -278,20 +278,25 @@ async function generatePDF() {
 
 function saveMember() {
 
-    const formData = new FormData();
+    const params = new URLSearchParams();
 
-    formData.append("name", document.getElementById("name").value);
-    formData.append("mobile", document.getElementById("mobile").value);
-    formData.append("address", document.getElementById("address").value);
-    formData.append("aadhaar", document.getElementById("aadhaar").value);
-    formData.append("membershipType", "महिला अभ्यासिका");
-    formData.append("months", document.getElementById("months").value);
+    params.append("name", document.getElementById("name").value);
 
-    fetch("https://script.google.com/macros/s/AKfycbwcs_KvY-9t63dj1CjHGieMqdgz9V-EyC8hcu5O9-fHje0O1zrW-BzQovwpHYFkuFA6iw/exec", {
+    params.append("mobile", document.getElementById("mobile").value);
+
+    params.append("address", document.getElementById("address").value);
+
+    params.append("aadhaar", document.getElementById("aadhaar").value);
+
+    params.append("membershipType", "महिला अभ्यासिका");
+
+    params.append("months", document.getElementById("months").value);
+
+    fetch("YOUR_WEBAPP_URL", {
 
         method: "POST",
 
-        body: formData,
+        body: params,
 
         mode: "no-cors"
 
