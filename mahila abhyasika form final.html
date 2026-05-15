@@ -265,28 +265,28 @@ async function generatePDF() {
     }
 }
 // तुमची गुगल वेब ॲप URL येथे पेस्ट करा
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzTuUCwYOZXsb9j3vLme0mbhk6IcaH4tdl4kX6uSEmu9sCSeKBzw2D-yQiYqNRSxjRn/exec"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxtMjz8VGwJTUjDnc3pI61AEpfCV4vOOhoCm-qDNilvUclev18AJ1XoHChc5BtsRGc/exec"; 
 
 let loggedInUser = "";
 
 // १. कर्मचारी लॉगिन तपासणे
-    async function staffLogin() {
+   async function staffLogin() {
     const user = document.getElementById('username').value;
     const pass = document.getElementById('password').value;
+    const SCRIPT_URL = "तुमची_नवीन_URL_येथे_टाका"; 
 
-    if(!user || !pass) { alert("कृपया युजरनेम आणि पासवर्ड टाका"); return; }
+    if(!user || !pass) { alert("कृपया माहिती भरा"); return; }
 
     try {
         const resp = await fetch(`${SCRIPT_URL}?action=login&username=${encodeURIComponent(user)}&password=${encodeURIComponent(pass)}`, {
             method: "GET",
-            mode: "cors",
-            redirect: "follow"
+            // ही ओळ CORS आणि Redirect साठी महत्त्वाची आहे
+            mode: "cors"
         });
         
-        let result = await resp.text();
-        result = result.trim(); // अत्यंत महत्त्वाचे
+        const result = await resp.text();
 
-        if (result === "success") {
+        if (result.trim() === "success") {
             loggedInUser = user;
             document.getElementById('loginSection').classList.add('hidden');
             document.getElementById('staffControls').classList.remove('hidden');
@@ -297,10 +297,9 @@ let loggedInUser = "";
         }
     } catch (e) {
         console.error("Login Error:", e);
-        alert("कनेक्शन त्रुटी! कृपया पुन्हा प्रयत्न करा.");
+        alert("कनेक्शन त्रुटी! गुगल स्क्रिप्टच्या 'Access' सेटिंग्जमध्ये 'Anyone' निवडल्याची खात्री करा.");
     }
 }
-
 // २. गुगल शीटमध्ये डेटा सेव्ह करणे
 async function saveToSheet() {
     const form = document.getElementById('admissionForm');
