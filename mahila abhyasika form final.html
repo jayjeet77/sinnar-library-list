@@ -265,39 +265,40 @@ async function generatePDF() {
     }
 }
 // तुमची गुगल वेब ॲप URL येथे पेस्ट करा
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxtMjz8VGwJTUjDnc3pI61AEpfCV4vOOhoCm-qDNilvUclev18AJ1XoHChc5BtsRGc/exec"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwLzOIDXPniUQwVUsK6P-_TdPMAxqlqx1HPgJIQSCfUw8DeAqxRrPCAuCA-mqY-AZK5/exec"; 
 
 let loggedInUser = "";
 
 // १. कर्मचारी लॉगिन तपासणे
-   async function staffLogin() {
+// १. तुमची नवीन URL येथे टाका
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwLzOIDXPniUQwVUsK6P-_TdPMAxqlqx1HPgJIQSCfUw8DeAqxRrPCAuCA-mqY-AZK5/exec";
+
+let loggedInUser = "";
+
+// २. नवीन लॉगिन फंक्शन (JSONP पद्धत)
+function staffLogin() {
     const user = document.getElementById('username').value;
     const pass = document.getElementById('password').value;
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxtMjz8VGwJTUjDnc3pI61AEpfCV4vOOhoCm-qDNilvUclev18AJ1XoHChc5BtsRGc/exec"; 
 
-    if(!user || !pass) { alert("कृपया माहिती भरा"); return; }
+    if(!user || !pass) { alert("कृपया युजरनेम आणि पासवर्ड टाका"); return; }
 
-    try {
-        const resp = await fetch(`${SCRIPT_URL}?action=login&username=${encodeURIComponent(user)}&password=${encodeURIComponent(pass)}`, {
-            method: "GET",
-            // ही ओळ CORS आणि Redirect साठी महत्त्वाची आहे
-            mode: "cors"
-        });
-        
-        const result = await resp.text();
+    // JSONP कॉल करण्यासाठी डायनॅमिक स्क्रिप्ट टॅग वापरणे
+    const script = document.createElement('script');
+    script.src = `${SCRIPT_URL}?action=login&username=${encodeURIComponent(user)}&password=${encodeURIComponent(pass)}&callback=handleLogin`;
+    document.body.appendChild(script);
+    document.body.removeChild(script); // कामांतर स्क्रिप्ट काढून टाकणे
+}
 
-        if (result.trim() === "success") {
-            loggedInUser = user;
-            document.getElementById('loginSection').classList.add('hidden');
-            document.getElementById('staffControls').classList.remove('hidden');
-            document.getElementById('welcomeMsg').innerText = "नमस्ते, " + user;
-            document.getElementById('downloadBtn').classList.add('hidden');
-        } else {
-            alert("चुकीचे युजरनेम किंवा पासवर्ड!");
-        }
-    } catch (e) {
-        console.error("Login Error:", e);
-        alert("कनेक्शन त्रुटी! गुगल स्क्रिप्टच्या 'Access' सेटिंग्जमध्ये 'Anyone' निवडल्याची खात्री करा.");
+// ३. लॉगिनचा रिझल्ट हाताळण्यासाठी हे फंक्शन जोडा
+function handleLogin(response) {
+    if (response.result === "success") {
+        loggedInUser = document.getElementById('username').value;
+        document.getElementById('loginSection').classList.add('hidden');
+        document.getElementById('staffControls').classList.remove('hidden');
+        document.getElementById('welcomeMsg').innerText = "नमस्ते, " + loggedInUser;
+        document.getElementById('downloadBtn').classList.add('hidden');
+    } else {
+        alert("चुकीचे युजरनेम किंवा पासवर्ड!");
     }
 }
 // २. गुगल शीटमध्ये डेटा सेव्ह करणे
