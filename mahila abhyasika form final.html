@@ -298,11 +298,15 @@ async function saveMember() {
 
         const response = await fetch("https://script.google.com/macros/s/AKfycbzRJ-LRu_1UIAfhRxG3pNqyoZPm5UfD_jjlMD9R2De4_Qgpwq-Ze31Kfml0UtGPH2bKGw/exec", {
 
-            method: "POST",
+    method: "POST",
 
-            body: JSON.stringify(data)
+    headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+    },
 
-        });
+    body: JSON.stringify(data)
+
+});
 
         const result = await response.json();
 
