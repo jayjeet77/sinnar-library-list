@@ -308,7 +308,17 @@ async function saveMember() {
 
 });
 
-        const result = await response.json();
+       const text = await response.text();
+
+if(text.startsWith("SUCCESS")){
+
+    const memberId = text.split("|")[1];
+
+    alert("Admission Saved Successfully!\nMember ID: " + memberId);
+
+} else {
+    alert("Saving failed");
+}
 
         if(result.success){
 
