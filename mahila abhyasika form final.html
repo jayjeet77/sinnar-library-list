@@ -109,39 +109,64 @@
                     </div>
 
                     <table>
-                        <tr>
-                            <td class="label">जन्मतारीख</td>
-                            <td><input type="date" name="dob" required></td>
-                            <td class="label">संपर्क क्रमांक</td>
-                            <td><input type="tel" name="mobile" placeholder="९९xxxxxxxx" required maxlength="10" oninput="this.value=this.value.replace(/[^0-9०-९]/g,'')"></td>
-                        </tr>
-                        <tr><td class="label">पालकांचे नाव</td><td colspan="3"><input type="text" name="p_name" required></td></tr>
-                        <tr><td class="label">पालकांचा व्यवसाय</td><td colspan="3"><input type="text" name="p_occ" required></td></tr>
-                        <tr><td class="label">पालकांचा मोबाईल क्रमांक </td><td colspan="3"><input type="tel" name="p_mobile" placeholder="९९xxxxxxxx" required maxlength="10" oninput="this.value=this.value.replace(/[^0-9०-९]/g,'')"></td></tr>
-                        <tr><td class="label">सध्याचे शिक्षण</td><td colspan="3"><input type="text" name="edu" required></td></tr>
-                        <tr><td class="label">महाविद्यालय</td><td colspan="3"><input type="text" name="coll" required></td></tr>
-                        <tr><td class="label">कोणती परीक्षा देणार आहात </td><td colspan="3"><input type="text" name="purpose" required></td></tr>
-                        <tr>
-                            <td class="label">ओळखपत्र प्रकार</td>
-                            <td>
-                                <select name="id_type" required>
-                                    <option value="">निवडा</option>
-                                    <option value="Aadhaar">आधार कार्ड</option>
-                                    <option value="College">कॉलेज आयडी</option>
-                                    <option value="Other">इतर</option>
-                                </select>
-                            </td>
-                            <td class="label">ओळखपत्र क्रमांक</td>
-                            <td><input type="text" name="id_no" required></td>
-                        </tr>
-                        <tr>
-                            <td class="label">अपेक्षित वेळ</td>
-                            <td><input type="text" name="time" required></td>
-                            <td class="label">वापर  कालावधी (महिने)</td>
-                            <td><input type="text" name="duration" required></td>
-                        </tr>
-                    </table>
-
+    <tr>
+        <td class="label">पूर्ण नाव</td>
+        <td colspan="3"><input type="text" name="name" placeholder="आडनाव - नाव - वडिलांचे नाव" required></td>
+    </tr>
+    <tr>
+        <td class="label">पत्ता</td>
+        <td colspan="3"><input type="text" name="address" required></td>
+    </tr>
+    <tr>
+        <td class="label">जन्मतारीख</td>
+        <td><input type="date" name="dob" required></td>
+        <td class="label">संपर्क क्रमांक</td>
+        <td><input type="tel" name="mobile" placeholder="९९xxxxxxxx" required maxlength="10" oninput="this.value=this.value.replace(/[^0-9०-९]/g,'')"></td>
+    </tr>
+    <tr>
+        <td class="label">पालकांचे नाव</td>
+        <td colspan="3"><input type="text" name="p_name" required></td>
+    </tr>
+    <tr>
+        <td class="label">पालकांचा व्यवसाय</td>
+        <td colspan="3"><input type="text" name="p_occ" required></td>
+    </tr>
+    <tr>
+        <td class="label">पालकांचा मोबाईल</td>
+        <td colspan="3"><input type="tel" name="p_mobile" placeholder="९९xxxxxxxx" required maxlength="10" oninput="this.value=this.value.replace(/[^0-9०-९]/g,'')"></td>
+    </tr>
+    <tr>
+        <td class="label">सध्याचे शिक्षण</td>
+        <td colspan="3"><input type="text" name="edu" required></td>
+    </tr>
+    <tr>
+        <td class="label">महाविद्यालय</td>
+        <td colspan="3"><input type="text" name="coll" required></td>
+    </tr>
+    <tr>
+        <td class="label">कोणती परीक्षा देणार</td>
+        <td colspan="3"><input type="text" name="purpose" required></td>
+    </tr>
+    <tr>
+        <td class="label">ओळखपत्र प्रकार</td>
+        <td>
+            <select name="id_type" required>
+                <option value="">निवडा</option>
+                <option value="Aadhaar">आधार कार्ड</option>
+                <option value="College">कॉलेज आयडी</option>
+                <option value="Other">इतर</option>
+            </select>
+        </td>
+        <td class="label">ओळखपत्र क्रमांक</td>
+        <td><input type="text" name="id_no" required></td>
+    </tr>
+    <tr>
+        <td class="label">अपेक्षित वेळ</td>
+        <td><input type="text" name="time" required></td>
+        <td class="label">कालावधी (महिने)</td>
+        <td><input type="text" name="duration" required></td>
+    </tr>
+</table>
                     <div class="mt-4 text-xs font-bold italic">पुढील पानावर असलेले अभ्यासिकेचे सर्व नियम व अटी मी वाचल्या असून त्या मला मान्य आहेत.</div>
                     
                     <div class="flex justify-between mt-10">
