@@ -370,6 +370,10 @@
 </form>
 
 <script>
+// १. ग्लोबल व्हेरिएबल्स (येथे तुमची नवीन गुगल स्क्रिप्ट लिंक पेस्ट करा)
+const googleScriptUrl = "https://script.google.com/macros/s/AKfycbw_clcOwmSorYfagRphauErOqqv7ihkZch-qVw8_KrecLfzWwnIJeFOg8-j5RfPPaVL/exec"; 
+var currentLoggedUser = ""; 
+
 // सिस्टीम सुरू झाल्यावर आजची तारीख भरणे
 document.addEventListener("DOMContentLoaded", function() {
     const today = new Date();
@@ -377,52 +381,43 @@ document.addEventListener("DOMContentLoaded", function() {
     const month = String(today.getMonth() + 1).padStart(2, '0');
     const year = today.getFullYear();
     
-    // इनपुट्स आणि लेबल्स सेट करणे
     document.getElementById('form_current_date').innerText = `${day}/${month}/${year}`;
     document.getElementById('rcpt_date').innerText = `${day}/${month}/${year}`;
     
-    // पासून कॅलेंडरची डीफॉल्ट तारीख आजची सेट करणे
     const yyyy_mm_dd = `${year}-${month}-${day}`;
     document.getElementById('startDate').value = yyyy_mm_dd;
     
     calculateFees();
 });
 
-// १. फी आणि तारीख ऑटो-कॅल्क्युलेशन फंक्शन
+// २. फी आणि तारीख ऑटो-कॅल्क्युलेशन फंक्शन
 function calculateFees() {
     const durationInput = document.getElementById('form_duration');
     const duration = parseInt(durationInput ? durationInput.value : 0) || 0;
     const isRenewal = document.getElementById('is_renewal').value === "true";
     
-    // फी चे मूळ गणित
     let admFee = isRenewal ? 0 : 100;
     let idFee = isRenewal ? 0 : 25;
     let monthlyFee = (duration === 3) ? 500 : duration * 200;
 
-    // मुख्य फॉर्मवर अपडेट करणे
     document.getElementById('fee_adm').innerText = admFee.toFixed(2);
     document.getElementById('fee_id').innerText = idFee.toFixed(2);
     document.getElementById('fee_monthly').innerText = monthlyFee.toFixed(2);
     document.getElementById('fee_total').innerText = (admFee + idFee + monthlyFee).toFixed(2);
 
-    // पावतीवर अपडेट करणे
     document.getElementById('rcpt_fee_adm').innerText = admFee.toFixed(2);
     document.getElementById('rcpt_fee_id').innerText = idFee.toFixed(2);
     document.getElementById('rcpt_fee_monthly').innerText = monthlyFee.toFixed(2);
     document.getElementById('rcpt_fee_total').innerText = (admFee + idFee + monthlyFee).toFixed(2);
 
-    // तारीख कॅल्क्युलेशन लॉजिक (तुमच्या नवीन नियमानुसार)
     const startDateVal = document.getElementById('startDate').value;
     if (startDateVal && duration > 0) {
-        const joinDate = new Date(startDateVal); // 'पासून' तारीख
-        
-        // पर्यंत तारीख = 'पासून' महिन्याचा इंडेक्स + एकूण महिने आणि शेवटचा दिवस काढण्यासाठी '०' तारीख नियम
+        const joinDate = new Date(startDateVal);
         const expiryDate = new Date(joinDate.getFullYear(), joinDate.getMonth() + duration, 0);
         
-        const fDateStr = joinDate.toLocaleDateString('en-GB'); // DD/MM/YYYY फॉरमॅट
+        const fDateStr = joinDate.toLocaleDateString('en-GB'); 
         const tDateStr = expiryDate.toLocaleDateString('en-GB');
         
-        // फॉर्म आणि पावतीवर तारखा लॉक करणे
         document.getElementById('displayToDate').innerText = tDateStr;
         document.getElementById('rcpt_period').innerText = `${fDateStr} पासून ${tDateStr} पर्यंत`;
     } else {
@@ -431,24 +426,42 @@ function calculateFees() {
     }
 }
 
-// २. स्टाफ लॉगिन सुरक्षा
+// ३. गुगल शीटद्वारे कर्मचारी लॉगिन (Staff Login)
 function staffLogin() {
-    const user = document.getElementById('username').value;
-    const pass = document.getElementById('password').value;
-    if (user === "sinnar" && pass === "lib123") {
-        document.getElementById('loginSection').classList.add('hidden');
-        document.getElementById('staffControls').classList.remove('hidden');
-        document.getElementById('welcomeMsg').innerText = "👤 ऑपरेटर: " + user;
-    } else {
-        alert("चुकीचे युजरनेम किंवा पासवर्ड!");
+    const user = document.getElementById('username').value.trim();
+    const pass = document.getElementById('password').value.trim();
+    
+    if (!user || !pass) {
+        alert("कृपया युजरनेम आणि पासवर्ड टाका!");
+        return;
     }
-}
-function logout() {
-    document.getElementById('loginSection').classList.remove('hidden');
-    document.getElementById('staffControls').classList.add('hidden');
+
+    const script = document.createElement('script');
+    script.src = `${googleScriptUrl}?action=login&username=${encodeURIComponent(user)}&password=${encodeURIComponent(pass)}&callback=handleLoginResponse`;
+    document.body.appendChild(script);
 }
 
-// ३. गुगल शीटमध्ये डेटा पाठवणे (Save Data)
+function handleLoginResponse(response) {
+    if (response === "success") {
+        currentLoggedUser = document.getElementById('username').value;
+        document.getElementById('loginSection').classList.add('hidden');
+        document.getElementById('staffControls').classList.remove('hidden');
+        document.getElementById('welcomeMsg').innerText = "👤 ऑपरेटर: " + currentLoggedUser;
+        alert("लॉगिन यशस्वी झाले!");
+    } else {
+        alert("चुकीचे युजरनेम किंवा पासवर्ड! (गुगल शीटमधील 'Staff' टॅब तपासा)");
+    }
+}
+
+function logout() {
+    currentLoggedUser = "";
+    document.getElementById('loginSection').classList.remove('hidden');
+    document.getElementById('staffControls').classList.add('hidden');
+    document.getElementById('username').value = "";
+    document.getElementById('password').value = "";
+}
+
+// ४. गुगल शीटमध्ये डेटा सुरक्षित करणे (Save Data)
 function saveToSheet() {
     const form = document.getElementById('admissionForm');
     if (!form.checkValidity()) {
@@ -460,63 +473,34 @@ function saveToSheet() {
     saveBtn.innerHTML = "⏳ सेव्ह होत आहे...";
     saveBtn.disabled = true;
 
-    // सर्व फॉर्म डेटा एकत्र करणे
     const formData = new FormData(form);
     const params = new URLSearchParams();
     formData.forEach((value, key) => params.append(key, value));
     
-    // तारीख आणि बॅचचे अतिरिक्त पॅरामीटर्स जोडणे
+    params.append('action', 'saveData');
     params.append('to_date', document.getElementById('displayToDate').innerText);
     params.append('total_amount', document.getElementById('fee_total').innerText);
+    params.append('staff_user', currentLoggedUser);
 
-    // तुमची गुगल वेब ॲप URL (येथे तुमची लिंक पेस्ट करा)
-    const googleScriptUrl = "YOUR_GOOGLE_SCRIPT_WEB_APP_URL"; 
-
-    // JSONP द्वारे डेटा पाठवणे (CORS एरर टाळण्यासाठी)
     const script = document.createElement('script');
     script.src = `${googleScriptUrl}?${params.toString()}&callback=handleSaveResponse`;
     document.body.appendChild(script);
 }
-// फोटो अपलोड आणि प्रिव्ह्यू दाखवण्याचे फंक्शन
-function previewImage(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            // चौकोनात फोटो दाखवणे आणि आतील मजकूर काढणे
-            const previewBox = document.getElementById('photoPreview');
-            if(previewBox) {
-                previewBox.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
-            }
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
-}
 
-// चौकोनावर क्लिक केल्यावर फाईल गॅलरी उघडणे
-document.addEventListener("DOMContentLoaded", function() {
-    const photoBox = document.getElementById('photoPreview');
-    if(photoBox) {
-        photoBox.addEventListener("click", function() {
-            document.getElementById('photoInput').click();
-        });
-    }
-});
-// ४. सेव्ह झाल्यानंतरचा गुगल शीटचा प्रतिसाद (Response)
 function handleSaveResponse(response) {
     const saveBtn = document.getElementById('saveBtn');
+    saveBtn.innerHTML = "💾 सेव्ह डेटा";
+    saveBtn.disabled = false;
     
     if (response.result === "success") {
-        // सिस्टीम कडून मिळालेला नोंदणी आणि पावती क्रमांक दाखवणे
         document.getElementById('displayRegNo').innerText = response.regNo;
         document.getElementById('rcpt_reg_no').innerText = response.regNo;
         document.getElementById('displayReceiptNoTop').innerText = response.receiptNo;
         document.getElementById('displayReceiptNo').innerText = response.receiptNo;
         
-        // पावतीवरील नाव आणि वेळ अपडेट करणे
         document.getElementById('rcpt_name').innerText = document.getElementsByName('full_name')[0].value;
         document.getElementById('rcpt_time').innerText = document.getElementsByName('time_slot')[0].value;
         
-        // कंट्रोल बटणे चालू करणे
         document.getElementById('downloadFormBtn').classList.remove('hidden');
         document.getElementById('downloadReceiptBtn').classList.remove('hidden');
         document.getElementById('receipt-capture-area').classList.remove('no-print');
@@ -525,9 +509,6 @@ function handleSaveResponse(response) {
     } else {
         alert("डेटा सेव्ह करताना त्रुटी आली! गुगल स्क्रिप्ट तपासा.");
     }
-    
-    saveBtn.innerHTML = "💾 सेव्ह डेटा";
-    saveBtn.disabled = false;
 }
 
 // ५. जुनी विद्यार्थिनी शोधणे (Search Member for Renewal)
@@ -535,27 +516,21 @@ function searchMember() {
     const regNo = document.getElementById('searchRegNo').value.trim();
     if (!regNo) { alert("कृपया नोंदणी क्रमांक टाका!"); return; }
     
-    const googleScriptUrl = "https://script.google.com/macros/s/AKfycbxQyhU-0rWZnaqh_uU7Hm8nc52TIzR7HrKfl66IfK11myIHSnxkTnOYfg06h_ZMctB6/exec";
-    
     const script = document.createElement('script');
     script.src = `${googleScriptUrl}?action=search&regNo=${regNo}&callback=handleSearchResponse`;
     document.body.appendChild(script);
 }
 
-// ६. सर्च रिस्पॉन्स हाताळणे
 function handleSearchResponse(response) {
     if (response.result === "found") {
-        // फॉर्म नूतनीकरण मोडवर सेट करणे
         document.getElementById('is_renewal').value = "true";
         document.getElementById('reg_no_input').value = response.data.regNo;
         document.getElementById('orig_join_date_input').value = response.data.originalJoinDate;
         
-        // स्क्रीनवर नोंदणी आणि मूळ तारीख दाखवणे
         document.getElementById('displayRegNo').innerText = response.data.regNo;
         document.getElementById('rcpt_reg_no').innerText = response.data.regNo;
         document.getElementById('displayOrigJoinDate').innerText = response.data.originalJoinDate;
         
-        // जुनी माहिती फॉर्ममध्ये स्वयंचलित भरणे
         document.getElementsByName('full_name')[0].value = response.data.fullName;
         document.getElementsByName('address')[0].value = response.data.address;
         document.getElementsByName('pincode')[0].value = response.data.pincode;
@@ -571,11 +546,10 @@ function handleSearchResponse(response) {
         document.getElementsByName('id_no')[0].value = response.data.idNo;
         document.getElementsByName('time_slot')[0].value = response.data.timeSlot;
         
-        // इतिहास तक्ता अपडेट करणे
         const tbody = document.getElementById('historyTableBody');
-        if (response.data.history && response.data.history.length > 0) {
+        if (response.history && response.history.length > 0) {
             let rowsHtml = "";
-            response.data.history.forEach((row, idx) => {
+            response.history.forEach((row, idx) => {
                 rowsHtml += `<tr class='text-xs'>
                     <td>${idx + 1}</td>
                     <td>${row.date}</td>
@@ -586,10 +560,9 @@ function handleSearchResponse(response) {
             });
             tbody.innerHTML = rowsHtml;
         } else {
-            tbody.innerHTML = "<tr><td colspan='5' class='p-2 text-center text-gray-400 italic'>इतिहास उपलब्ध नाही</td></tr>";
+            tbody.innerHTML = "<tr><td colspan='5' class='p-2 text-center text-gray-400 italic text-xs'>कोणताही इतिहास उपलब्ध नाही</td></tr>";
         }
         
-        // फी पुन्हा मोजणे (नूतनीकरणामुळे ॲडमिशन शुल्क 0 होईल)
         calculateFees();
         alert("जुन्या विद्यार्थिनीचा डेटा मिळाला आहे! नूतनीकरणासाठी नवीन कालावधी निवडा.");
     } else {
@@ -597,7 +570,30 @@ function handleSearchResponse(response) {
     }
 }
 
-// ७. संपूर्ण अर्ज डाउनलोड करणे (A4 आकाराची २ पाने)
+// ६. फोटो अपलोड प्रिव्ह्यू फंक्शन्स
+function previewImage(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            const previewBox = document.getElementById('photoPreview');
+            if(previewBox) {
+                previewBox.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
+            }
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const photoBox = document.getElementById('photoPreview');
+    if(photoBox) {
+        photoBox.addEventListener("click", function() {
+            document.getElementById('photoInput').click();
+        });
+    }
+});
+
+// ७. PDF डाऊनलोड फंक्शन्स
 async function generateFormPDF() {
     const element = document.getElementById('capture-area');
     const opt = {
@@ -610,7 +606,6 @@ async function generateFormPDF() {
     await html2pdf().set(opt).from(element).save();
 }
 
-// ८. स्वतंत्र पावती डाउनलोड करणे (A5 आकाराची कमी उंचीची पावती)
 async function generateReceiptPDF() {
     const element = document.getElementById('receipt-capture-area');
     const opt = {
@@ -618,7 +613,7 @@ async function generateReceiptPDF() {
         filename: 'Abhyasika_Fees_Receipt.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2, useCORS: true },
-        jsPDF: { unit: 'mm', format: [210, 148], orientation: 'portrait' } // अचूक उभ्या अर्ध-पानाची साईझ
+        jsPDF: { unit: 'mm', format: [210, 148], orientation: 'portrait' }
     };
     await html2pdf().set(opt).from(element).save();
 }
