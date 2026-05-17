@@ -113,9 +113,9 @@
     <input type="hidden" name="reg_no_input" id="reg_no_input" value="">
     <input type="hidden" name="orig_join_date_input" id="orig_join_date_input" value="">
 
-    <div id="capture-area" class="a4-container">
+    <div id="capture-area" style="width: 210mm; margin: 0 auto; background: white;">
         
-        <div class="a4-page mb-4">
+        <div class="a4-page" style="width: 210mm; background: white; padding: 10mm; box-sizing: border-box; page-break-after: always;">
             <div class="outer-border">
                 <div class="inner-border">
                     <div class="flex justify-between items-center border-b-2 border-black pb-2 mb-3">
@@ -126,11 +126,12 @@
                             <h2 class="text-base font-bold bg-slate-800 text-white px-4 py-0.5 rounded mt-1.5 inline-block">महिला अभ्यासिका प्रवेश अर्ज</h2>
                         </div>
                         <div id="photoPreview" class="w-28 h-32 border-2 border-dashed border-gray-400 flex items-center justify-center text-[10px] text-gray-400 text-center cursor-pointer" title="फोटो अपलोड करण्यासाठी येथे क्लिक करा">
-    फोटो चिकटवावा
-</div>
-<input type="file" id="photoInput" accept="image/*" class="hidden" onchange="previewImage(this)">
+                            फोटो चिकटवावा
+                        </div>
+                        <input type="file" id="photoInput" accept="image/*" class="hidden" onchange="previewImage(this)">
                     </div>
-<table>
+
+                    <table>
                         <tr>
                             <td class="label" style="width: 20%;">विद्यार्थिनीचे पूर्ण नाव</td>
                             <td colspan="3"><input type="text" name="full_name" required placeholder="पहिले नाव, वडिलांचे नाव, आडनाव"></td>
@@ -202,8 +203,8 @@
                         </tr>
                     </table>
 
-                    <h3 class="font-bold text-xs bg-gray-100 p-1 mb-1 border border-black">शुल्क तपशील (रुपये)</h3>
-                    <table class="mb-4">
+                    <h3 class="font-bold text-xs bg-gray-100 p-1 mb-1 border border-black mt-2">शुल्क तपशील (रुपये)</h3>
+                    <table class="mb-2">
                         <tr class="bg-gray-50 text-center font-bold text-xs">
                             <td>नोंदणी शुल्क</td>
                             <td>ओळखपत्र शुल्क</td>
@@ -218,9 +219,9 @@
                         </tr>
                     </table>
 
-                   <p class="text-xs mb-4 mt-2">मी अभ्यासिकेचे सर्व नियम व अटी वाचल्या असून त्या मला पूर्णपणे मान्य आहेत. नियमांचे उल्लंघन केल्यास माझे सभासदत्व रद्द होईल याची मला जाणीव आहे.</p>
+                    <p class="text-xs mb-2 mt-1">मी अभ्यासिकेचे सर्व नियम व अटी वाचल्या असून त्या मला पूर्णपणे मान्य आहेत. नियमांचे उल्लंघन केल्यास माझे सभासदत्व रद्द होईल याची मला जाणीव आहे.</p>
 
-                    <div class="flex justify-between items-end mt-6 text-xs font-bold px-2">
+                    <div class="flex justify-between items-end mt-4 text-xs font-bold px-2">
                         <div>
                             <p>दिनांक: <span id="form_current_date">____/____/______</span></p>
                         </div>
@@ -236,7 +237,7 @@
                         </div>
                     </div>
 
-                    <div class="mt-auto bg-slate-50 p-3 border-2 border-black space-y-2">
+                    <div style="margin-top: 15px !important; padding: 6px 10px !important;" class="bg-slate-50 border-2 border-black space-y-1">
                         <h3 class="font-bold text-xs mb-1 text-center bg-slate-200 py-0.5 border border-black">फक्त कार्यालयीन वापरासाठी</h3>
                         <div class="flex justify-between items-center px-2">
                             <p>नोंदणी क्रमांक: <span id="displayRegNo" class="office-box">_ _ _ _ _ _ _ _</span></p>
@@ -245,7 +246,7 @@
                         <div class="flex justify-start items-center px-2 mt-1">
                             <p>मूळ प्रवेश दिनांक: <span id="displayOrigJoinDate" class="office-box text-green-700">_ _ _ _ _ _ _ _</span></p>
                         </div>
-                        <div class="flex justify-between items-end mt-4 text-xs font-bold pt-2">
+                        <div class="flex justify-between items-end mt-2 text-xs font-bold pt-1">
                             <p>प्रवेश मंजूर / नाकारला</p>
                             <p class="text-center">________________<br>अभ्यासिका प्रमुख</p>
                             <p class="text-center">________________<br>ग्रंथपाल</p>
@@ -255,7 +256,7 @@
             </div>
         </div>
 
-        <div class="a4-page">
+        <div class="a4-page" style="width: 210mm; background: white; padding: 10mm; box-sizing: border-box; page-break-before: always;">
             <div class="outer-border">
                 <div class="inner-border">
                     <h2 class="text-center font-bold text-base bg-black text-white py-1 rounded mb-3">अभ्यासिकेचे नियम व नियमावली (विद्यार्थिनीसाठी मार्गदर्शक तत्त्वे)</h2>
@@ -267,7 +268,7 @@
                         <div>४. मोबाईल फोन पूर्णपणे सायलेंट किंवा स्वीच ऑफ ठेवावा. हॉलमध्ये फोनवर बोलण्यास सक्त मनाई आहे.</div>
                         <div>५. अभ्यासिकेमध्ये कोणत्याही प्रकारचे खाणे, नाश्ता किंवा चहा-कॉफी घेण्यास सक्त मनाई आहे.</div>
                         <div>६. वाचनालयाच्या मालमत्तेचे (टेबल, खुर्ची, लाईट्स, पंखे) नुकसान होणार नाही याची काळजी घ्यावी.</div>
-                        <div>७. कोणतीही तोडफोड किंवा नुकसान केल्यास संबंधित विद्यार्थिनीकडून नुकसानभरपाई वसूल केली जाईल.</div>
+                        <div>७. कोणतीही toडफोड किंवा नुकसान केल्यास संबंधित विद्यार्थिनीकडून नुकसानभरपाई वसूल केली जाईल.</div>
                         <div>८. स्वतःचे मौल्यवान सामान, पुस्तके, लॅपटॉप याची जबाबदारी सर्वस्वी विद्यार्थिनीची राहील.</div>
                         <div>९. अभ्यासिकेत जागा राखून ठेवता येणार नाही. रिकाम्या जागेवर दुसऱ्या विद्यार्थिनीला बसण्याचा अधिकार असेल.</div>
                         <div>१०. इतर विद्यार्थिनींना अभ्यासात अडथळा येईल असे कोणतेही वर्तन खपवून घेतले जाणार नाही.</div>
@@ -284,23 +285,23 @@
                         <div>२१. प्रवेश अर्जासोबत आधार कार्ड आणि कॉलेज/ओळखपत्राची छायांकित प्रत जोडणे आवश्यक आहे.</div>
                         <div>२२. अर्जावर दिलेला मोबाईल क्रमांक चालू असणे गरजेचे आहे, जेणेकरून सूचना पाठवता येतील.</div>
                         <div>२३. शासकीय सुट्ट्यांच्या दिवशी अभ्यासिकेच्या वेळेत बदल करण्याचे अधिकार प्रशासनाकडे राहतील.</div>
-                        <div>२४. विद्यार्थिनीने येताना व जाताना हजेरी पुस्तिकेत (Register) नोंद करणे आवश्यक आहे.</div>
+                        <div> २४. विद्यार्थिनीने येताना व जाताना हजेरी पुस्तिकेत (Register) नोंद करणे आवश्यक आहे.</div>
                         <div>२५. सुरक्षिततेच्या कारणास्तव अभ्यासिकेचा परिसर सीसीटीव्ही (CCTV) देखरेखीखाली आहे.</div>
                         <div>२६. अभ्यास हॉलमधील इंटरनेट/वायफायचा वापर फक्त शैक्षणिक कामासाठीच करावा.</div>
                         <div>२७. बंदी घातलेल्या वेबसाईट किंवा गैरवापर करताना आढळल्यास कायदेशीर कारवाई केली जाईल.</div>
                         <div>२८. कोणत्याही विद्यार्थिनीला वैयक्तिक कारणास्तव जागा बदलून हवी असल्यास प्रशासनाची परवानगी घ्यावी.</div>
-                        <div>२९. लॉकर सुविधेचा वापर करत असल्यास त्याची चावी सांभाळण्याची जबाबदारी स्वतःची राहील.</div>
+                        <div>२९. लॉकर सुविधेचा वापर करत असल्यास त्याची चावीसांभाळण्याची जबाबदारी स्वतःची राहील.</div>
                         <div>३०. ग्रंथालयातील मूळ संदर्भ पुस्तके अभ्यास हॉलच्या बाहेर घेऊन जाण्यास सक्त मनाई आहे.</div>
                         <div>३१. वेळोवेळी नियमांमध्ये बदल करण्याचे सर्व अधिकार वाचनालय व्यवस्थापनाकडे सुरक्षित आहेत.</div>
                         <div>३२. प्रत्येक विद्यार्थिनीने सुसंस्कृत आणि शिस्तप्रिय वातावरणाचा आदर करावा.</div>
                     </div>
 
-                    <div class="flex justify-between items-center mt-6 text-xs font-bold border-b border-black pb-4">
+                    <div class="flex justify-between items-center mt-4 text-xs font-bold border-b border-black pb-2">
                         <p class="text-center">मी वरील सर्व ३२ नियमांचे पालन करण्यास बांधील आहे.<br><br>____________________<br>विद्यार्थिनीची स्वाक्षरी</p>
                         <p class="text-center"><br><br>____________________<br>पालकांची स्वाक्षरी</p>
                     </div>
 
-                    <div class="mt-4 border border-black p-2 rounded bg-slate-50">
+                    <div class="mt-3 border border-black p-2 rounded bg-slate-50">
                         <h3 class="text-xs font-bold mb-1 border-b border-black pb-0.5 text-center">मागील नूतनीकरण इतिहास (Office Use Only)</h3>
                         <table class="w-full bg-white text-center">
                             <thead>
@@ -322,8 +323,8 @@
                 </div>
             </div>
         </div>
+        
     </div>
-
     <div id="receipt-capture-area" class="mt-6 no-print" style="max-width: 148mm; margin: 0 auto;">
         <div class="receipt-page">
             <div class="outer-border">
@@ -636,33 +637,26 @@ document.addEventListener("DOMContentLoaded", function() {
     async function generateFormPDF() {
     const element = document.getElementById('capture-area');
     
-    // 🛑 कडक तपासणी: डेटा सेव्ह नसेल तर फंक्शन इथेच थांबेल
     if (!isDataSavedSuccessfully) {
         alert("❌ आधी 'Save Data' किंवा 'नूतनीकरण करा' बटन दाबून डेटा सुरक्षित सेव्ह करा, त्याशिवाय अर्ज डाऊनलोड करता येणार नाही!");
         return; 
     }
     
-    // 🎯 उजवीकडे बाहेर जाऊ नये म्हणून पीडीएफ काढण्यापूर्वी विड्थ कडक लॉक करणे
-    element.style.width = '210mm'; 
-    element.style.minWidth = '210mm';
+    // 🎯 उजवीकडे बाहेर जाऊ नये म्हणून विड्थ कडक लॉक केली
+    element.style.width = '210mm';
 
     const opt = {
-        margin: [10, 5, 10, 5], // वर आणि खाली १० मिमी, डाव्या-उजव्या कडा सुरक्षित ठेवण्यासाठी ५ मिमी मार्जिन
+        margin: 0, // कंटेनर आणि पेज दोन्ही २१० मिमी चे असल्यामुळे मार्जिन शून्य परफेक्ट आहे
         filename: 'Abhyasika_Admission_Form.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { 
             scale: 2, 
             useCORS: true, 
             logging: false,
-            width: 794 // A4 आकारासाठीची अचूक पिक्सेल विड्थ (उजवीकडे बाहेर जाणे १००% थांबवते)
+            width: 794 // A4 आकारासाठीची जागतिक अचूक पिक्सेल विड्थ (उजवीकडे कटणे १००% बंद)
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        
-        // 🎯 कोरे पान घालवणारा आणि दुसऱ्या पानावरील `div` ला अचूक ब्रेक करणारा नियम
-        pagebreak: { 
-            mode: ['css', 'legacy'], 
-            before: '.a4-container > div:nth-of-type(2)' 
-        }
+        pagebreak: { mode: ['css', 'legacy'] } // HTML मधील page-break-after/before ला फॉलो करणारा नैसर्गिक नियम
     };
     
     try {
@@ -670,12 +664,9 @@ document.addEventListener("DOMContentLoaded", function() {
     } catch (error) {
         console.error("PDF जनरेशनमध्ये त्रुटी:", error);
     } finally {
-        // पीडीएफ डाऊनलोड झाल्यावर स्क्रीनवरील लेआउट पुन्हा मूळ स्थितीत आणणे
         element.style.width = ''; 
-        element.style.minWidth = '';
     }
 }
-
 // स्वतंत्र पावती डाउनलोड करणे (अचूक A5 आकारात सेट)
 async function generateReceiptPDF() {
     if (!isDataSavedSuccessfully) {
