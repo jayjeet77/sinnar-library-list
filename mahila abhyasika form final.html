@@ -15,16 +15,24 @@
 /* पीडीएफ मधील अतिरिक्त कोरे पान काढण्यासाठी */
 .a4-page {
     width: 210mm;
-    height: 296mm; /* उंची किंचित कमी केली आहे जेणेकरून ओव्हरफ्लो होणार नाही */
+    height: 295mm; /* १ मिमी उंची आणखी सुरक्षित केली */
     background: white;
-    padding: 10mm;
+    padding: 8mm 10mm; /* वरची आणि खालची पॅडिंग १० मिमी वरून ८ मिमी केली (जागा मोकळी झाली) */
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
-    page-break-after: always; /* प्रत्येक पानानंतर नवीन पान स्पष्टपणे सुरू होईल */
+    page-break-after: always; 
     page-break-inside: avoid;
 }
+/* स्वाक्षरी आणि कार्यालयीन चौकट यामधील अनावश्यक जागा कमी करणे */
+.inner-border > div.flex.justify-between.items-end.mt-6 {
+    margin-top: 10px !important; /* स्वाक्षरीच्या वरची मोठी स्पेस कमी केली */
+}
 
+.mt-auto.bg-slate-50.p-3.border-2.border-black {
+    margin-top: 10px !important; /* कार्यालयीन चौकटीच्या वरची मोकळी जागा कमी केली */
+    padding: 6px 10px !important; /* चौकटीच्या आतली अनावश्यक स्पेस दाबून बारीक केली */
+}
 /* शेवटच्या पानावरील ब्रेक टाळण्यासाठी */
 .a4-page:last-of-type {
     page-break-after: avoid;
