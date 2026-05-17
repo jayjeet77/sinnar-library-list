@@ -501,6 +501,8 @@ function handleSaveResponse(response) {
     saveBtn.disabled = false;
     
     if (response.result === "success") {
+        isDataSavedSuccessfully = true; 
+        alert("डेटा यशस्वीरित्या सेव्ह झाला आहे. आता तुम्ही पीडीएफ डाऊनलोड करू शकता.");
         document.getElementById('displayRegNo').innerText = response.regNo;
         document.getElementById('rcpt_reg_no').innerText = response.regNo;
         document.getElementById('displayReceiptNoTop').innerText = response.receiptNo;
@@ -607,8 +609,14 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // ७. PDF डाऊनलोड फंक्शन्स
+    let isDataSavedSuccessfully = false; // डेटा सेव्ह झाला आहे की नाही हे तपासण्यासाठी
 async function generateFormPDF() {
     const element = document.getElementById('capture-area');
+    // 🛑 कडक तपासणी: डेटा सेव्ह नसेल तर फंक्शन इथेच थांबेल
+    if (!isDataSavedSuccessfully) {
+        alert("❌ आधी 'Save Data' किंवा 'नूतनीकरण करा' बटन दाबून डेटा सुरक्षित सेव्ह करा, त्याशिवाय अर्ज डाऊनलोड करता येणार नाही!");
+        return; // पीडीएफ तयार होणे इथेच थांबेल
+    }
     const opt = {
         margin: 0,
         filename: 'Abhyasika_Admission_Form.pdf',
@@ -623,6 +631,10 @@ async function generateFormPDF() {
 
 // स्वतंत्र पावती डाउनलोड करणे (अचूक A5 आकारात सेट)
 async function generateReceiptPDF() {
+    if (!isDataSavedSuccessfully) {
+        alert("❌ आधी नूतनीकरणाचा डेटा सेव्ह करा, त्याशिवाय पावती डाऊनलोड करता येणार नाही!");
+        return; 
+    }
     const element = document.getElementById('receipt-capture-area');
     
     // पीडीएफ जनरेट करण्यापूर्वी 'no-print' आणि 'a4-container' चे क्लेश काढण्यासाठी 
