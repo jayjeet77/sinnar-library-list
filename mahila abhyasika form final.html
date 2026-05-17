@@ -15,14 +15,16 @@
 /* पीडीएफ मधील अतिरिक्त कोरे पान काढण्यासाठी */
 .a4-page {
     width: 210mm;
-    height: 295mm; /* १ मिमी उंची आणखी सुरक्षित केली */
+    min-height: 290mm; /* height ऐवजी min-height वापरली, जेणेकरून कोरे पान येणार नाही */
     background: white;
-    padding: 8mm 10mm; /* वरची आणि खालची पॅडिंग १० मिमी वरून ८ मिमी केली (जागा मोकळी झाली) */
+    padding: 10mm;
     box-sizing: border-box;
     position: relative;
-    overflow: hidden;
-    page-break-after: always; 
-    page-break-inside: avoid;
+    /* page-break-after आणि overflow पूर्णपणे काढून टाकले आहेत */
+}
+        /* पहिल्या पानावरील डेटा आणि दुसऱ्या पानावरील ३२ नियम यांच्यात नैसर्गिक ब्रेक मिळण्यासाठी */
+.rules-grid {
+    page-break-before: always !important; /* नियम नेहमी स्वतःहून नवीन पानावर (Page 2) सुरू होतील */
 }
 /* स्वाक्षरी आणि कार्यालयीन चौकट यामधील अनावश्यक जागा कमी करणे */
 .inner-border > div.flex.justify-between.items-end.mt-6 {
