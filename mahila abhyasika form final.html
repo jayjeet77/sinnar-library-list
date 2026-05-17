@@ -632,8 +632,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // ७. PDF डाऊनलोड फंक्शन्स
-    let isDataSavedSuccessfully = false; // डेटा सेव्ह झाला आहे की नाही हे तपासण्यासाठी
-async function generateFormPDF() {
+    let isDataSavedSuccessfully = false; // डेटा सेव्ह झाला आहे की नाही हे तपासण्यासाठीasync function generateFormPDF() {
     const element = document.getElementById('capture-area');
     
     // 🛑 कडक तपासणी: डेटा सेव्ह नसेल तर फंक्शन इथेच थांबेल
@@ -642,20 +641,38 @@ async function generateFormPDF() {
         return; 
     }
     
+    // 🎯 उजवीकडे बाहेर जाऊ नये म्हणून पीडीएफ काढण्यापूर्वी विड्थ कडक लॉक करणे
+    element.style.width = '210mm'; 
+    element.style.minWidth = '210mm';
+
     const opt = {
-        margin: [5, 5, 5, 5], // कडांमधून मजकूर कट होऊ नये म्हणून ५ मिमी मार्जिन
+        margin: [10, 5, 10, 5], // वर आणि खाली १० मिमी, डाव्या-उजव्या कडा सुरक्षित ठेवण्यासाठी ५ मिमी मार्जिन
         filename: 'Abhyasika_Admission_Form.pdf',
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, logging: false },
+        html2canvas: { 
+            scale: 2, 
+            useCORS: true, 
+            logging: false,
+            width: 794 // A4 आकारासाठीची अचूक पिक्सेल विड्थ (उजवीकडे बाहेर जाणे १००% थांबवते)
+        },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         
-        // 🎯 कोरे पान घालवणारा आणि तक्ता व्यवस्थित २ पानांत तोडणारा अचूक नियम
+        // 🎯 कोरे पान घालवणारा आणि दुसऱ्या पानावरील `div` ला अचूक ब्रेक करणारा नियम
         pagebreak: { 
-            mode: ['css', 'legacy'], // 'avoid-all' काढून टाकला, ज्यामुळे नियम व्यवस्थित तुटून दुसऱ्या पानावर बसतील
-            before: '.rules-grid'    // ३२ नियम नेहमी नव्या कोऱ्या दुसऱ्या पानाव्यतिरिक्त कुठेही जाणार नाहीत
+            mode: ['css', 'legacy'], 
+            before: '.a4-container > div:nth-of-type(2)' 
         }
     };
-    await html2pdf().set(opt).from(element).save();
+    
+    try {
+        await html2pdf().set(opt).from(element).save();
+    } catch (error) {
+        console.error("PDF जनरेशनमध्ये त्रुटी:", error);
+    } finally {
+        // पीडीएफ डाऊनलोड झाल्यावर स्क्रीनवरील लेआउट पुन्हा मूळ स्थितीत आणणे
+        element.style.width = ''; 
+        element.style.minWidth = '';
+    }
 }
 
 // स्वतंत्र पावती डाउनलोड करणे (अचूक A5 आकारात सेट)
