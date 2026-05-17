@@ -497,35 +497,50 @@ function saveToSheet() {
 
 function handleSaveResponse(response) {
     const saveBtn = document.getElementById('saveBtn');
-    saveBtn.innerHTML = "💾 सेव्ह डेटा";
-    saveBtn.disabled = false;
     
     if (response.result === "success") {
         isDataSavedSuccessfully = true; 
+        
+        // 🛑 डबल एंट्री रोखण्यासाठी बटन लॉक (Disable) करणे
+        saveBtn.innerHTML = "✅ डेटा सेव्ह झाला आहे";
+        saveBtn.disabled = true;
+        saveBtn.style.backgroundColor = "#cccccc"; // बटनाचा रंग राखाडी करणे
+        saveBtn.style.cursor = "not-allowed";
+        
         alert("डेटा यशस्वीरित्या सेव्ह झाला आहे. आता तुम्ही पीडीएफ डाऊनलोड करू शकता.");
+        
+        // नोंदणी आणि पावती क्रमांक सेट करणे
         document.getElementById('displayRegNo').innerText = response.regNo;
         document.getElementById('rcpt_reg_no').innerText = response.regNo;
         document.getElementById('displayReceiptNoTop').innerText = response.receiptNo;
         document.getElementById('displayReceiptNo').innerText = response.receiptNo;
         
         // थेट गुगल शीट कडून मिळालेले शुद्ध नाव पावतीवर दाखवणे
-if (response.data && response.data.fullName) {
-    document.getElementById('rcpt_name').innerText = response.data.fullName.toString().trim();
-} else {
-    document.getElementById('rcpt_name').innerText = document.getElementsByName('full_name')[0].value.toString().trim();
-}
+        if (response.data && response.data.fullName) {
+            document.getElementById('rcpt_name').innerText = response.data.fullName.toString().trim();
+        } else {
+            document.getElementById('rcpt_name').innerText = document.getElementsByName('full_name')[0].value.toString().trim();
+        }
+        
         document.getElementById('rcpt_time').innerText = document.getElementsByName('time_slot')[0].value;
         
+        // डाऊनलोड बटने दृश्यमान (Show) करणे
         document.getElementById('downloadFormBtn').classList.remove('hidden');
         document.getElementById('downloadReceiptBtn').classList.remove('hidden');
         document.getElementById('receipt-capture-area').classList.remove('no-print');
         
         alert(`डेटा यशस्वीरित्या सेव्ह झाला!\nनोंदणी क्र: ${response.regNo}\nपावती क्र: ${response.receiptNo}`);
     } else {
+        // जर एरर आली, तरच बटन पुन्हा दाबण्यासाठी मोकळे ठेवणे
+        isDataSavedSuccessfully = false;
+        saveBtn.innerHTML = "💾 सेव्ह डेटा";
+        saveBtn.disabled = false;
+        saveBtn.style.backgroundColor = ""; // मूळ रंग परत देणे
+        saveBtn.style.cursor = "pointer";
+        
         alert("डेटा सेव्ह करताना त्रुटी आली! गुगल स्क्रिप्ट तपासा.");
     }
 }
-
 // ५. जुनी विद्यार्थिनी शोधणे (Search Member for Renewal)
 function searchMember() {
     const regNo = document.getElementById('searchRegNo').value.trim();
