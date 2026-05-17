@@ -615,8 +615,8 @@ async function generateFormPDF() {
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2, useCORS: true },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        // कोरे पान आणि ओव्हरफ्लो टाळण्यासाठी खालील मोड बंधनकारक आहे
-        pagebreak: { mode: ['css', 'legacy'] }
+        // ⭐ कोरे पान येणे थांबवणारा कडक नियम (Pagebreak Mode)
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
     };
     await html2pdf().set(opt).from(element).save();
 }
