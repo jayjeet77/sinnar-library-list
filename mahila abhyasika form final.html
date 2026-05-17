@@ -47,7 +47,7 @@
         input, select { border: none; outline: none; border-bottom: 1px dashed #666; background: transparent; width: 100%; padding: 2px; }
         table { width: 100%; border-collapse: collapse; margin-top: 8px; }
         table, td, th { border: 1px solid black; }
-        td, th { padding: 5px; font-size: 13px; }
+        td, th { padding: 4px; font-size: 13px; }
         .label { font-weight: 700; background-color: #f9fafb; width: 22%; font-size: 13px; text-align: left; }
         
         .rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 11px; line-height: 1.2; }
@@ -55,7 +55,7 @@
         /* कार्यालयीन डेटासाठी स्पष्ट बॉर्डर असलेले चौकोन (Boxes) */
         .office-box { 
             border: 2px solid #000; 
-            padding: 4px 10px; 
+            padding: 2px 6px; 
             display: inline-block; 
             min-width: 35mm; 
             font-weight: bold; 
@@ -506,7 +506,12 @@ function handleSaveResponse(response) {
         document.getElementById('displayReceiptNoTop').innerText = response.receiptNo;
         document.getElementById('displayReceiptNo').innerText = response.receiptNo;
         
-        document.getElementById('rcpt_name').innerText = document.getElementsByName('full_name')[0].value;
+        // थेट गुगल शीट कडून मिळालेले शुद्ध नाव पावतीवर दाखवणे
+if (response.data && response.data.fullName) {
+    document.getElementById('rcpt_name').innerText = response.data.fullName.toString().trim();
+} else {
+    document.getElementById('rcpt_name').innerText = document.getElementsByName('full_name')[0].value.toString().trim();
+}
         document.getElementById('rcpt_time').innerText = document.getElementsByName('time_slot')[0].value;
         
         document.getElementById('downloadFormBtn').classList.remove('hidden');
@@ -609,7 +614,9 @@ async function generateFormPDF() {
         filename: 'Abhyasika_Admission_Form.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2, useCORS: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        // कोरे पान आणि ओव्हरफ्लो टाळण्यासाठी खालील मोड बंधनकारक आहे
+        pagebreak: { mode: ['css', 'legacy'] }
     };
     await html2pdf().set(opt).from(element).save();
 }
