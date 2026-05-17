@@ -23,9 +23,7 @@
     /* page-break-after आणि overflow पूर्णपणे काढून टाकले आहेत */
 }
         /* पहिल्या पानावरील डेटा आणि दुसऱ्या पानावरील ३२ नियम यांच्यात नैसर्गिक ब्रेक मिळण्यासाठी */
-.rules-grid {
-    page-break-before: always !important; /* नियम नेहमी स्वतःहून नवीन पानावर (Page 2) सुरू होतील */
-}
+
 /* स्वाक्षरी आणि कार्यालयीन चौकट यामधील अनावश्यक जागा कमी करणे */
 .inner-border > div.flex.justify-between.items-end.mt-6 {
     margin-top: 10px !important; /* स्वाक्षरीच्या वरची मोठी स्पेस कमी केली */
@@ -637,19 +635,25 @@ document.addEventListener("DOMContentLoaded", function() {
     let isDataSavedSuccessfully = false; // डेटा सेव्ह झाला आहे की नाही हे तपासण्यासाठी
 async function generateFormPDF() {
     const element = document.getElementById('capture-area');
+    
     // 🛑 कडक तपासणी: डेटा सेव्ह नसेल तर फंक्शन इथेच थांबेल
     if (!isDataSavedSuccessfully) {
         alert("❌ आधी 'Save Data' किंवा 'नूतनीकरण करा' बटन दाबून डेटा सुरक्षित सेव्ह करा, त्याशिवाय अर्ज डाऊनलोड करता येणार नाही!");
-        return; // पीडीएफ तयार होणे इथेच थांबेल
+        return; 
     }
+    
     const opt = {
-        margin: 0,
+        margin: [5, 5, 5, 5], // कडांमधून मजकूर कट होऊ नये म्हणून ५ मिमी मार्जिन
         filename: 'Abhyasika_Admission_Form.pdf',
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
+        html2canvas: { scale: 2, useCORS: true, logging: false },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        // ⭐ कोरे पान येणे थांबवणारा कडक नियम (Pagebreak Mode)
-        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+        
+        // 🎯 कोरे पान घालवणारा आणि तक्ता व्यवस्थित २ पानांत तोडणारा अचूक नियम
+        pagebreak: { 
+            mode: ['css', 'legacy'], // 'avoid-all' काढून टाकला, ज्यामुळे नियम व्यवस्थित तुटून दुसऱ्या पानावर बसतील
+            before: '.rules-grid'    // ३२ नियम नेहमी नव्या कोऱ्या दुसऱ्या पानाव्यतिरिक्त कुठेही जाणार नाहीत
+        }
     };
     await html2pdf().set(opt).from(element).save();
 }
