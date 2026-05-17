@@ -632,7 +632,8 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // ७. PDF डाऊनलोड फंक्शन्स
-    let isDataSavedSuccessfully = false; // डेटा सेव्ह झाला आहे की नाही हे तपासण्यासाठीasync function generateFormPDF() {
+    let isDataSavedSuccessfully = false; // डेटा सेव्ह झाला आहे की नाही हे तपासण्यासाठी
+    async function generateFormPDF() {
     const element = document.getElementById('capture-area');
     
     // 🛑 कडक तपासणी: डेटा सेव्ह नसेल तर फंक्शन इथेच थांबेल
