@@ -12,15 +12,23 @@
         
         .a4-container { width: 210mm; margin: 0 auto; }
         
-        .a4-page {
-            width: 210mm;
-            height: 296.5mm;
-            background: white;
-            padding: 10mm;
-            box-sizing: border-box;
-            position: relative;
-            overflow: hidden;
-        }
+/* पीडीएफ मधील अतिरिक्त कोरे पान काढण्यासाठी */
+.a4-page {
+    width: 210mm;
+    height: 296mm; /* उंची किंचित कमी केली आहे जेणेकरून ओव्हरफ्लो होणार नाही */
+    background: white;
+    padding: 10mm;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always; /* प्रत्येक पानानंतर नवीन पान स्पष्टपणे सुरू होईल */
+    page-break-inside: avoid;
+}
+
+/* शेवटच्या पानावरील ब्रेक टाळण्यासाठी */
+.a4-page:last-of-type {
+    page-break-after: avoid;
+}
 
        /* पावतीसाठी अचूक A5 आकाराचा लेआउट */
 .receipt-page {
