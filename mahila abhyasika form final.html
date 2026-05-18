@@ -99,8 +99,9 @@
                 <button onclick="searchMember()" class="bg-yellow-500 text-slate-900 px-2 py-1 rounded text-xs font-bold">🔍 शोध (Renewal)</button>
             </div>
 
-            <button id="saveBtn" onclick="saveToSheet()" class="bg-green-600 hover:bg-green-500 px-4 py-2 rounded text-sm font-bold shadow-md">💾 सेव्ह डेटा</button>
-            <button id="downloadFormBtn" onclick="generateFormPDF()" class="hidden bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded text-sm font-bold shadow-md">📄 डाऊनलोड अर्ज</button>
+           <button id="saveBtn" onclick="saveToSheet()" class="bg-green-600 hover:bg-green-500 px-4 py-2 rounded text-sm font-bold shadow-md">💾 सेव्ह डेटा</button>
+<button id="clearFormBtn" onclick="clearFullForm()" class="bg-amber-600 hover:bg-amber-500 px-4 py-2 rounded text-sm font-bold shadow-md">🔄 नवीन अर्ज भरा</button>
+<button id="downloadFormBtn" onclick="generateFormPDF()" class="hidden bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded text-sm font-bold shadow-md">📄 डाऊनलोड अर्ज</button>
             <button id="downloadReceiptBtn" onclick="generateReceiptPDF()" class="hidden bg-purple-600 hover:bg-purple-500 px-4 py-2 rounded text-sm font-bold shadow-md">🧾 डाऊनलोड पावती</button>
 
             <button onclick="logout()" class="text-xs text-slate-300 underline ml-2">लॉगआउट</button>
@@ -700,6 +701,66 @@ async function generateReceiptPDF() {
         // पीडीएफ सेव्ह झाल्यावर लेआउट मूळ स्थितीत आणणे
         element.style.width = ''; 
     }
+}
+    // ८. फॉर्म पूर्णपणे कोरा आणि रीसेट करणे (Clear Form for New Entry)
+function clearFullForm() {
+    // युझरला एकदा खात्री करून विचारणे
+    if (!confirm("तुम्हाला खात्री आहे की नवीन अर्ज भरण्यासाठी स्क्रीनवरील डेटा पुसून टाकायचा आहे?")) {
+        return;
+    }
+
+    // अ) फॉर्ममधील सर्व इनपुट व्हॅल्यू पुसून टाकणे
+    const form = document.getElementById('admissionForm');
+    form.reset();
+
+    // ब) हिडन (Hidden) फिल्ड्स मूळ स्थितीत आणणे
+    document.getElementById('is_renewal').value = "false";
+    document.getElementById('reg_no_input').value = "";
+    document.getElementById('orig_join_date_input').value = "";
+
+    // क) कार्यालयीन चौकटीतील टेक्स्ट पुन्हा पूर्ववत (Blank) करणे
+    document.getElementById('displayRegNo').innerText = "_ _ _ _ _ _ _ _";
+    document.getElementById('rcpt_reg_no').innerText = "";
+    document.getElementById('displayReceiptNoTop').innerText = "_ _ _ _ _ _ _ _";
+    document.getElementById('displayReceiptNo').innerText = "";
+    document.getElementById('displayOrigJoinDate').innerText = "_ _ _ _ _ _ _ _";
+    document.getElementById('rcpt_name').innerText = "";
+    document.getElementById('searchRegNo').value = "";
+
+    // ड) इतिहास टेबल (History Table) रीसेट करणे
+    document.getElementById('historyTableBody').innerHTML = `<tr>
+        <td colspan='5' class='p-2 text-center text-gray-400 italic text-xs'>कोणताही इतिहास उपलब्ध नाही</td>
+    </tr>`;
+
+    // इ) अपलोड केलेला फोटो प्रिव्ह्यू काढून मूळ टेक्स्ट दाखवणे
+    document.getElementById('photoPreview').innerHTML = "फोटो चिकटवावा";
+
+    // फ) डाऊनलोड बटने पुन्हा लपवणे (Hide करणे)
+    document.getElementById('downloadFormBtn').classList.add('hidden');
+    document.getElementById('downloadReceiptBtn').classList.add('hidden');
+    document.getElementById('receipt-capture-area').classList.add('no-print');
+
+    // ग) 'सेव्ह डेटा' बटन पुन्हा लॉक मधून अनलॉक (Enable) करणे
+    isDataSavedSuccessfully = false; // सेफ्टी फ्लॅग रीसेट
+    const saveBtn = document.getElementById('saveBtn');
+    saveBtn.innerHTML = "💾 सेव्ह डेटा";
+    saveBtn.disabled = false;
+    saveBtn.style.backgroundColor = ""; // मूळ हिरवा रंग परत देणे
+    saveBtn.style.cursor = "pointer";
+
+    // ह) आजची चालू तारीख आणि फी कॅल्क्युलेशन पुन्हा चालू करणे
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const year = today.getFullYear();
+    
+    document.getElementById('form_current_date').innerText = `${day}/${month}/${year}`;
+    document.getElementById('rcpt_date').innerText = `${day}/${month}/${year}`;
+    document.getElementById('startDate').value = `${year}-${month}-${day}`;
+    
+    calculateFees(); // फी शून्य आणि तारीख सेट होईल
+    
+    alert("फॉर्म यशस्वीरित्या रीसेट झाला आहे! तुम्ही नवीन अर्ज भरू शकता.");
 }
 </script>
 
