@@ -465,7 +465,7 @@ function handleLoginResponse(response) {
         currentLoggedUser = response.staffName; // येथे युजरनेम ऐवजी प्रत्यक्ष नाव सेव्ह होईल
         document.getElementById('loginSection').classList.add('hidden');
         document.getElementById('staffControls').classList.remove('hidden');
-        document.getElementById('welcomeMsg').innerText = "👤 ऑपरेटर: " + currentLoggedUser; // स्क्रीनवर पूर्ण नाव दिसेल
+        document.getElementById('welcomeMsg').innerText = "👤 कर्मचारी: " + currentLoggedUser; // स्क्रीनवर पूर्ण नाव दिसेल
         alert("लॉगिन यशस्वी झाले! स्वागत आहे, " + currentLoggedUser);
     } else {
         alert("चुकीचे युजरनेम किंवा पासवर्ड! (गुगल शीटमधील 'Staff' टॅब तपासा)");
