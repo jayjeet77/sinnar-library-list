@@ -414,7 +414,7 @@ function calculateFees() {
     const duration = parseInt(durationInput ? durationInput.value : 0) || 0;
     const isRenewal = document.getElementById('is_renewal').value === "true";
     
-    let admFee = isRenewal ? 0 : 100;
+    let admFee = isRenewal ? 0 : 50;
     let idFee = isRenewal ? 0 : 25;
     let monthlyFee = (duration === 3) ? 500 : duration * 200;
 
