@@ -702,7 +702,7 @@ async function generateReceiptPDF() {
         element.style.width = ''; 
     }
 }
-    // ८. फॉर्म पूर्णपणे कोरा आणि रीसेट करणे (Clear Form for New Entry)
+// ८. फॉर्म पूर्णपणे कोरा आणि रीसेट करणे (Clear Form for New Entry) - सुधारीत
 function clearFullForm() {
     // युझरला एकदा खात्री करून विचारणे
     if (!confirm("तुम्हाला खात्री आहे की नवीन अर्ज भरण्यासाठी स्क्रीनवरील डेटा पुसून टाकायचा आहे?")) {
@@ -759,6 +759,12 @@ function clearFullForm() {
     document.getElementById('startDate').value = `${year}-${month}-${day}`;
     
     calculateFees(); // फी शून्य आणि तारीख सेट होईल
+
+    // 🎯 नवीन जोडलेला कोड: लेआउट सेंटरला लॉक करणे आणि डावीकडे सरकणे थांबवणे
+    const captureArea = document.getElementById('capture-area');
+    captureArea.style.width = '210mm';
+    captureArea.style.marginLeft = 'auto';
+    captureArea.style.marginRight = 'auto';
     
     alert("फॉर्म यशस्वीरित्या रीसेट झाला आहे! तुम्ही नवीन अर्ज भरू शकता.");
 }
