@@ -389,7 +389,7 @@
 
 <script>
 // १. ग्लोबल व्हेरिएबल्स (येथे तुमची नवीन गुगल स्क्रिप्ट लिंक पेस्ट करा)
-const googleScriptUrl = "https://script.google.com/macros/s/AKfycbw_clcOwmSorYfagRphauErOqqv7ihkZch-qVw8_KrecLfzWwnIJeFOg8-j5RfPPaVL/exec"; 
+const googleScriptUrl = "https://script.google.com/macros/s/AKfycbyU63UGQoKf098CH7gJWJ0nFSU6k5BKdWBz4yCuetPgluiBIEXdvLc8y5vNkGeqVylL/exec"; 
 var currentLoggedUser = ""; 
 
 // सिस्टीम सुरू झाल्यावर आजची तारीख भरणे
@@ -444,7 +444,7 @@ function calculateFees() {
     }
 }
 
-// ३. गुगल शीटद्वारे कर्मचारी लॉगिन (Staff Login)
+// ३. गुगल शीटद्वारे कर्मचारी लॉगिन (Staff Login) - सुधारीत
 function staffLogin() {
     const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value.trim();
@@ -460,17 +460,17 @@ function staffLogin() {
 }
 
 function handleLoginResponse(response) {
-    if (response === "success") {
-        currentLoggedUser = document.getElementById('username').value;
+    // आता रेस्पॉन्स हा Object स्वरूपात येईल (response.status)
+    if (response && response.status === "success") {
+        currentLoggedUser = response.staffName; // येथे युजरनेम ऐवजी प्रत्यक्ष नाव सेव्ह होईल
         document.getElementById('loginSection').classList.add('hidden');
         document.getElementById('staffControls').classList.remove('hidden');
-        document.getElementById('welcomeMsg').innerText = "👤 ऑपरेटर: " + currentLoggedUser;
-        alert("लॉगिन यशस्वी झाले!");
+        document.getElementById('welcomeMsg').innerText = "👤 ऑपरेटर: " + currentLoggedUser; // स्क्रीनवर पूर्ण नाव दिसेल
+        alert("लॉगिन यशस्वी झाले! स्वागत आहे, " + currentLoggedUser);
     } else {
         alert("चुकीचे युजरनेम किंवा पासवर्ड! (गुगल शीटमधील 'Staff' टॅब तपासा)");
     }
 }
-
 function logout() {
     currentLoggedUser = "";
     document.getElementById('loginSection').classList.remove('hidden');
