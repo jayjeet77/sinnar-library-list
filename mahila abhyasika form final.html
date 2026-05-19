@@ -656,7 +656,7 @@ function saveToSheet() {
     saveBtn.disabled = true;
 
     // ⚡ INSTANT UNLOCK SYSTEM (Does not wait for Google Network Response)
-    isDataSavedSuccessfully = true; 
+   
     
     // १. सेव्ह बटन लॉक करणे
     saveBtn.innerHTML = "✅ डेटा सेव्ह झाला आहे";
@@ -700,11 +700,10 @@ function saveToSheet() {
     if (document.getElementById('downloadFormBtn')) document.getElementById('downloadFormBtn').classList.remove('hidden');
     if (document.getElementById('downloadReceiptBtn')) document.getElementById('downloadReceiptBtn').classList.remove('hidden');
     if (document.getElementById('downloadIdCardBtn')) document.getElementById('downloadIdCardBtn').classList.remove('hidden');
-    if (document.getElementById('receipt-capture-area')) document.getElementById('receipt-capture-area').classList.remove('no-print');
-    if (document.getElementById('id-card-box')) document.getElementById('id-card-box').classList.remove('hidden');
+    
 
     // ६. त्वरित अलर्ट पॉप-अप दाखवणे
-    alert("डेटा यशस्वीरित्या सेव्ह झाला आहे!\nनोंदणी व पावती क्रमांक बॅकएंडला अपडेट होत आहेत. तुम्ही फाईल्स डाऊनलोड करू शकता.");
+   
 
     // ७. बॅकएंडला गुपचूप डेटा पाठवणे (Background Processing)
     const formData = new FormData(form);
