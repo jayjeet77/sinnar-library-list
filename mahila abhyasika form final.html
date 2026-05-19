@@ -215,10 +215,26 @@
 
             <button id="saveBtn" onclick="saveToSheet()" class="bg-green-600 hover:bg-green-500 px-4 py-2 rounded text-sm font-bold shadow-md">💾 सेव्ह डेटा</button>
             <button id="clearFormBtn" onclick="clearFullForm()" class="bg-amber-600 hover:bg-amber-500 px-4 py-2 rounded text-sm font-bold shadow-md">🔄 नवीन अर्ज भरा</button>
-            <button id="downloadFormBtn" onclick="generateFormPDF()" class="hidden bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded text-sm font-bold shadow-md">📄 डाऊनलोड अर्ज</button>
-            <button id="downloadReceiptBtn" onclick="generateReceiptPDF()" class="hidden bg-purple-600 hover:bg-purple-500 px-4 py-2 rounded text-sm font-bold shadow-md">🧾 डाऊनलोड पावती</button>
-            <button id="downloadIdCardBtn" onclick="generateIdCardPDF()" class="hidden bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded text-sm font-bold shadow-md">🪪 डाऊनलोड ID कार्ड</button>
+            <button id="downloadFormBtn"
+onclick="generateFormPDF()"
+style="display:none"
+class="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded text-sm font-bold shadow-md">
+📄 डाऊनलोड अर्ज
+</button>
 
+<button id="downloadReceiptBtn"
+onclick="generateReceiptPDF()"
+style="display:none"
+class="bg-purple-600 hover:bg-purple-500 px-4 py-2 rounded text-sm font-bold shadow-md">
+🧾 डाऊनलोड पावती
+</button>
+
+<button id="downloadIdCardBtn"
+onclick="generateIdCardPDF()"
+style="display:none"
+class="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded text-sm font-bold shadow-md">
+🪪 डाऊनलोड ID कार्ड
+</button>
             <button onclick="logout()" class="text-xs text-slate-300 underline ml-2">लॉगआउट</button>
         </div>
     </div>
