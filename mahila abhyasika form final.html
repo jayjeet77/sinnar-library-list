@@ -137,7 +137,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 4px solid #bda884; /* जागा सुधारली */
+            border: 4px solid #bda884;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             z-index: 10;
         }
@@ -247,7 +247,7 @@
                             <img src="logo.png" alt="लोगो" class="w-full h-full object-contain" onerror="this.parentElement.innerText='लोगो'">
                         </div>
                         <div class="text-center flex-1 mx-2">
-                            <h1 class="text-xl font-bold text-red-600 leading-tight">सिन्नर सार्वजनिक वाचनालय, सिन्नर</h1>
+                            <h1 class="text-xl font-bold text-red-600 leading-tight">सイナー सार्वजनिक वाचनालय, सिन्नर</h1>
                             <p class="text-[11px] text-gray-600 leading-none">स्थापना: १९११ |reg. No. २२३५</p>
                             <h2 class="text-base font-bold bg-slate-800 text-white px-4 py-0.5 rounded mt-1.5 inline-block">महिला अभ्यासिका प्रवेश अर्ज</h2>
                         </div>
@@ -410,15 +410,15 @@
                         <div>२०. गैरवर्तन किंवा शिस्तभंग केल्यास कोणताही पूर्वइशारा न देता प्रवेश रद्द केला जाईल.</div>
                         <div>२१. प्रवेश अर्जासोबत आधार कार्ड आणि कॉलेज/ओळखपत्राची छायांकित प्रत जोडणे आवश्यक आहे.</div>
                         <div>२२. अर्जावर दिलेला मोबाईल क्रमांक चालू असणे गरजेचे आहे, जेणेकरून सूचना पाठवता यातील.</div>
-                        <div>२३. शासकीय सुट्ट्यांच्या दिवशी अभ्यासिकेच्या वेळेत बदल करण्याचे अधिकार प्रशासनाकडे राहतील.</div>
+                        <div>२३. शासकीय सुट्ट्याщих दिवशी अभ्यासिकेच्या वेळेत बदल करण्याचे अधिकार प्रशासनाकडे राहतील.</div>
                         <div>२४. विद्यार्थिनीने येताना व जाताना हजेरी पुस्तिकेत (Register) नोंद करणे आवश्यक आहे.</div>
                         <div>२५. सुरक्षिततेच्या कारणास्तव अभ्यासिकेचा परिसर सीसीटीव्ही (CCTV) देखरेखीखाली आहे.</div>
                         <div>२६. अभ्यास हॉलमधील इंटरनेट/वायफायचा वापर फक्त शैक्षणिक कामासाठीच करावा.</div>
                         <div>२७. बंदी घातलेल्या वेबसाईट किंवा गैरवापर करताना आढळल्यास कायदेशीर कारवाई केली जाईल.</div>
                         <div>२८. कोणत्याही विद्यार्थिनीला वैयक्तिक कारणास्तव जागा बदलून हवी असल्यास प्रशासनाची परवानगी घ्यावी.</div>
-                        <div>२९. लॉकर सुविधेचा वापर करत असल्यास त्याची चावी सांभाळण्याची जबाबदारी स्वतःची राहील.</div>
+                        <div>२९. लॉकर सुविधेचा वापर करत असल्यास त्याची चावी सांप्रतची जबाबदारी स्वतःची राहील.</div>
                         <div>३०. ग्रंथालयातील मूळ संदर्भ पुस्तके अभ्यास हॉलच्या बाहेर घेऊन जाण्यास सक्त मनाई आहे.</div>
-                        <div>३१. वेलोवेळी नियमांमध्ये बदल करण्याचे सर्व अधिकार वाचनालय व्यवस्थापनाकडे सुरक्षित आहेत.</div>
+                        <div>३१. वेळोवेळी नियमांमध्ये बदल करण्याचे सर्व अधिकार वाचनालय व्यवस्थापनाकडे सुरक्षित आहेत.</div>
                         <div>३२. प्रत्येक विद्यार्थिनीने सुसंस्कृत आणि शिस्तप्रिय वातावरणाचा आदर करावा.</div>
                     </div>
 
@@ -662,10 +662,12 @@ function saveToSheet() {
     document.body.appendChild(script);
 }
 
+// 🎯 दुरुस्त केलेले मूळ हँडलर फंक्शन (response.status चे मूळ लॉजिक)
 function handleSaveResponse(response) {
     const saveBtn = document.getElementById('saveBtn');
     
-    if (response.result === "success") {
+    // तुमच्या मूळ सिस्टमच्या संरचनेनुसार 'success' तपासणी (status किंवा result दोन्हींसाठी सेफ केले)
+    if ((response.status === "success") || (response.result === "success")) {
         isDataSavedSuccessfully = true; 
         
         saveBtn.innerHTML = "✅ डेटा सेव्ह झाला आहे";
@@ -687,7 +689,7 @@ function handleSaveResponse(response) {
         document.getElementById('rcpt_time').innerText = document.getElementsByName('time_slot')[0].value;
         
         // =========================================================
-        // 🌟 डेटा सेव्ह झाल्यावर आयडी कार्डवर माहिती भरणे आणि QR जनरेट करणे (सुधारित)
+        // 🌟 आयडी कार्डवर माहिती भरणे आणि QR जनरेट करणे (सुधारित यंत्रणा)
         // =========================================================
         const name = document.getElementsByName('full_name')[0].value || "----------";
         const phone = document.getElementsByName('student_mobile')[0].value || "----------";
@@ -700,7 +702,7 @@ function handleSaveResponse(response) {
         document.getElementById('card_display_address').innerText = address;
         document.getElementById('card_display_batch').innerText = batch;
 
-        // फोटो नसेल तरी एरर येऊ न देता सुरक्षितरीत्या मॅप करणे
+        // फोटो प्रिव्ह्यू एरर-फ्री मॅपिंग
         const originalPreview = document.getElementById('photoPreview');
         const cardPreview = document.getElementById('cardPhotoPreview');
         if (originalPreview && originalPreview.getElementsByTagName('img').length > 0) {
@@ -709,7 +711,7 @@ function handleSaveResponse(response) {
             cardPreview.innerHTML = `<span class="text-gray-400 text-xs font-bold">फोटो</span>`;
         }
 
-        // QR कोड जनरेट करणे (आकार १२०x१२० पिक्सेल - परफेक्ट स्कॅनिंगसाठी)
+        // QR कोड जनरेट करणे (आकार १२० पिक्सेल - परफेक्ट स्कॅनिंगसाठी)
         const qrContainer = document.getElementById('card_qrcode');
         qrContainer.innerHTML = "";
         if(typeof QRCode !== 'undefined' && response.regNo) {
@@ -722,6 +724,7 @@ function handleSaveResponse(response) {
         }
         // =========================================================
         
+        // बटने दृश्यमान करणे (बटनांचे ID मूळ यंत्रणेप्रमाणे अनलॉक केले)
         document.getElementById('downloadFormBtn').classList.remove('hidden');
         document.getElementById('downloadReceiptBtn').classList.remove('hidden');
         document.getElementById('receipt-capture-area').classList.remove('no-print');
@@ -836,7 +839,6 @@ async function generateFormPDF() {
         return; 
     }
     
-    // विद्यार्थिनीचे नाव व नोंदणी क्रमांकावरून फाईलचे नाव तयार करणे
     const sName = (document.getElementsByName('full_name')[0].value || "Student").toString().trim().replace(/\s+/g, '_');
     const rNo = document.getElementById('displayRegNo').innerText;
     const dynamicFilename = `${sName}_${rNo}_Form.pdf`;
