@@ -37,7 +37,7 @@
     page-break-after: avoid;
 }
 
-       /* पावतीसाठी अचूक A5 आकाराचा लेआउट */
+/* पावतीसाठी अचूक A5 आकाराचा लेआउट */
 .receipt-page {
     width: 148mm;
     height: 210mm; /* A5 Portrait साईझ */
@@ -78,7 +78,7 @@
         }
 
         /* =========================================================
-        🌟 डिजिटल आयडी कार्ड स्टाईल्स (नवीन प्रीमियम डिझाईन)
+        🌟 डिजिटल आयडी कार्ड स्टाईल्स (प्रीमियम व सुधारित लेआउट)
         ========================================================= */
         .id-card-vertical {
             width: 350px;
@@ -87,7 +87,6 @@
             border-radius: 15px;
             overflow: hidden;
             position: relative;
-            font-family: 'Hind', sans-serif;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             margin: 0 auto;
             color: #333;
@@ -120,29 +119,32 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
-            font-weight: bold;
+        }
+        .card-logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .card-photo-area {
             position: absolute;
             top: 25px;
             right: 15px;
-            width: 150px;
-            height: 150px;
-            background: #f3ede1;
+            width: 140px;
+            height: 140px;
+            background: #e2e8f0;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 4px solid #bda884; /* गोल्ड/ब्राँझ बॉर्डर */
+            border: 4px solid #bda884; /* जागा सुधारली */
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             z-index: 10;
         }
 
         .card-photo-inner {
-            width: 134px;
-            height: 134px;
+            width: 124px;
+            height: 124px;
             border-radius: 50%;
             background: #fff;
             overflow: hidden;
@@ -156,28 +158,32 @@
 
         .card-title-marathi {
             color: white;
-            margin-top: 10px;
+            margin-top: 8px;
             line-height: 1.2;
         }
         .card-title-marathi h3 { font-size: 12px; font-weight: 500; margin: 0; color: #bda884; }
         .card-title-marathi h2 { font-size: 15px; font-weight: 700; margin: 0; }
 
         .card-content-body {
-            padding: 45px 20px 20px 25px;
+            padding: 35px 20px 20px 25px;
         }
 
-        .card-field { font-size: 15px; color: #333; margin-bottom: 8px; display: flex; }
-        .card-field strong { color: #555; font-weight: 600; width: 110px; display: inline-block; }
-        .card-field span { flex: 1; color: #000; font-weight: 700; }
+        .card-field { font-size: 14px; color: #333; margin-bottom: 8px; display: flex; align-items: baseline; }
+        .card-field strong { color: #555; font-weight: 600; width: 120px; flex-shrink: 0; display: inline-block; }
+        .card-field span { flex-grow: 1; color: #000; font-weight: 700; word-break: break-word; }
 
+        /* QR कोड कंटेनर बॅकग्राउंड पांढरा आणि योग्य पॅडिंगसह */
         .card-qr-box {
             position: absolute;
             bottom: 50px;
             right: 25px;
             background: white;
-            padding: 5px;
-            border-radius: 4px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 6px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .card-footer-address {
@@ -189,8 +195,9 @@
             color: #f3ede1;
             text-align: center;
             padding: 6px;
-            font-size: 11px;
+            font-size: 12px;
             letter-spacing: 0.5px;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -236,7 +243,9 @@
             <div class="outer-border">
                 <div class="inner-border">
                     <div class="flex justify-between items-center border-b-2 border-black pb-2 mb-3">
-                        <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center text-xs font-bold">लोगो</div>
+                        <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
+                            <img src="logo.png" alt="लोगो" class="w-full h-full object-contain" onerror="this.parentElement.innerText='लोगो'">
+                        </div>
                         <div class="text-center flex-1 mx-2">
                             <h1 class="text-xl font-bold text-red-600 leading-tight">सिन्नर सार्वजनिक वाचनालय, सिन्नर</h1>
                             <p class="text-[11px] text-gray-600 leading-none">स्थापना: १९११ |reg. No. २२३५</p>
@@ -385,12 +394,12 @@
                         <div>४. मोबाईल फोन पूर्णपणे सायलेंट किंवा स्वीच ऑफ ठेवावा. हॉलमध्ये फोनवर बोलण्यास सक्त मनाई आहे.</div>
                         <div>५. अभ्यासिकेमध्ये कोणत्याही प्रकारचे खाणे, नाश्ता किंवा चहा-कॉफी घेण्यास सक्त मनाई आहे.</div>
                         <div>६. वाचनालयाच्या मालमत्तेचे (टेबल, खुर्ची, लाईट्स, पंखे) नुकसान होणार नाही याची काळजी घ्यावी.</div>
-                        <div>७. कोणतीही toडफोड किंवा नुकसान केल्यास संबंधित विद्यार्थिनीकडून नुकसानभरपाई वसूल केली जाईल.</div>
+                        <div>७. कोणतीही तोडफोड किंवा नुकसान केल्यास संबंधित विद्यार्थिनीकडून नुकसानभरपाई वसूल केली जाईल.</div>
                         <div>८. स्वतःचे मौल्यवान सामान, पुस्तके, लॅपटॉप याची जबाबदारी सर्वस्वी विद्यार्थिनीची राहील.</div>
                         <div>९. अभ्यासिकेत जागा राखून ठेवता येणार नाही. रिकाम्या जागेवर दुसऱ्या विद्यार्थिनीला बसण्याचा अधिकार असेल.</div>
                         <div>१०. इतर विद्यार्थिनींना अभ्यासात अडथळा येईल असे कोणतेही वर्तन खपवून घेतले जाणार नाही.</div>
                         <div>११. वाचनालय प्रशासनाने दिलेल्या सूचनांचे पालन करणे प्रत्येक विद्यार्थिनीवर बंधनकारक आहे.</div>
-                        <div>१२. मासिक फी दर महिन्याच्या ५ इत फी भरणे आवश्यक आहे, अन्यथा प्रवेश स्थगित केला जाईल.</div>
+                        <div>१२. मासिक फी दर महिन्याच्या ५ तारखेच्या आत भरणे आवश्यक आहे, अन्यथा प्रवेश स्थगित केला जाईल.</div>
                         <div>१३. एकदा भरलेली फी कोणत्याही परिस्थितीत परत (Refund) किंवा वर्ग (Transfer) केली जाणार नाही.</div>
                         <div>१४. परीक्षा संपल्यास किंवा अभ्यासिका सोडायची असल्यास प्रशासनाला पूर्वकल्पना देणे आवश्यक आहे.</div>
                         <div>१५. अभ्यासिकेच्या आवारात स्वच्छता राखावी. कचरा कचराकुंडीतच टाकावा.</div>
@@ -400,16 +409,16 @@
                         <div>१९. अभ्यासिकेच्या वेळेनंतर आवारात थांबण्यास परवानगी दिली जाणार नाही.</div>
                         <div>२०. गैरवर्तन किंवा शिस्तभंग केल्यास कोणताही पूर्वइशारा न देता प्रवेश रद्द केला जाईल.</div>
                         <div>२१. प्रवेश अर्जासोबत आधार कार्ड आणि कॉलेज/ओळखपत्राची छायांकित प्रत जोडणे आवश्यक आहे.</div>
-                        <div>२२. अर्जावर दिलेला मोबाईल क्रमांक चालू असणे गरजेचे आहे, जेणेकरून सूचना पाठवता येतील.</div>
+                        <div>२२. अर्जावर दिलेला मोबाईल क्रमांक चालू असणे गरजेचे आहे, जेणेकरून सूचना पाठवता यातील.</div>
                         <div>२३. शासकीय सुट्ट्यांच्या दिवशी अभ्यासिकेच्या वेळेत बदल करण्याचे अधिकार प्रशासनाकडे राहतील.</div>
-                        <div> २४. विद्यार्थिनीने येताना व जाताना हजेरी पुस्तिकेत (Register) नोंद करणे आवश्यक आहे.</div>
-                        <div>२4. सुरक्षिततेच्या कारणास्तव अभ्यासिकेचा परिसर सीसीटीव्ही (CCTV) देखरेखीखाली आहे.</div>
+                        <div>२४. विद्यार्थिनीने येताना व जाताना हजेरी पुस्तिकेत (Register) नोंद करणे आवश्यक आहे.</div>
+                        <div>२५. सुरक्षिततेच्या कारणास्तव अभ्यासिकेचा परिसर सीसीटीव्ही (CCTV) देखरेखीखाली आहे.</div>
                         <div>२६. अभ्यास हॉलमधील इंटरनेट/वायफायचा वापर फक्त शैक्षणिक कामासाठीच करावा.</div>
                         <div>२७. बंदी घातलेल्या वेबसाईट किंवा गैरवापर करताना आढळल्यास कायदेशीर कारवाई केली जाईल.</div>
                         <div>२८. कोणत्याही विद्यार्थिनीला वैयक्तिक कारणास्तव जागा बदलून हवी असल्यास प्रशासनाची परवानगी घ्यावी.</div>
-                        <div>२९. लॉकर सुविधेचा वापर करत असल्यास त्याची चावीसांभाळण्याची जबाबदारी स्वतःची राहील.</div>
+                        <div>२९. लॉकर सुविधेचा वापर करत असल्यास त्याची चावी सांभाळण्याची जबाबदारी स्वतःची राहील.</div>
                         <div>३०. ग्रंथालयातील मूळ संदर्भ पुस्तके अभ्यास हॉलच्या बाहेर घेऊन जाण्यास सक्त मनाई आहे.</div>
-                        <div>३१. वेळोवेळी नियमांमध्ये बदल करण्याचे सर्व अधिकार वाचनालय व्यवस्थापनाकडे सुरक्षित आहेत.</div>
+                        <div>३१. वेलोवेळी नियमांमध्ये बदल करण्याचे सर्व अधिकार वाचनालय व्यवस्थापनाकडे सुरक्षित आहेत.</div>
                         <div>३२. प्रत्येक विद्यार्थिनीने सुसंस्कृत आणि शिस्तप्रिय वातावरणाचा आदर करावा.</div>
                     </div>
 
@@ -494,7 +503,7 @@
                     </table>
 
                     <div class="flex justify-between items-end mt-auto pt-2 text-xs font-bold">
-                        <p class="text-[10px] text-gray-500 font-normal italic">विषेश टीप: भरलेली फी परत किंवा वर्ग केली जाणार नाही.</p>
+                        <p class="text-[10px] text-gray-500 font-normal italic">विशेष टीप: भरलेली फी परत किंवा वर्ग केली जाणार नाही.</p>
                         <p class="text-center border-t border-black pt-4 w-32">सही (ग्रंथपाल)</p>
                     </div>
                 </div>
@@ -507,7 +516,9 @@
     <div id="id-card-box" class="hidden id-card-vertical">
         <div class="card-header-dark">
             <div class="card-digital-tag">DIGITAL ID CARD</div>
-            <div class="card-logo-circle">लोगो</div>
+            <div class="card-logo-circle">
+                <img src="logo.png" alt="वाचनालय लोगो" onerror="this.parentElement.innerText='लोगो'">
+            </div>
             <div class="card-title-marathi">
                 <h3>महिला अभ्यासिका</h3>
                 <h2>सिन्नर सार्वजनिक वाचनालय</h2>
@@ -515,7 +526,7 @@
         </div>
         <div class="card-photo-area">
             <div id="cardPhotoPreview" class="card-photo-inner flex items-center justify-center">
-                <span class="text-gray-400 text-xs">फोटो</span>
+                <span class="text-gray-400 text-xs font-bold">फोटो</span>
             </div>
         </div>
         <div class="card-content-body">
@@ -526,7 +537,7 @@
             <div class="card-field"><strong>वेळ बॅच:</strong> <span id="card_display_batch" class="text-blue-800">----------</span></div>
         </div>
         <div class="card-qr-box">
-            <div id="card_qrcode"></div>
+            <div id="card_qrcode" style="width: 120px; height: 120px;"></div>
         </div>
         <div class="card-footer-address">
             छ. शिवाजी महाराज चौक, सिन्नर जि. नाशिक
@@ -535,7 +546,7 @@
 </div>
 
 <script>
-// १. ग्लोबल व्हेरिएबल्स (येथे तुमची नवीन गुगल स्क्रिप्ट लिंक पेस्ट करा)
+// १. ग्लोबल व्हेरिएबल्स
 const googleScriptUrl = "https://script.google.com/macros/s/AKfycbyU63UGQoKf098CH7gJWJ0nFSU6k5BKdWBz4yCuetPgluiBIEXdvLc8y5vNkGeqVylL/exec"; 
 var currentLoggedUser = ""; 
 
@@ -591,7 +602,7 @@ function calculateFees() {
     }
 }
 
-// ३. गुगल शीटद्वारे कर्मचारी लॉगिन (Staff Login) - सुधारीत
+// ३. गुगल शीटद्वारे कर्मचारी लॉगिन (Staff Login)
 function staffLogin() {
     const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value.trim();
@@ -657,21 +668,16 @@ function handleSaveResponse(response) {
     if (response.result === "success") {
         isDataSavedSuccessfully = true; 
         
-        // 🛑 डबल एंट्री रोखण्यासाठी बटन锁 (Disable) करणे
         saveBtn.innerHTML = "✅ डेटा सेव्ह झाला आहे";
         saveBtn.disabled = true;
         saveBtn.style.backgroundColor = "#cccccc"; 
         saveBtn.style.cursor = "not-allowed";
         
-        alert("डेटा यशस्वीरित्या सेव्ह झाला आहे. आता तुम्ही पीडीएफ डाऊनलोड करू शकता.");
-        
-        // नोंदणी आणि पावती क्रमांक सेट करणे
         document.getElementById('displayRegNo').innerText = response.regNo;
         document.getElementById('rcpt_reg_no').innerText = response.regNo;
         document.getElementById('displayReceiptNoTop').innerText = response.receiptNo;
         document.getElementById('displayReceiptNo').innerText = response.receiptNo;
         
-        // थेट गुगल शीट कडून मिळालेले शुद्ध नाव पावतीवर दाखवणे
         if (response.data && response.data.fullName) {
             document.getElementById('rcpt_name').innerText = response.data.fullName.toString().trim();
         } else {
@@ -681,7 +687,7 @@ function handleSaveResponse(response) {
         document.getElementById('rcpt_time').innerText = document.getElementsByName('time_slot')[0].value;
         
         // =========================================================
-        // 🌟 नवीन जोडलेले: सेव्ह झाल्यावर आयडी कार्डवर डेटा भरणे आणि QR जनरेट करणे
+        // 🌟 डेटा सेव्ह झाल्यावर आयडी कार्डवर माहिती भरणे आणि QR जनरेट करणे (सुधारित)
         // =========================================================
         const name = document.getElementsByName('full_name')[0].value || "----------";
         const phone = document.getElementsByName('student_mobile')[0].value || "----------";
@@ -694,32 +700,32 @@ function handleSaveResponse(response) {
         document.getElementById('card_display_address').innerText = address;
         document.getElementById('card_display_batch').innerText = batch;
 
-        // मुख्य फॉर्मवरील विद्यार्थ्याचा अपलोड केलेला फोटो आयडी कार्डवर कॉपी करणे
+        // फोटो नसेल तरी एरर येऊ न देता सुरक्षितरीत्या मॅप करणे
         const originalPreview = document.getElementById('photoPreview');
         const cardPreview = document.getElementById('cardPhotoPreview');
         if (originalPreview && originalPreview.getElementsByTagName('img').length > 0) {
             cardPreview.innerHTML = `<img src="${originalPreview.getElementsByTagName('img')[0].src}" class="w-full h-full object-cover">`;
+        } else {
+            cardPreview.innerHTML = `<span class="text-gray-400 text-xs font-bold">फोटो</span>`;
         }
 
-        // QR कोड जनरेट करणे (६०x६० आकाराचा)
+        // QR कोड जनरेट करणे (आकार १२०x१२० पिक्सेल - परफेक्ट स्कॅनिंगसाठी)
         const qrContainer = document.getElementById('card_qrcode');
         qrContainer.innerHTML = "";
         if(typeof QRCode !== 'undefined' && response.regNo) {
             new QRCode(qrContainer, {
                 text: `Reg No: ${response.regNo}\nName: ${name}\nBatch: ${batch}`,
-                width: 60,
-                height: 60,
+                width: 120,
+                height: 120,
                 correctLevel: QRCode.CorrectLevel.M
             });
         }
         // =========================================================
         
-        // डाऊनलोड बटने दृश्यमान (Show) करणे
         document.getElementById('downloadFormBtn').classList.remove('hidden');
         document.getElementById('downloadReceiptBtn').classList.remove('hidden');
         document.getElementById('receipt-capture-area').classList.remove('no-print');
         
-        // नवीन आयडी कार्ड आणि त्याचे डाऊनलोड बटन स्क्रीनवर चालू करणे
         if(document.getElementById('downloadIdCardBtn')) {
             document.getElementById('downloadIdCardBtn').classList.remove('hidden');
         }
@@ -734,10 +740,10 @@ function handleSaveResponse(response) {
         saveBtn.disabled = false;
         saveBtn.style.backgroundColor = ""; 
         saveBtn.style.cursor = "pointer";
-        
         alert("डेटा सेव्ह करताना त्रुटी आली! गुगल स्क्रिप्ट तपासा.");
     }
 }
+
 // ५. जुनी विद्यार्थिनी शोधणे (Search Member for Renewal)
 function searchMember() {
     const regNo = document.getElementById('searchRegNo').value.trim();
@@ -820,28 +826,28 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-// ७. PDF डाऊनलोड फंक्शन्स
-    let isDataSavedSuccessfully = false; 
-    async function generateFormPDF() {
+// ७. डायनॅमिक फाईल नावासह PDF डाऊनलोड फंक्शन्स (सुधारित)
+let isDataSavedSuccessfully = false; 
+
+async function generateFormPDF() {
     const element = document.getElementById('capture-area');
-    
     if (!isDataSavedSuccessfully) {
-        alert("❌ आधी 'Save Data' किंवा 'नूतनीकरण करा' बटन दाबून डेटा सुरक्षित सेव्ह करा, त्याशिवाय अर्ज डाऊनलोड करता येणार नाही!");
+        alert("❌ आधी 'Save Data' किंवा 'नूतनीकरण करा' बटन दाबून डेटा सुरक्षित सेव्ह करा!");
         return; 
     }
     
+    // विद्यार्थिनीचे नाव व नोंदणी क्रमांकावरून फाईलचे नाव तयार करणे
+    const sName = (document.getElementsByName('full_name')[0].value || "Student").toString().trim().replace(/\s+/g, '_');
+    const rNo = document.getElementById('displayRegNo').innerText;
+    const dynamicFilename = `${sName}_${rNo}_Form.pdf`;
+
     element.style.width = '210mm';
 
     const opt = {
         margin: 0, 
-        filename: 'Abhyasika_Admission_Form.pdf',
+        filename: dynamicFilename,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { 
-            scale: 2, 
-            useCORS: true, 
-            logging: false,
-            width: 794 
-        },
+        html2canvas: { scale: 2, useCORS: true, logging: false, width: 794 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: ['css', 'legacy'] } 
     };
@@ -861,18 +867,18 @@ async function generateReceiptPDF() {
         return; 
     }
     const element = document.getElementById('receipt-capture-area');
+    
+    const sName = (document.getElementsByName('full_name')[0].value || "Student").toString().trim().replace(/\s+/g, '_');
+    const rNo = document.getElementById('displayRegNo').innerText;
+    const dynamicFilename = `${sName}_${rNo}_Receipt.pdf`;
+
     element.style.width = '148mm'; 
 
     const opt = {
         margin: [5, 5, 5, 5], 
-        filename: 'Abhyasika_Fees_Receipt.pdf',
+        filename: dynamicFilename,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { 
-            scale: 2, 
-            useCORS: true,
-            logging: false,
-            width: 560 
-        },
+        html2canvas: { scale: 2, useCORS: true, logging: false, width: 560 },
         jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' } 
     };
     
@@ -885,7 +891,6 @@ async function generateReceiptPDF() {
     }
 }
 
-// 🌟 नवीन जोडलेले: आयडी कार्ड डाउनलोड करण्यासाठीचे स्वतंत्र फंक्शन
 async function generateIdCardPDF() {
     if (!isDataSavedSuccessfully) {
         alert("❌ आधी डेटा सेव्ह करा, त्याशिवाय ओळखपत्र डाऊनलोड करता येणार नाही!");
@@ -893,9 +898,13 @@ async function generateIdCardPDF() {
     }
     const element = document.getElementById('id-card-box');
     
+    const sName = (document.getElementsByName('full_name')[0].value || "Student").toString().trim().replace(/\s+/g, '_');
+    const rNo = document.getElementById('displayRegNo').innerText;
+    const dynamicFilename = `${sName}_${rNo}_ID_Card.pdf`;
+    
     const opt = {
         margin: [10, 10, 10, 10],
-        filename: 'Student_Digital_ID_Card.pdf',
+        filename: dynamicFilename,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 3, useCORS: true, logging: false },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -908,7 +917,7 @@ async function generateIdCardPDF() {
     }
 }
 
-// ८. फॉर्म पूर्णपणे कोरा आणि रीसेट करणे (Clear Form for New Entry) - सुधारीत
+// ८. फॉर्म पूर्णपणे कोरा आणि रीसेट करणे
 function clearFullForm() {
     if (!confirm("तुम्हाला खात्री आहे की नवीन अर्ज भरण्यासाठी स्क्रीनवरील डेटा पुसून टाकायचा आहे?")) {
         return;
@@ -939,7 +948,6 @@ function clearFullForm() {
     document.getElementById('downloadReceiptBtn').classList.add('hidden');
     document.getElementById('receipt-capture-area').classList.add('no-print');
     
-    // 🌟 आयडी कार्ड देखील रीसेट करताना लपवणे
     document.getElementById('downloadIdCardBtn').classList.add('hidden');
     document.getElementById('id-card-box').classList.add('hidden');
 
