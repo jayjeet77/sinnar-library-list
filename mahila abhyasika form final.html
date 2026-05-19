@@ -77,6 +77,119 @@
             body { background: white; }
             .a4-container { width: 210mm; }
         }
+        /* ==========================================
+   🌟 डिजिटल आयडी कार्ड स्टाईल्स (नवीन डिझाईननुसार)
+   ========================================== */
+.id-card-vertical {
+    width: 350px;
+    height: 550px;
+    background-color: #f3ede1; /* क्रीम/बदामी बॅकग्राउंड */
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    font-family: 'Hind', sans-serif;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    margin: 0 auto;
+    color: #333;
+}
+
+.card-header-dark {
+    background-color: #4a4a4a; /* डार्क राखाडी पट्टी */
+    height: 140px;
+    width: 100%;
+    padding: 15px;
+    position: relative;
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
+}
+
+.card-digital-tag {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 9px;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.card-logo-circle {
+    width: 55px;
+    height: 55px;
+    background: white;
+    border-radius: 50%;
+    margin-top: 8px;
+    overflow: hidden;
+    border: 2px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-photo-area {
+    position: absolute;
+    top: 25px;
+    right: 15px;
+    width: 150px;
+    height: 150px;
+    background: #f3ede1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 4px solid #bda884; /* ब्राँझ/गोल्डन बॉर्डर */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    z-index: 10;
+}
+
+.card-photo-inner {
+    width: 134px;
+    height: 134px;
+    border-radius: 50%;
+    background: #fff;
+    overflow: hidden;
+}
+
+.card-photo-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-title-marathi {
+    color: white;
+    margin-top: 10px;
+    line-height: 1.2;
+}
+.card-title-marathi h3 { font-size: 13px; font-weight: 500; margin: 0; color: #bda884; }
+.card-title-marathi h2 { font-size: 15px; font-weight: 700; margin: 0; }
+
+.card-content-body {
+    padding: 45px 20px 20px 25px;
+}
+
+.card-field { font-size: 15px; color: #333; margin-bottom: 8px; display: flex; }
+.card-field strong { color: #555; font-weight: 600; width: 110px; display: inline-block; }
+.card-field span { flex: 1; color: #000; font-weight: 700; }
+
+.card-qr-box {
+    position: absolute;
+    bottom: 50px;
+    right: 25px;
+    background: white;
+    padding: 6px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.card-footer-address {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #4a4a4a;
+    color: #f3ede1;
+    text-align: center;
+    padding: 6px;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+}
            </style>
 </head>
 <body>
@@ -104,6 +217,7 @@
 <button id="downloadFormBtn" onclick="generateFormPDF()" class="hidden bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded text-sm font-bold shadow-md">📄 डाऊनलोड अर्ज</button>
             <button id="downloadReceiptBtn" onclick="generateReceiptPDF()" class="hidden bg-purple-600 hover:bg-purple-500 px-4 py-2 rounded text-sm font-bold shadow-md">🧾 डाऊनलोड पावती</button>
 
+            <button id="downloadIdCardBtn" onclick="generateIdCardPDF()" class="hidden bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded text-sm font-bold shadow-md">🪪 डाऊनलोड ID कार्ड</button>
             <button onclick="logout()" class="text-xs text-slate-300 underline ml-2">लॉगआउट</button>
         </div>
     </div>
@@ -386,7 +500,47 @@
         </div>
     </div>
 </form>
+</form> 
 
+<div id="id-card-capture-area" class="no-print flex justify-center my-8">
+    <div id="id-card-box" class="hidden id-card-vertical">
+        
+        <div class="card-header-dark">
+            <div class="card-digital-tag">DIGITAL ID CARD</div>
+            <div class="card-logo-circle">
+                <img id="card_logo_img" src="" class="w-full h-full object-cover hidden" onload="this.classList.remove('hidden')">
+            </div>
+            <div class="card-title-marathi">
+                <h3>महिला अभ्यासिका</h3>
+                <h2>सिन्नर सार्वजनिक वाचनालय</h2>
+            </div>
+        </div>
+
+        <div class="card-photo-area">
+            <div id="cardPhotoPreview" class="card-photo-inner flex items-center justify-center">
+                <span class="text-gray-400 text-xs">फोटो</span>
+            </div>
+        </div>
+
+        <div class="card-content-body">
+            <div class="card-field"><strong>विद्यार्थिनीचे नाव:</strong> <span id="card_display_name">----------</span></div>
+            <div class="card-field"><strong>मोबाईल नं.:</strong> <span id="card_display_phone">----------</span></div>
+            <div class="card-field"><strong>पत्ता:</strong> <span id="card_display_address">----------</span></div>
+            <div class="card-field" style="margin-top: 25px;"><strong>नोंदणी क्र.:</strong> <span id="card_display_reg_no">-------</span></div>
+            <div class="card-field"><strong>वेळ बॅच:</strong> <span id="card_display_batch" class="text-blue-800">----------</span></div>
+        </div>
+
+        <div class="card-qr-box">
+            <div id="card_qrcode"></div>
+        </div>
+
+        <div class="card-footer-address">
+            छ. शिवाजी महाराज चौक, सिन्नर जि. नाशिक
+        </div>
+
+    </div>
+</div>
+<script>
 <script>
 // १. ग्लोबल व्हेरिएबल्स (येथे तुमची नवीन गुगल स्क्रिप्ट लिंक पेस्ट करा)
 const googleScriptUrl = "https://script.google.com/macros/s/AKfycbyU63UGQoKf098CH7gJWJ0nFSU6k5BKdWBz4yCuetPgluiBIEXdvLc8y5vNkGeqVylL/exec"; 
@@ -517,8 +671,6 @@ function handleSaveResponse(response) {
         saveBtn.style.backgroundColor = "#cccccc"; // बटनाचा रंग राखाडी करणे
         saveBtn.style.cursor = "not-allowed";
         
-        alert("डेटा यशस्वीरित्या सेव्ह झाला आहे. आता तुम्ही पीडीएफ डाऊनलोड करू शकता.");
-        
         // नोंदणी आणि पावती क्रमांक सेट करणे
         document.getElementById('displayRegNo').innerText = response.regNo;
         document.getElementById('rcpt_reg_no').innerText = response.regNo;
@@ -534,10 +686,52 @@ function handleSaveResponse(response) {
         
         document.getElementById('rcpt_time').innerText = document.getElementsByName('time_slot')[0].value;
         
-        // डाऊनलोड बटने दृश्यमान (Show) करणे
+        // =========================================================
+        // 🌟 नवीन जोडलेले: आयडी कार्डवर लाइव्ह डेटा भरणे आणि QR जनरेट करणे
+        // =========================================================
+        const name = document.getElementById('fullname').value || "----------";
+        const phone = document.getElementById('mobile').value || "----------";
+        const address = document.getElementById('address').value || "----------";
+        const batch = document.getElementById('time_slot').value || "----------";
+
+        document.getElementById('card_display_reg_no').innerText = response.regNo;
+        document.getElementById('card_display_name').innerText = name;
+        document.getElementById('card_display_phone').innerText = phone;
+        document.getElementById('card_display_address').innerText = address;
+        document.getElementById('card_display_batch').innerText = batch;
+
+        // मुख्य फॉर्मवरील विद्यार्थ्याचा फोटो आयडी कार्डवर कॉपी करणे
+        const originalPreview = document.getElementById('photoPreview');
+        const cardPreview = document.getElementById('cardPhotoPreview');
+        if (originalPreview && originalPreview.getElementsByTagName('img').length > 0) {
+            cardPreview.innerHTML = `<img src="${originalPreview.getElementsByTagName('img')[0].src}" class="w-full h-full object-cover">`;
+        }
+
+        // QR कोड जनरेट करणे (६०x६० साईझ)
+        const qrContainer = document.getElementById('card_qrcode');
+        qrContainer.innerHTML = "";
+        if(typeof QRCode !== 'undefined' && response.regNo) {
+            new QRCode(qrContainer, {
+                text: `Reg No: ${response.regNo}\nName: ${name}\nBatch: ${batch}`,
+                width: 60,
+                height: 60,
+                correctLevel: QRCode.CorrectLevel.M
+            });
+        }
+        // =========================================================
+
+        // डाऊनलोड बटने दृश्यमान (Show) करणे (तुमचे मूळ आयडी सुरक्षित ठेवून)
         document.getElementById('downloadFormBtn').classList.remove('hidden');
         document.getElementById('downloadReceiptBtn').classList.remove('hidden');
         document.getElementById('receipt-capture-area').classList.remove('no-print');
+        
+        // नवीन आयडी कार्ड आणि त्याचे डाऊनलोड बटन दाखवणे
+        if(document.getElementById('downloadIdCardBtn')) {
+            document.getElementById('downloadIdCardBtn').classList.remove('hidden');
+        }
+        if(document.getElementById('id-card-box')) {
+            document.getElementById('id-card-box').classList.remove('hidden');
+        }
         
         alert(`डेटा यशस्वीरित्या सेव्ह झाला!\nनोंदणी क्र: ${response.regNo}\nपावती क्र: ${response.receiptNo}`);
     } else {
@@ -551,6 +745,7 @@ function handleSaveResponse(response) {
         alert("डेटा सेव्ह करताना त्रुटी आली! गुगल स्क्रिप्ट तपासा.");
     }
 }
+
 // ५. जुनी विद्यार्थिनी शोधणे (Search Member for Renewal)
 function searchMember() {
     const regNo = document.getElementById('searchRegNo').value.trim();
@@ -560,7 +755,6 @@ function searchMember() {
     script.src = `${googleScriptUrl}?action=search&regNo=${regNo}&callback=handleSearchResponse`;
     document.body.appendChild(script);
 }
-
 function handleSearchResponse(response) {
     if (response.result === "found") {
         document.getElementById('is_renewal').value = "true";
@@ -739,6 +933,9 @@ function clearFullForm() {
     document.getElementById('downloadFormBtn').classList.add('hidden');
     document.getElementById('downloadReceiptBtn').classList.add('hidden');
     document.getElementById('receipt-capture-area').classList.add('no-print');
+  
+    document.getElementById('id-card-box').classList.add('hidden');
+document.getElementById('downloadIdCardBtn').classList.add('hidden');
 
     // ग) 'सेव्ह डेटा' बटन पुन्हा लॉक मधून अनलॉक (Enable) करणे
     isDataSavedSuccessfully = false; // सेफ्टी फ्लॅग रीसेट
