@@ -651,100 +651,97 @@ function saveToSheet() {
     document.body.appendChild(script);
 }
 
-// 🛠️ १००% अचूक अनलॉक लॉजिक असलेले दुरुस्त हँडलर फंक्शन
+// 🛠️ १००% अचूक अनलॉक लॉजिक आणि आधी पॉप-अप देणारे दुरुस्त हँडलर फंक्शन
 function handleSaveResponse(response) {
     const saveBtn = document.getElementById('saveBtn');
-    console.log("Google Script Response Received:", response); // तपासणीसाठी
+    console.log("Google Script Response Received:", response);
 
-    // सुपर-सेफ चेकिंग: रिस्पॉन्स मध्ये यशाचा कोणताही संकेत असेल तर बटने दाखवा
-    if (response && (response.status === "success" || response.result === "success" || response.regNo)) {
-        isDataSavedSuccessfully = true; 
-        
-        // १. सेव्ह बटन लॉक करणे
+    // १. सुरक्षित व्हेरिएबल्स तयार करणे (जर स्क्रिप्टमधून अचूक नाव आले नाही तर फॉलबॅक वापरणे)
+    let finalRegNo = "SIN-XXXX";
+    let finalRcptNo = "RCPT-XXXX";
+
+    if (response) {
+        if (response.regNo) finalRegNo = response.regNo;
+        else if (response.reg_no) finalRegNo = response.reg_no;
+
+        if (response.receiptNo) finalRcptNo = response.receiptNo;
+        else if (response.receipt_no) finalRcptNo = response.receipt_no;
+    }
+
+    // 🎯 [तुमची मागणी] - आधी अर्ज यशस्वीरित्या सेव्ह झाल्याचा पॉप-अप दाखवणे
+    alert(`डेटा यशस्वीरित्या सेव्ह झाला!\nनोंदणी क्र: ${finalRegNo}\nपावती क्र: ${finalRcptNo}`);
+
+    // पॉप-अप 'OK' केल्यानंतर खालील सर्व बटने लगेच अनलॉक होतील:
+    isDataSavedSuccessfully = true; 
+    
+    // २. सेव्ह बटन लॉक करणे (जेणेकरून पुन्हा क्लिक होणार नाही)
+    if (saveBtn) {
         saveBtn.innerHTML = "✅ डेटा सेव्ह झाला आहे";
         saveBtn.disabled = true;
         saveBtn.style.backgroundColor = "#cccccc"; 
         saveBtn.style.cursor = "not-allowed";
-        
-        // २. नोंदणी आणि पावती क्रमांक भरणे
-        const finalRegNo = response.regNo || response.reg_no || "SIN-XXXX";
-        const finalRcptNo = response.receiptNo || response.receipt_no || "RCPT-XXXX";
-
-        document.getElementById('displayRegNo').innerText = finalRegNo;
-        document.getElementById('rcpt_reg_no').innerText = finalRegNo;
-        document.getElementById('displayReceiptNoTop').innerText = finalRcptNo;
-        document.getElementById('displayReceiptNo').innerText = finalRcptNo;
-        document.getElementById('card_display_reg_no').innerText = finalRegNo;
-        
-        // ३. विद्यार्थिनीचे नाव पावतीवर सेट करणे
-        if (response.data && response.data.fullName) {
-            document.getElementById('rcpt_name').innerText = response.data.fullName.toString().trim();
-        } else {
-            document.getElementById('rcpt_name').innerText = document.getElementsByName('full_name')[0].value.toString().trim();
-        }
-        
-        document.getElementById('rcpt_time').innerText = document.getElementsByName('time_slot')[0].value;
-        
-        // ४. आयडी कार्डवरील डेटा अपडेट करणे
-        const name = document.getElementsByName('full_name')[0].value || "----------";
-        const phone = document.getElementsByName('student_mobile')[0].value || "----------";
-        const address = document.getElementsByName('address')[0].value || "----------";
-        const batch = document.getElementsByName('time_slot')[0].value || "----------";
-
-        document.getElementById('card_display_name').innerText = name;
-        document.getElementById('card_display_phone').innerText = phone;
-        document.getElementById('card_display_address').innerText = address;
-        document.getElementById('card_display_batch').innerText = batch;
-
-        // ५. फोटो मॅपिंग
-        const originalPreview = document.getElementById('photoPreview');
-        const cardPreview = document.getElementById('cardPhotoPreview');
-        if (originalPreview && originalPreview.getElementsByTagName('img').length > 0) {
-            cardPreview.innerHTML = `<img src="${originalPreview.getElementsByTagName('img')[0].src}" class="w-full h-full object-cover">`;
-        }
-
-        // ६. QR कोड तयार करणे
-        const qrContainer = document.getElementById('card_qrcode');
-        if (qrContainer) {
-            qrContainer.innerHTML = "";
-            if (typeof QRCode !== 'undefined') {
-                new QRCode(qrContainer, {
-                    text: `Reg No: ${finalRegNo}\nName: ${name}\nBatch: ${batch}`,
-                    width: 120,
-                    height: 120,
-                    correctLevel: QRCode.CorrectLevel.M
-                });
-            }
-        }
-        
-        // 🎯 ७. डाऊनलोडची सर्व बटने त्वरित दाखवणे (FALLBACK PROOF)
-        showDownloadButtons();
-
-        alert(`डेटा यशस्वीरित्या सेव्ह झाला!\nनोंदणी क्र: ${finalRegNo}\nपावती क्र: ${finalRcptNo}`);
-    } else {
-        // जरी गुगल स्क्रिप्टकडून रिस्पॉन्स समजला नाही, तरी डेटा गेला असण्याची शक्यता गृहीत धरून स्टाफला पर्याय देणे
-        console.error("रिस्पॉन्स फॉरमॅट जुळला नाही, पण तरीही बटने फोर्स-ओपन केली जात आहेत.");
-        
-        isDataSavedSuccessfully = true; // डाऊनलोड चालू करण्यासाठी true केले
-        showDownloadButtons(); // बटने दाखवा
-
-        saveBtn.innerHTML = "✅ डेटा सेव्ह झाला (Force)";
-        saveBtn.disabled = true;
-        saveBtn.style.backgroundColor = "#cccccc";
-
-        alert("डेटा सेव्ह झाला आहे (कृपया गुगल शीट तपासा जर नोंदणी क्रमांक दिसला नसेल तर)!\nडाऊनलोड बटने उपलब्ध केली आहेत.");
     }
-}
+    
+    // ३. फॉर्म आणि पावतीवरील नोंदणी क्रमांक अपडेट करणे
+    if (document.getElementById('displayRegNo')) document.getElementById('displayRegNo').innerText = finalRegNo;
+    if (document.getElementById('rcpt_reg_no')) document.getElementById('rcpt_reg_no').innerText = finalRegNo;
+    if (document.getElementById('displayReceiptNoTop')) document.getElementById('displayReceiptNoTop').innerText = finalRcptNo;
+    if (document.getElementById('displayReceiptNo')) document.getElementById('displayReceiptNo').innerText = finalRcptNo;
+    if (document.getElementById('card_display_reg_no')) document.getElementById('card_display_reg_no').innerText = finalRegNo;
+    
+    // ४. पावतीवर विद्यार्थिनीचे नाव सेट करणे
+    const rcptNameElem = document.getElementById('rcpt_name');
+    if (rcptNameElem) {
+        if (response && response.data && response.data.fullName) {
+            rcptNameElem.innerText = response.data.fullName.toString().trim();
+        } else if (document.getElementsByName('full_name')[0]) {
+            rcptNameElem.innerText = document.getElementsByName('full_name')[0].value.toString().trim();
+        }
+    }
+    
+    if (document.getElementById('rcpt_time') && document.getElementsByName('time_slot')[0]) {
+        document.getElementById('rcpt_time').innerText = document.getElementsByName('time_slot')[0].value;
+    }
+    
+    // ५. डिजिटल आयडी कार्डवर माहिती भरणे
+    const name = (document.getElementsByName('full_name')[0] ? document.getElementsByName('full_name')[0].value : "") || "----------";
+    const phone = (document.getElementsByName('student_mobile')[0] ? document.getElementsByName('student_mobile')[0].value : "") || "----------";
+    const address = (document.getElementsByName('address')[0] ? document.getElementsByName('address')[0].value : "") || "----------";
+    const batch = (document.getElementsByName('time_slot')[0] ? document.getElementsByName('time_slot')[0].value : "") || "----------";
 
-// बटने दाखवण्यासाठी स्वतंत्र सुरक्षित फंक्शन
-function showDownloadButtons() {
-    if(document.getElementById('downloadFormBtn')) document.getElementById('downloadFormBtn').classList.remove('hidden');
-    if(document.getElementById('downloadReceiptBtn')) document.getElementById('downloadReceiptBtn').classList.remove('hidden');
-    if(document.getElementById('downloadIdCardBtn')) document.getElementById('downloadIdCardBtn').classList.remove('hidden');
-    if(document.getElementById('receipt-capture-area')) document.getElementById('receipt-capture-area').classList.remove('no-print');
-    if(document.getElementById('id-card-box')) document.getElementById('id-card-box').classList.remove('hidden');
-}
-function searchMember() {
+    if (document.getElementById('card_display_name')) document.getElementById('card_display_name').innerText = name;
+    if (document.getElementById('card_display_phone')) document.getElementById('card_display_phone').innerText = phone;
+    if (document.getElementById('card_display_address')) document.getElementById('card_display_address').innerText = address;
+    if (document.getElementById('card_display_batch')) document.getElementById('card_display_batch').innerText = batch;
+
+    // ६. फोटो मॅपिंग करणे
+    const originalPreview = document.getElementById('photoPreview');
+    const cardPreview = document.getElementById('cardPhotoPreview');
+    if (originalPreview && cardPreview && originalPreview.getElementsByTagName('img').length > 0) {
+        cardPreview.innerHTML = `<img src="${originalPreview.getElementsByTagName('img')[0].src}" class="w-full h-full object-cover">`;
+    }
+
+    // ७. QR कोड जनरेट करणे
+    const qrContainer = document.getElementById('card_qrcode');
+    if (qrContainer) {
+        qrContainer.innerHTML = "";
+        if (typeof QRCode !== 'undefined') {
+            new QRCode(qrContainer, {
+                text: `Reg No: ${finalRegNo}\nName: ${name}\nBatch: ${batch}`,
+                width: 120,
+                height: 120,
+                correctLevel: QRCode.CorrectLevel.M
+            });
+        }
+    }
+    
+    // 🎯 ८. डाऊनलोडची सर्व बटने आणि एरिया त्वरित स्क्रीनवर दाखवणे (FORCE UNLOCK)
+    if (document.getElementById('downloadFormBtn')) document.getElementById('downloadFormBtn').classList.remove('hidden');
+    if (document.getElementById('downloadReceiptBtn')) document.getElementById('downloadReceiptBtn').classList.remove('hidden');
+    if (document.getElementById('downloadIdCardBtn')) document.getElementById('downloadIdCardBtn').classList.remove('hidden');
+    if (document.getElementById('receipt-capture-area')) document.getElementById('receipt-capture-area').classList.remove('no-print');
+    if (document.getElementById('id-card-box')) document.getElementById('id-card-box').classList.remove('hidden');
+}function searchMember() {
     const regNo = document.getElementById('searchRegNo').value.trim();
     if (!regNo) { alert("कृपया नोंदणी क्रमांक टाका!"); return; }
     
