@@ -724,6 +724,20 @@ function saveToSheet() {
 function handleSaveResponse(response) {
     console.log("Background Google Sheet Sync Complete:", response);
     if (response && (response.status === "success" || response.result === "success" || response.regNo)) {
+        // ✅ DATA SUCCESSFULLY SAVED
+isDataSavedSuccessfully = true;
+
+// ✅ SHOW DOWNLOAD BUTTONS
+document.getElementById('downloadFormBtn').style.display = 'inline-block';
+document.getElementById('downloadReceiptBtn').style.display = 'inline-block';
+document.getElementById('downloadIdCardBtn').style.display = 'inline-block';
+
+// ✅ SHOW RECEIPT & ID CARD
+document.getElementById('receipt-capture-area').style.display = 'block';
+document.getElementById('id-card-box').style.display = 'block';
+
+// ✅ SUCCESS MESSAGE
+alert("डेटा Google Sheet मध्ये यशस्वीरित्या सेव्ह झाला आहे!");
         const finalRegNo = response.regNo || "SIN-DONE";
         const finalRcptNo = response.receiptNo || "RCPT-DONE";
 
