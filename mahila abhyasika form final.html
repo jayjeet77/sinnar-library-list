@@ -6,12 +6,13 @@
     <title>Study Room Admission Form - Sinnar Public Library</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; color: #000; margin: 0; }
+        
         .a4-container { width: 210mm; margin: 0 auto; }
+        
         .a4-page {
             width: 210mm;
             min-height: 290mm;
@@ -20,812 +21,801 @@
             box-sizing: border-box;
             position: relative;
         }
+
         .receipt-page {
             width: 148mm;
             background: white;
             padding: 8mm;
             box-sizing: border-box;
-            margin: 0 auto;
-            border: 1px dashed #9ca3af;
+            border: 2px dashed #cbd5e1;
+            margin: 10px auto;
         }
+
         @media print {
             body { background: white; }
             .no-print { display: none !important; }
-            .a4-container { width: auto; margin: 0; box-shadow: none; }
-            .a4-page { width: auto; min-height: auto; padding: 0; margin: 0; border: none; }
-            .page-break { page-break-before: always; }
+            .a4-container { width: 210mm; margin: 0; box-shadow: none; }
+            .a4-page { width: 210mm; min-height: 290mm; padding: 10mm; box-shadow: none; margin: 0; page-break-after: always; }
+            .receipt-page { width: 148mm; border: none; padding: 0; margin: 0; page-break-after: avoid; }
         }
     </style>
 </head>
-<body class="bg-gray-100 py-8">
+<body class="bg-gray-100 py-6">
 
-    <div class="max-w-4xl mx-auto mb-6 px-4 no-print flex justify-between items-center bg-white p-4 rounded-lg shadow border border-gray-200">
+    <div class="max-w-4xl mx-auto mb-6 bg-white p-4 rounded-xl shadow-md border border-gray-200 flex flex-wrap gap-3 justify-between items-center no-print">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center font-bold text-lg shadow-md">वा</div>
+            <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+            <span id="loginStatusLabel" class="text-xs font-bold text-gray-600">Staff Mode: Logged Out</span>
+        </div>
+        <div class="flex gap-2">
+            <button onclick="window.location.href='attendance.html';" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-lg shadow transition">⏱️ Attendance Scanner</button>
+            <button id="downloadFormBtn" onclick="downloadFormPDF()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2 rounded-lg shadow hidden transition">📥 Form PDF</button>
+            <button id="downloadReceiptBtn" onclick="downloadReceiptPDF()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-lg shadow hidden transition">📥 Receipt PDF</button>
+            <button id="downloadIdCardBtn" onclick="downloadIdCardJPG()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2 rounded-lg shadow hidden transition">🪪 ID Card JPG</button>
+        </div>
+    </div>
+
+    <div id="loginOverlay" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 no-print">
+        <div class="bg-white rounded-2xl shadow-2xl border border-gray-100 max-w-sm w-full p-6 text-center space-y-4">
+            <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl mx-auto font-bold">🔐</div>
             <div>
-                <h1 class="text-base font-bold tracking-tight text-gray-900">सिन्नर सार्वजनिक वाचनालय</h1>
-                <p class="text-[11px] text-gray-500 font-medium">डिजिटल अभ्यासिका व्यवस्थापन प्रणाली • २०२६</p>
+                <h2 class="text-base font-bold text-gray-900">स्टाफ लॉगिन (Staff Authorization)</h2>
+                <p class="text-xs text-gray-500 mt-0.5">प्रणाली वापरण्यासाठी कृपया ओळख पटवा.</p>
             </div>
-        </div>
-        <div class="flex items-center gap-2">
-            <span id="loggedUserDisplay" class="text-xs bg-gray-100 border border-gray-300 text-gray-700 font-semibold px-3 py-1.5 rounded-md shadow-sm">👤 Operator: Loading...</span>
-            <button onclick="flushForm()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-3 py-1.5 rounded shadow-sm transition">🔄 New Form</button>
-            <button onclick="window.location.href='attendance.html';" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-3 py-1.5 rounded shadow-sm transition">⏱️ Attendance Scanner</button>
-        </div>
-    </div>
-
-    <div class="max-w-4xl mx-auto mb-6 px-4 no-print grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="bg-white p-4 rounded-lg shadow border border-gray-200 flex flex-col justify-between">
-            <div>
-                <label class="block text-xs font-bold text-gray-700 mb-1">Search & Renew Member (Reg No)</label>
-                <div class="flex gap-2">
-                    <input type="text" id="searchRegNo" placeholder="e.g., SIN-0024" class="border border-gray-300 text-sm rounded px-3 py-1.5 w-full uppercase font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-blue-500">
-                    <button onclick="searchAndPopulateMember()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-4 py-2 rounded shadow-sm transition whitespace-nowrap">🔍 Search & Fill</button>
+            <div class="space-y-2.5 text-left">
+                <div>
+                    <label class="text-[11px] font-bold text-gray-500 block mb-1">युझरनेम (Username)</label>
+                    <input type="text" id="staffUser" placeholder="Enter username" class="w-full bg-gray-50 border border-gray-200 text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500 font-medium">
+                </div>
+                <div>
+                    <label class="text-[11px] font-bold text-gray-500 block mb-1">पासवर्ड (Password)</label>
+                    <input type="password" id="staffPass" placeholder="Enter password" class="w-full bg-gray-50 border border-gray-200 text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500 font-medium">
                 </div>
             </div>
-            <div class="flex gap-2 mt-4">
-                <button id="saveBtn" onclick="saveToSheet()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2.5 rounded shadow-md transition flex-1">💾 Save Data</button>
-                <button id="downloadFormBtn" onclick="window.print()" class="hidden bg-gray-800 hover:bg-gray-700 text-white text-xs font-bold px-3 py-2.5 rounded shadow transition">🖨️ Print / Save A4 Form</button>
-            </div>
-        </div>
-
-        <div class="bg-white p-4 rounded-lg shadow border border-gray-200 flex flex-col justify-end gap-2">
-            <div class="text-xs text-gray-500 font-medium mb-auto">
-                <span class="font-bold text-gray-700 block mb-1">System Processing Feedback</span>
-                <p>Generated Registration ID: <span id="displayRegNo" class="font-bold text-blue-600 font-mono bg-blue-50 px-1 rounded">-</span></p>
-                <p>Generated Receipt Number: <span id="displayReceiptNo" class="font-bold text-purple-600 font-mono bg-purple-50 px-1 rounded">-</span></p>
-            </div>
-            <div class="flex gap-2">
-                <button id="downloadReceiptBtn" onclick="downloadReceiptPDF()" class="hidden bg-purple-600 hover:bg-purple-500 px-4 py-2 rounded text-xs font-bold text-white shadow-md transition flex-1">🧾 Download Receipt</button>
-                <button id="downloadIdCardBtn" onclick="downloadIdCardAsJPG()" class="hidden bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded text-xs font-bold text-white shadow-md transition flex-1">🪪 Download ID Card (JPG)</button>
-            </div>
+            <p id="loginErrorMsg" class="text-xs text-red-500 font-medium hidden">❌ चुकीचे युझरनेम किंवा पासवर्ड!</p>
+            <button onclick="processStaffLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2.5 rounded-lg shadow transition">Verify & Access</button>
         </div>
     </div>
 
-    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow border border-gray-200 no-print mb-8">
-        <h2 class="text-sm font-bold text-gray-800 border-b pb-2 mb-4 uppercase tracking-wider">Student Enrolment Form</h2>
-        <form id="admissionForm" onsubmit="event.preventDefault();" class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-            
-            <div class="flex flex-col items-center justify-center border border-gray-200 rounded p-4 bg-gray-50">
-                <div id="photoPreview" class="w-28 h-32 border-2 border-dashed border-gray-400 flex items-center justify-center text-[10px] text-gray-400 text-center cursor-pointer bg-white font-medium" title="Click to upload photo">
-                    Affix Photo Here
-                </div>
-                <input type="file" id="photoInput" accept="image/*" class="hidden" onchange="previewImage(this)">
-                <p class="text-[10px] text-gray-500 mt-2 text-center">Click the frame above to browse image</p>
-            </div>
-
-            <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Full Name (विद्यार्थ्याचे नाव) *</label>
-                    <input type="text" name="full_name" id="studentName" oninput="syncIdCardPreview()" required class="border rounded px-2 py-1 w-full text-xs focus:ring-1 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Parent/Guardian Name (पालकाचे नाव)</label>
-                    <input type="text" name="parent_name" id="parentName" class="border rounded px-2 py-1 w-full text-xs focus:ring-1 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Parent Occupation (पालकाचा व्यवसाय)</label>
-                    <input type="text" name="parent_occ" id="parentOcc" class="border rounded px-2 py-1 w-full text-xs focus:ring-1 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Date of Birth (जन्मदिनांक)</label>
-                    <input type="date" name="dob" id="dobInput" class="border rounded px-2 py-1 w-full text-xs focus:ring-1 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Gender (लिंग)</label>
-                    <select name="gender" class="border rounded px-2 py-1 w-full text-xs focus:ring-1 focus:ring-blue-500">
-                        <option value="Male">Male / पुरुष</option>
-                        <option value="Female">Female / स्त्री</option>
-                        <option value="Other">Other / इतर</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Blood Group (रक्तगट)</label>
-                    <input type="text" name="blood_group" placeholder="e.g. O+ve" class="border rounded px-2 py-1 w-full text-xs focus:ring-1 focus:ring-blue-500">
-                </div>
-            </div>
-
-            <div class="md:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t">
-                <div class="sm:col-span-2">
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Permanent Address (पत्ता)</label>
-                    <input type="text" name="address" id="addressInput" class="border rounded px-2 py-1 w-full text-xs focus:ring-1 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Pincode (पिनकोड) *</label>
-                    <input type="text" name="pincode" id="pincodeInput" required class="border rounded px-2 py-1 w-full text-xs focus:ring-1 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Student Mobile (विद्यार्थ्याचा मोबाईल) *</label>
-                    <input type="tel" name="mobile" id="studentMobile" oninput="syncIdCardPreview()" required class="border rounded px-2 py-1 w-full text-xs focus:ring-1 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Parent Mobile (पालकाचा मोबाईल)</label>
-                    <input type="tel" name="parent_mobile" id="parentMobile" class="border rounded px-2 py-1 w-full text-xs focus:ring-1 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Exam Purpose (परीक्षेचे नाव)</label>
-                    <input type="text" name="exam_purpose" id="examPurpose" placeholder="e.g. MPSC, UPSC, Banking" class="border rounded px-2 py-1 w-full text-xs focus:ring-1 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">National ID Type (ओळखपत्र प्रकार)</label>
-                    <select name="id_type" class="border rounded px-2 py-1 w-full text-xs focus:ring-1 focus:ring-blue-500">
-                        <option value="Aadhaar">Aadhaar Card</option>
-                        <option value="PAN">PAN Card</option>
-                        <option value="Voting">Voting Card</option>
-                        <option value="Driving">Driving Licence</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">National ID Number (ओळखपत्र क्रमांक)</label>
-                    <input type="text" name="id_no" class="border rounded px-2 py-1 w-full text-xs focus:ring-1 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Expected Study Time Slot</label>
-                    <select name="time_slot" class="border rounded px-2 py-1 w-full text-xs focus:ring-1 focus:ring-blue-500">
-                        <option value="Morning (7 AM - 12 PM)">Morning (7 AM - 12 PM)</option>
-                        <option value="Afternoon (12 PM - 5 PM)">Afternoon (12 PM - 5 PM)</option>
-                        <option value="Full Day (7 AM - 9 PM)">Full Day (7 AM - 9 PM)</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="md:col-span-3 grid grid-cols-1 sm:grid-cols-4 gap-3 pt-2 border-t bg-slate-50 p-3 rounded">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Plan Start Date (सुरुवात तारीख)</label>
-                    <input type="date" name="start_date" id="startDate" onchange="calculateFees()" class="border rounded px-2 py-1 w-full text-xs focus:ring-1 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Duration (कालावधी)</label>
-                    <select name="duration" id="durationSelect" onchange="calculateFees()" class="border rounded px-2 py-1 w-full text-xs font-bold focus:ring-1 focus:ring-blue-500">
-                        <option value="1">1 Month / महिना</option>
-                        <option value="2">2 Months / महिने</option>
-                        <option value="3">3 Months / महिने</option>
-                        <option value="6">6 Months / महिने</option>
-                        <option value="12">1 Year / वर्ष</option>
-                    </select>
-                </div>
-                <div class="flex flex-col justify-center items-center bg-white border rounded shadow-sm">
-                    <span class="text-[10px] uppercase font-bold tracking-wider text-gray-500">Valid Up To</span>
-                    <span id="displayToDate" class="text-sm font-black text-gray-800 font-mono">-</span>
-                </div>
-                <div class="flex flex-col justify-center items-center bg-emerald-600 text-white border rounded shadow-sm">
-                    <span class="text-[10px] uppercase font-bold tracking-wider text-emerald-100">Total Calculation</span>
-                    <span class="text-lg font-black font-mono">₹<span id="fee_total">500</span>/-</span>
-                </div>
-            </div>
-
-            <input type="hidden" name="is_renewal" id="isRenewalFlag" value="false">
-            <input type="hidden" name="reg_no" id="hiddenRegNo" value="">
-            <input type="hidden" name="orig_join_date_input" id="origJoinDateInput" value="">
-        </form>
+    <div class="max-w-4xl mx-auto mb-6 bg-white p-4 rounded-xl shadow-md border border-gray-200 no-print">
+        <h3 class="text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">🔄 सदस्य नूतनीकरण / शोध (Member Renewal & Search)</h3>
+        <div class="flex gap-2">
+            <input type="text" id="searchRegNo" placeholder="नोंदणी क्रमांक टाका (उदा. SIN-0001)" class="bg-gray-50 border border-gray-200 text-xs rounded-lg px-3 py-2 w-full uppercase font-mono tracking-wider focus:outline-none focus:border-blue-500">
+            <button onclick="searchMemberRecord()" class="bg-gray-800 hover:bg-gray-900 text-white text-xs font-bold px-5 py-2 rounded-lg shadow transition whitespace-nowrap">🔍 Search</button>
+        </div>
     </div>
 
-    <div id="historyBlock" class="max-w-4xl mx-auto bg-white p-4 rounded-lg shadow border border-gray-200 no-print mb-8 hidden">
-        <h3 class="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2 flex items-center gap-1">📜 Membership Renewal Logs & Timeline History</h3>
+    <div id="historyLogsSection" class="max-w-4xl mx-auto mb-6 bg-white p-4 rounded-xl shadow-md border border-gray-200 no-print hidden">
+        <h3 class="text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">📊 मागील शुल्क पावती इतिहास (Previous Receipt History)</h3>
         <div class="overflow-x-auto">
             <table class="w-full text-left text-xs border-collapse">
                 <thead>
-                    <tr class="bg-amber-50 text-amber-900 border-b border-amber-200 font-bold">
+                    <tr class="bg-gray-50 text-gray-500 border-b border-gray-200 font-bold">
                         <th class="p-2">Receipt No</th>
-                        <th class="p-2">Transaction Date</th>
+                        <th class="p-2">Date</th>
                         <th class="p-2">Duration</th>
                         <th class="p-2">Amount Paid</th>
-                        <th class="p-2">Validity Term (From - To)</th>
+                        <th class="p-2">Validity Period</th>
                     </tr>
                 </thead>
-                <tbody id="historyTableBody" class="divide-y divide-gray-100">
-                    <tr><td colspan="5" class="p-2 text-center text-gray-400 italic">No history records found</td></tr>
+                <tbody id="historyTableBody" class="divide-y divide-gray-100 font-medium text-gray-600">
+                    <tr>
+                        <td colspan="5" class="p-2 text-center text-gray-400 italic">No history records found</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
+    <div id="interactive-form-panel" class="max-w-4xl mx-auto mb-8 bg-white p-6 rounded-xl shadow-md border border-gray-200 no-print">
+        <div class="border-b border-gray-100 pb-3 mb-5 flex justify-between items-center">
+            <div>
+                <h2 class="text-base font-bold text-gray-900">अभ्यासिका प्रवेश अर्ज प्रणाली (Digital Data Entry)</h2>
+                <p class="text-xs text-gray-500 mt-0.5">माहिती अचूक भरा, डेटा थेट गुगल शीटमध्ये सुरक्षित सेव्ह होईल.</p>
+            </div>
+            <span id="formModeBadge" class="text-[10px] bg-blue-50 text-blue-600 border border-blue-200 font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">NEW ADMISSION</span>
+        </div>
 
-    <div class="a4-container shadow-2xl border border-gray-300 rounded page-break">
-        <div class="a4-page" id="form-page-element">
-            
-            <div class="flex items-center justify-between border-b-2 border-red-600 pb-4 mb-4">
-                <div class="flex items-center gap-3">
-                    <div class="w-14 h-14 bg-red-600 text-white rounded-full flex items-center justify-center font-black text-2xl shadow">वा</div>
-                    <div>
-                        <h1 class="text-xl font-black tracking-tight text-gray-900">सिन्नर सार्वजनिक वाचनालय, सिन्नर</h1>
-                        <p class="text-xs font-bold text-red-600">अभ्यासिका प्रवेश अर्ज (Study Room Admission Form)</p>
-                    </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-semibold text-gray-600">
+            <div>
+                <label class="block mb-1 text-gray-500">विद्यार्थ्याचे पूर्ण नाव (Full Name)*</label>
+                <input type="text" id="input_full_name" oninput="syncFormView()" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block mb-1 text-gray-500">पालकाचे नाव (Parent's Name)*</label>
+                <input type="text" id="input_parent_name" oninput="syncFormView()" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block mb-1 text-gray-500">पालकाचा व्यवसाय (Parent's Occupation)</label>
+                <input type="text" id="input_parent_occ" oninput="syncFormView()" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block mb-1 text-gray-500">जन्म तारीख (Date of Birth)*</label>
+                <input type="date" id="input_dob" onchange="syncFormView()" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-blue-500 font-medium">
+            </div>
+            <div>
+                <label class="block mb-1 text-gray-500">लिंग (Gender)*</label>
+                <select id="input_gender" onchange="syncFormView()" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-blue-500">
+                    <option value="Male">Male</option>
+                    <option value="Female" selected>Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div>
+                <label class="block mb-1 text-gray-500">रक्त गट (Blood Group)</label>
+                <input type="text" id="input_blood_group" oninput="syncFormView()" placeholder="e.g. O+ve" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-blue-500 uppercase">
+            </div>
+            <div class="md:col-span-2">
+                <label class="block mb-1 text-gray-500">पूर्ण पत्ता (Permanent Address)*</label>
+                <input type="text" id="input_address" oninput="syncFormView()" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block mb-1 text-gray-500">पिन कोड (Pincode)*</label>
+                <input type="text" id="input_pincode" oninput="syncFormView()" placeholder="422103" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-blue-500 font-mono">
+            </div>
+            <div>
+                <label class="block mb-1 text-gray-500">विद्यार्थ्याचा मो. क्र. (Student Mobile)*</label>
+                <input type="text" id="input_mobile" oninput="syncFormView()" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-blue-500 font-mono">
+            </div>
+            <div>
+                <label class="block mb-1 text-gray-500">पालकाचा मो. क्र. (Parent Mobile)*</label>
+                <input type="text" id="input_parent_mobile" oninput="syncFormView()" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-blue-500 font-mono">
+            </div>
+            <div>
+                <label class="block mb-1 text-gray-500">तयारी करत असलेली परीक्षा (Exam Purpose)</label>
+                <input type="text" id="input_exam_purpose" oninput="syncFormView()" placeholder="e.g. MPSC, Banking" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block mb-1 text-gray-500">ओळखपत्र प्रकार (ID Proof Type)*</label>
+                <select id="input_id_type" onchange="syncFormView()" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-blue-500">
+                    <option value="Aadhar Card">Aadhar Card</option>
+                    <option value="Voting Card">Voting Card</option>
+                    <option value="College ID">College ID</option>
+                    <option value="Driving License">Driving License</option>
+                </select>
+            </div>
+            <div>
+                <label class="block mb-1 text-gray-500">ओळखपत्र क्रमांक (ID Number)*</label>
+                <input type="text" id="input_id_no" oninput="syncFormView()" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-blue-500 font-mono uppercase">
+            </div>
+            <div>
+                <label class="block mb-1 text-gray-500">अभ्यासिकेची वेळ (Expected Time Slot)*</label>
+                <select id="input_time_slot" onchange="syncFormView()" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-blue-500">
+                    <option value="7:00 AM - 12:00 PM">7:00 AM - 12:00 PM</option>
+                    <option value="12:00 PM - 5:00 PM">12:00 PM - 5:00 PM</option>
+                    <option value="5:00 PM - 10:00 PM">5:00 PM - 10:00 PM</option>
+                    <option value="Full Day (7:00 AM - 10:00 PM)">Full Day (7:00 AM - 10:00 PM)</option>
+                </select>
+            </div>
+            <div>
+                <label class="block mb-1 text-gray-500">प्रवेश कालावधी (Duration)*</label>
+                <select id="duration" onchange="calculateFees()" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-blue-500">
+                    <option value="1">1 Month</option>
+                    <option value="2">2 Months</option>
+                    <option value="3">3 Months</option>
+                    <option value="6">6 Months</option>
+                    <option value="12">1 Year</option>
+                </select>
+            </div>
+            <div>
+                <label class="block mb-1 text-gray-500">प्रारंभ तारीख (Start Date)*</label>
+                <input type="date" id="startDate" onchange="calculateFees()" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-blue-500 font-medium">
+            </div>
+            <div>
+                <label class="block mb-1 text-gray-500">एकूण शुल्क आकारणी (Total Fee Amount)</label>
+                <input type="number" id="totalAmount" readonly class="w-full bg-gray-200 border border-gray-300 rounded-lg px-3 py-2 text-gray-800 font-mono font-bold focus:outline-none">
+            </div>
+            <div class="md:col-span-3 pt-2">
+                <label class="block mb-1 text-gray-500">विद्यार्थ्याचा फोटो अपलोड (Upload Photo)*</label>
+                <div class="flex items-center gap-4 bg-gray-50 border border-dashed border-gray-300 p-3 rounded-lg">
+                    <input type="file" id="photoFile" accept="image/*" class="text-xs text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-gray-800 file:text-white hover:file:bg-gray-900 cursor-pointer">
+                    <p class="text-[10px] text-gray-400">Image file only. It will automatically compress into A4 & ID Card.</p>
                 </div>
-                <div class="text-right text-xs text-gray-500 font-bold font-mono">
-                    <p>Form Date: <span id="form_current_date" class="text-gray-900">-</span></p>
-                    <p class="text-sm mt-1 text-blue-600">Reg No: <span id="form_reg_no" class="font-black">-</span></p>
+            </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-gray-100 flex gap-3">
+            <button id="saveBtn" onclick="saveDataToGoogleSheets()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-3 rounded-lg shadow transition">💾 Save & Register</button>
+            <button onclick="clearAndResetFormSystem()" class="bg-gray-100 hover:bg-gray-200 text-gray-600 text-xs font-bold px-6 py-3 rounded-lg border border-gray-200 transition">Reset</button>
+        </div>
+    </div>
+
+    <div id="a4-admission-form" class="a4-container bg-white shadow-xl border border-gray-200 rounded-xl my-4 overflow-hidden">
+        <div class="a4-page">
+            <div class="flex justify-between items-center border-b-2 border-black pb-3">
+                <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=100&auto=format&fit=crop&q=60" alt="Logo" class="w-16 h-16 object-cover rounded-full border border-gray-300">
+                <div class="text-center flex-1 mx-4">
+                    <h1 class="text-xl font-extrabold tracking-tight text-gray-950 uppercase">Sinnar Public Library</h1>
+                    <p class="text-[11px] font-bold text-gray-700 uppercase tracking-widest mt-0.5">Sinnar Public Library Study Room Admission Form</p>
+                    <p class="text-[10px] text-gray-600 font-medium mt-0.5">Sinnar, Dist. Nashik • Ph: 02551-220033</p>
+                </div>
+                <div id="photoPreview" class="w-24 h-28 border-2 border-dashed border-gray-400 rounded flex items-center justify-center text-[10px] text-gray-400 font-bold text-center p-1 bg-gray-50 shrink-0">
+                    Affix Photo Here
                 </div>
             </div>
 
-            <div class="grid grid-cols-4 gap-4 text-xs text-gray-800 leading-relaxed">
-                <div class="col-span-1 border-2 border-gray-300 aspect-[3/4] flex items-center justify-center bg-gray-50 text-[10px] text-gray-400 font-bold p-1 rounded">
-                    Passport Photo Here
-                </div>
-                
-                <div class="col-span-3 grid grid-cols-2 gap-x-4 gap-y-2 border-l pl-4">
-                    <p class="col-span-2 border-b pb-1"><span class="font-bold text-gray-500 uppercase tracking-wider block text-[10px]">Student Name / विद्यार्थ्याचे नाव:</span> <span id="lbl_name" class="font-bold text-sm text-gray-900">-</span></p>
-                    <p><span class="font-bold text-gray-500 uppercase tracking-wider block text-[10px]">Parent Name / पालकाचे नाव:</span> <span id="lbl_parent" class="font-semibold">-</span></p>
-                    <p><span class="font-bold text-gray-500 uppercase tracking-wider block text-[10px]">Occupation / व्यवसाय:</span> <span id="lbl_occ">-</span></p>
-                    <p><span class="font-bold text-gray-500 uppercase tracking-wider block text-[10px]">Date of Birth / जन्मदिनांक:</span> <span id="lbl_dob" class="font-mono">-</span></p>
-                    <p><span class="font-bold text-gray-500 uppercase tracking-wider block text-[10px]">Gender / लिंग:</span> <span id="lbl_gender">-</span></p>
-                    <p><span class="font-bold text-gray-500 uppercase tracking-wider block text-[10px]">Blood Group / रक्तगट:</span> <span id="lbl_bg" class="font-mono font-bold">-</span></p>
-                    <p><span class="font-bold text-gray-500 uppercase tracking-wider block text-[10px]">Admission Type:</span> <span id="lbl_status" class="font-bold text-blue-600">-</span></p>
-                </div>
+            <div class="grid grid-cols-2 text-xs font-bold text-gray-800 my-4 bg-gray-50 p-2 rounded border border-gray-200">
+                <div>नोंदणी क्रमांक (Reg No): <span id="view_reg_no" class="font-mono text-blue-700">-</span></div>
+                <div class="text-right">दिनांक (Date): <span id="form_current_date">-</span></div>
+            </div>
 
-                <div class="col-span-4 grid grid-cols-3 gap-3 pt-3 border-t mt-2">
-                    <p class="col-span-2"><span class="font-bold text-gray-500 uppercase tracking-wider block text-[10px]">Address / पत्ता:</span> <span id="lbl_address" class="font-medium">-</span></p>
-                    <p><span>Pincode / पिनकोड:</span> <span id="lbl_pincode" class="font-mono font-bold">-</span></p>
-                    <p><span class="font-bold text-gray-500 uppercase tracking-wider block text-[10px]">Student Mobile / विद्यार्थ्याचा मोबाईल:</span> <span id="lbl_mobile" class="font-mono font-bold text-gray-900">-</span></p>
-                    <p><span class="font-bold text-gray-500 uppercase tracking-wider block text-[10px]">Parent Mobile / पालकाचा मोबाईल:</span> <span id="lbl_pmobile" class="font-mono">-</span></p>
-                    <p><span class="font-bold text-gray-500 uppercase tracking-wider block text-[10px]">Exam Purpose / परीक्षेचे नाव:</span> <span id="lbl_exam">-</span></p>
-                    <p><span class="font-bold text-gray-500 uppercase tracking-wider block text-[10px]">Verification ID Document:</span> <span id="lbl_idtype" class="font-medium">-</span></p>
-                    <p class="col-span-2"><span class="font-bold text-gray-500 uppercase tracking-wider block text-[10px]">ID Document Number:</span> <span id="lbl_idno" class="font-mono font-semibold">-</span></p>
+            <div class="space-y-4 text-xs mt-6 text-gray-950">
+                <div class="grid grid-cols-3 border-b border-gray-200 pb-2">
+                    <span class="font-bold text-gray-600">विद्यार्थ्याचे नाव / Full Name:</span>
+                    <span id="view_full_name" class="col-span-2 font-bold uppercase">-</span>
                 </div>
-
-                <div class="col-span-4 grid grid-cols-4 gap-2 bg-gray-100 p-3 rounded-lg border border-gray-200 font-medium mt-4">
-                    <div>
-                        <span class="block text-[9px] uppercase tracking-wider text-gray-500 font-bold">Plan Period</span>
-                        <span id="lbl_duration" class="font-bold text-gray-900">-</span>
-                    </div>
-                    <div>
-                        <span class="block text-[9px] uppercase tracking-wider text-gray-500 font-bold">Commence Date</span>
-                        <span id="lbl_from" class="font-mono text-gray-900">-</span>
-                    </div>
-                    <div>
-                        <span class="block text-[9px] uppercase tracking-wider text-gray-500 font-bold">Expiry Date</span>
-                        <span id="lbl_to" class="font-mono text-gray-900 font-bold">-</span>
-                    </div>
-                    <div class="text-right">
-                        <span class="block text-[9px] uppercase tracking-wider text-gray-500 font-bold">Fee Received</span>
-                        <span class="font-mono font-black text-emerald-700 text-sm">₹<span id="lbl_amount">-</span>/-</span>
-                    </div>
+                <div class="grid grid-cols-3 border-b border-gray-200 pb-2">
+                    <span class="font-bold text-gray-600">पालकाचे नाव / Parent Name:</span>
+                    <span id="view_parent_name" class="col-span-2 font-bold uppercase">-</span>
+                </div>
+                <div class="grid grid-cols-3 border-b border-gray-200 pb-2">
+                    <span class="font-bold text-gray-600">पालकाचा व्यवसाय / Occupation:</span>
+                    <span id="view_parent_occ" class="col-span-2 font-medium">-</span>
+                </div>
+                <div class="grid grid-cols-3 border-b border-gray-200 pb-2">
+                    <span class="font-bold text-gray-600">जन्म तारीख / Date of Birth:</span>
+                    <span id="view_dob" class="font-semibold">-</span>
+                </div>
+                <div class="grid grid-cols-3 border-b border-gray-200 pb-2">
+                    <span class="font-bold text-gray-600">लिंग / Gender:</span>
+                    <span id="view_gender" class="font-semibold">-</span>
+                    <div class="flex gap-2"><span class="font-bold text-gray-600">रक्त गट / Blood Group:</span> <span id="view_blood_group" class="font-bold uppercase">-</span></div>
+                </div>
+                <div class="grid grid-cols-3 border-b border-gray-200 pb-2">
+                    <span class="font-bold text-gray-600">पूर्ण पत्ता / Address:</span>
+                    <span id="view_address" class="col-span-2 font-medium">-</span>
+                </div>
+                <div class="grid grid-cols-3 border-b border-gray-200 pb-2">
+                    <span class="font-bold text-gray-600">पिन कोड / Pincode:</span>
+                    <span id="view_pincode" class="font-mono font-bold">-</span>
+                </div>
+                <div class="grid grid-cols-3 border-b border-gray-200 pb-2">
+                    <span class="font-bold text-gray-600">विद्यार्थी मो. क्र. / Student Mobile:</span>
+                    <span id="view_mobile" class="font-mono font-bold text-gray-800">-</span>
+                </div>
+                <div class="grid grid-cols-3 border-b border-gray-200 pb-2">
+                    <span class="font-bold text-gray-600">पालकाचा मो. क्र. / Parent Mobile:</span>
+                    <span id="view_parent_mobile" class="font-mono font-bold text-gray-800">-</span>
+                </div>
+                <div class="grid grid-cols-3 border-b border-gray-200 pb-2">
+                    <span class="font-bold text-gray-600">तयारी करत असलेली परीक्षा:</span>
+                    <span id="view_exam_purpose" class="col-span-2 font-medium">-</span>
+                </div>
+                <div class="grid grid-cols-3 border-b border-gray-200 pb-2">
+                    <span class="font-bold text-gray-600">ओळखपत्र तपशील / ID Proof:</span>
+                    <span class="col-span-2 font-medium"><span id="view_id_type">-</span> - <span id="view_id_no" class="font-mono font-bold uppercase">-</span></span>
+                </div>
+                <div class="grid grid-cols-3 border-b border-gray-200 pb-2">
+                    <span class="font-bold text-gray-600">अभ्यासिकेची वेळ / Time Slot:</span>
+                    <span id="view_time_slot" class="col-span-2 font-bold text-blue-900">-</span>
                 </div>
             </div>
 
-            <div class="mt-8 pt-4 border-t border-gray-200 text-[11px] text-gray-600 leading-relaxed">
-                <h3 class="font-bold text-gray-900 mb-2 uppercase tracking-wider text-xs">अभ्यासिका नियम व अटी (Rules & Regulations):</h3>
-                <ol class="list-decimal pl-4 space-y-1">
-                    <li>अभ्यासिकेत प्रवेश करताना आपले डिजिटल ओळखपत्र (ID Card) स्कॅन करणे बंधनकारक आहे.</li>
-                    <li>अभ्यासिकेत शांतता राखणे अनिवार्य आहे. मोबाईल सायलेंट मोडवर ठेवावा.</li>
-                    <li>मासिक शुल्क दरमहा ठरलेल्या तारखेपूर्वी जमा करणे आवश्यक आहे, अन्यथा प्रवेश रद्द केला जाईल.</li>
-                    <li>वाचनालयाच्या कोणत्याही साहित्याचे किंवा मालमत्तेचे नुकसान केल्यास दंडात्मक कारवाई होईल.</li>
+            <div class="mt-8 border border-gray-300 p-3 rounded bg-gray-50 text-[10px] leading-relaxed text-gray-700">
+                <h4 class="font-bold text-gray-950 mb-1 border-b border-gray-200 pb-0.5">⚠️ अटी व नियम (Terms & Conditions):</h4>
+                <ol class="list-decimal pl-3.5 space-y-1 font-medium">
+                    <li>अभ्यासिकेत शांतता राखणे बंधनकारक आहे. मोबाईल सायलेंट मोडवर ठेवावा.</li>
+                    <li>वाचनालयाच्या कोणत्याही मालमत्तेचे नुकसान केल्यास दंडात्मक कारवाई होईल.</li>
+                    <li>मासिक फी चालू महिन्याच्या १ ते ५ तारखेपर्यंत भरणे आवश्यक आहे. फी परतावा मिळणार नाही.</li>
+                    <li>अभ्यासिकेत येताना व जाताना डिजिटल आयडी कार्ड स्कॅन करून हजेरी लावणे अनिवार्य आहे.</li>
+                    <li>कोणत्याही प्रकारचा गैरव्यवहार आढळल्यास प्रवेश रद्द करण्याचा हक्क व्यवस्थापनाकडे राहील.</li>
                 </ol>
             </div>
 
-            <div class="absolute bottom-10 left-10 right-10 flex justify-between items-center text-xs pt-8 border-t border-dashed border-gray-300">
-                <div class="text-center">
-                    <div class="w-32 h-10"></div>
-                    <p class="border-t pt-1 font-semibold text-gray-700">विद्यार्थ्याची स्वाक्षरी<br><span class="text-[10px] font-normal text-gray-400">(Student Signature)</span></p>
-                </div>
-                <div class="text-center">
-                    <div id="form_staff_sign" class="w-32 h-10 flex items-center justify-center italic text-gray-500 font-mono text-[11px]">Authorized</div>
-                    <p class="border-t pt-1 font-semibold text-gray-700">जबाबदार अधिकारी स्वाक्षरी<br><span class="text-[10px] font-normal text-gray-400">(Library Authority)</span></p>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="my-12 no-print"></div>
-
-    <div id="receipt-capture-area" class="no-print">
-        <div class="receipt-page" id="receipt-page-element">
-            <div class="border-2 border-gray-800 p-4 relative min-h-[95mm] flex flex-col justify-between">
-                
-                <div class="flex justify-between items-start border-b pb-2">
-                    <div class="flex gap-2 items-center">
-                        <div class="w-10 h-10 bg-black text-white flex items-center justify-center font-black text-lg">वा</div>
-                        <div>
-                            <h2 class="text-sm font-black uppercase tracking-tight text-gray-900">सिन्नर सार्वजनिक वाचनालय</h2>
-                            <p class="text-[10px] font-bold text-gray-600">अभ्यासिका विभाग शुल्क पावती</p>
-                        </div>
-                    </div>
-                    <div class="text-right text-[10px] font-bold font-mono">
-                        <p>Receipt No: <span id="rcpt_no" class="text-red-600 text-xs font-black">-</span></p>
-                        <p>Date: <span id="rcpt_date">-</span></p>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-3 gap-x-2 gap-y-3 text-xs my-4 text-gray-800">
-                    <p class="col-span-3 border-b pb-1"><span>विद्यार्थ्याचे नाव (Student Name):</span> <span id="rcpt_student_name" class="font-bold text-gray-900 block">-</span></p>
-                    <p><span>नोंदणी क्र (Reg No):</span> <span id="rcpt_reg_no" class="font-mono font-bold text-blue-600 block">-</span></p>
-                    <p class="col-span-2"><span>मोबाईल क्रमांक (Mobile):</span> <span id="rcpt_mobile" class="font-mono font-semibold block">-</span></p>
-                    <p class="col-span-3 bg-gray-100 p-2 rounded border border-dashed font-medium grid grid-cols-3 text-center">
-                        <span>कालावधी: <b id="rcpt_duration" class="text-gray-900 block font-bold">-</b></span>
-                        <span>प्रारंभ: <b id="rcpt_from" class="text-gray-900 block font-mono">-</b></span>
-                        <span>समाप्ती: <b id="rcpt_to" class="text-gray-900 block font-mono">-</b></span>
-                    </p>
-                </div>
-
-                <div class="flex justify-between items-end mt-4 pt-2 border-t">
-                    <div class="bg-black text-white font-mono font-black text-base px-4 py-1.5 rounded shadow">
-                        ₹<span id="rcpt_amount">-</span>/-
-                    </div>
-                    <div class="text-center text-[10px] font-bold">
-                        <div id="rcpt_staff_sign" class="italic text-gray-500 font-mono mb-1">Authorized</div>
-                        <p class="border-t pt-1 border-gray-400">शुल्क स्वीकारणाऱ्याची स्वाक्षरी</p>
-                    </div>
-                </div>
-
+            <div class="mt-16 flex justify-between text-xs font-bold text-gray-900 px-4">
+                <div class="text-center border-t border-black pt-2 w-32">विद्यार्थ्याची स्वाक्षरी</div>
+                <div class="text-center border-t border-black pt-2 w-32">क्लर्क/ऑपरेटर स्वाक्षरी</div>
+                <div class="text-center border-t border-black pt-2 w-32">सक्षम प्राधिकारी</div>
             </div>
         </div>
     </div>
 
-    <div class="my-12 no-print"></div>
-
-    <div class="max-w-md mx-auto no-print bg-white p-4 rounded-lg shadow border border-gray-200">
-        <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Live ID Card Canvas View</h3>
-        
-        <div id="id-card-box" class="hidden w-[86mm] h-[54mm] bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-xl shadow-2xl p-3 relative overflow-hidden box-border select-none border border-slate-700 mx-auto">
+    <div id="receipt-capture-area" class="max-w-[148mm] mx-auto bg-white shadow-xl rounded-xl my-6 overflow-hidden no-print">
+        <div class="receipt-page">
+            <div class="text-center border-b border-gray-300 pb-2">
+                <h2 class="text-base font-extrabold text-gray-950 uppercase tracking-tight">Sinnar Public Library</h2>
+                <p class="text-[10px] font-bold text-gray-700 uppercase tracking-wider">अभ्यासिका शुल्क पावती (Fee Receipt)</p>
+            </div>
             
-            <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-red-600/10 rounded-full blur-xl pointer-events-none"></div>
-            <div class="absolute -left-6 -top-6 w-24 h-24 bg-blue-600/10 rounded-full blur-xl pointer-events-none"></div>
+            <div class="grid grid-cols-2 text-[11px] font-bold text-gray-800 my-2.5">
+                <div>पावती क्र (Receipt No): <span id="rcpt_no" class="font-mono text-emerald-700">REC-XXXX</span></div>
+                <div class="text-right">दिनांक (Date): <span id="rcpt_date">-</span></div>
+            </div>
 
-            <div class="flex items-center justify-between border-b border-slate-700/60 pb-1.5 mb-2">
-                <div class="flex items-center gap-1.5">
-                    <div class="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center font-black text-[11px] text-white shadow-sm">वा</div>
-                    <div>
-                        <h4 class="text-[10px] font-black tracking-tight text-white leading-tight">सिन्नर सार्वजनिक वाचनालय</h4>
-                        <p class="text-[6px] font-bold tracking-widest text-red-400 uppercase leading-none">डिजिटल अभ्यासिका कार्ड</p>
-                    </div>
-                </div>
-                <div class="text-right">
-                    <span id="id_reg_no" class="font-mono text-[9px] font-black text-blue-400 bg-blue-950/60 px-1.5 py-0.5 rounded border border-blue-900/40 tracking-wider">-</span>
+            <div class="space-y-2 text-xs font-medium text-gray-900 mt-3">
+                <div class="border-b border-gray-100 pb-1">नोंदणी क्रमांक / Reg No: <span id="rcpt_reg_no" class="font-mono font-bold text-blue-700">-</span></div>
+                <div class="border-b border-gray-100 pb-1">विद्यार्थ्याचे नाव / Name: <span id="rcpt_student_name" class="font-bold uppercase">-</span></div>
+                <div class="border-b border-gray-100 pb-1">कालावधी / Duration: <span id="rcpt_duration" class="font-bold">-</span></div>
+                <div class="border-b border-gray-100 pb-1">वैधता कालावधी / Validity: <span id="rcpt_validity" class="font-mono font-bold text-gray-800">-</span></div>
+                <div class="bg-gray-50 p-2 rounded border border-gray-200 flex justify-between items-center mt-3">
+                    <span class="font-bold text-gray-700 text-xs">भरलेले एकूण शुल्क (Paid Amount):</span>
+                    <span class="font-mono font-black text-sm text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded border border-emerald-200">₹<span id="rcpt_amount">0.00</span>/-</span>
                 </div>
             </div>
 
-            <div class="flex gap-2 items-start h-[33mm]">
-                <div id="idCardPhotoFrame" class="w-[20mm] h-[26mm] bg-slate-800 border border-slate-700 rounded overflow-hidden flex items-center justify-center text-[7px] text-slate-500 text-center font-bold shrink-0">
-                    No Photo
-                </div>
-
-                <div class="flex-1 flex flex-col justify-between h-[26mm] text-[8px] leading-tight">
-                    <div>
-                        <span class="text-[6px] text-slate-400 uppercase block tracking-wide font-medium">Student Name</span>
-                        <h5 id="id_name" class="font-bold text-white text-[9px] line-clamp-1 tracking-wide">-</h5>
-                    </div>
-                    <div>
-                        <span class="text-[6px] text-slate-400 uppercase block tracking-wide font-medium">Contact Number</span>
-                        <p id="id_mobile" class="font-mono font-semibold text-slate-200">-</p>
-                    </div>
-                    <div>
-                        <span class="text-[6px] text-slate-400 uppercase block tracking-wide font-medium">Membership Valid Till</span>
-                        <p id="id_valid_to" class="font-mono font-bold text-emerald-400 bg-emerald-950/40 px-1 py-0.2 rounded inline-block border border-emerald-900/30">-</p>
-                    </div>
-                </div>
-
-                <div class="w-[20mm] flex flex-col items-center justify-center gap-1 shrink-0 bg-white p-1 rounded border border-slate-700">
-                    <div id="id_qrcode" class="w-[18mm] h-[18mm] flex items-center justify-center"></div>
-                </div>
+            <div class="mt-8 flex justify-between items-center text-[11px] font-bold text-gray-900 px-2">
+                <div class="text-gray-500 font-medium italic text-[10px]">Note: This is a computer generated receipt.</div>
+                <div class="text-center border-t border-gray-400 pt-1.5 w-28">प्राप्तकर्ता स्वाक्षरी</div>
             </div>
-
-            <div class="absolute bottom-1 left-3 right-3 flex justify-between text-[5px] text-slate-500 font-medium tracking-wider uppercase border-t border-slate-800/80 pt-0.5">
-                <span>Sinnar Library Authority v2.0</span>
-                <span>Non-Transferable Card</span>
-            </div>
-
         </div>
     </div>
 
+    <div id="id-card-box" class="max-w-sm mx-auto my-6 p-4 bg-white border border-gray-200 rounded-xl shadow-xl no-print hidden">
+        <h3 class="text-xs font-bold text-gray-700 uppercase tracking-wider mb-2 text-center">🪪 डिजिटल आयडी कार्ड प्रिव्ह्यू (Digital ID Card)</h3>
+        
+        <div id="id-card-printable-area" class="w-[240px] h-[380px] bg-slate-950 text-white rounded-2xl mx-auto p-4 flex flex-col justify-between relative overflow-hidden shadow-2xl border border-slate-800">
+            <div class="absolute -top-10 -right-10 w-28 h-28 bg-red-600/10 rounded-full blur-xl"></div>
+            <div class="absolute -bottom-10 -left-10 w-28 h-28 bg-blue-600/10 rounded-full blur-xl"></div>
+
+            <div class="flex items-center gap-2 border-b border-slate-800 pb-2 z-10">
+                <div class="w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center font-black text-sm shadow">वा</div>
+                <div>
+                    <h2 class="text-[10px] font-black tracking-tight text-white uppercase leading-tight">Sinnar Library</h2>
+                    <p class="text-[7px] text-slate-400 uppercase tracking-widest font-bold">Digital Student ID</p>
+                </div>
+            </div>
+
+            <div id="id_photo_frame" class="w-20 h-24 bg-slate-900 border border-slate-800 rounded-lg mx-auto overflow-hidden shadow-md flex items-center justify-center text-[8px] font-bold text-slate-600 text-center uppercase p-1">
+                No Photo
+            </div>
+
+            <div class="text-center space-y-0.5 z-10">
+                <h3 id="id_student_name" class="text-xs font-black text-white uppercase tracking-tight truncate px-1">-</h3>
+                <p id="id_reg_no" class="font-mono text-[9px] font-black text-blue-400 bg-blue-950/50 px-2 py-0.5 rounded border border-blue-900/30 inline-block tracking-wider">-</p>
+            </div>
+
+            <div class="bg-white p-1.5 rounded-lg w-20 h-20 mx-auto shadow flex items-center justify-center border border-slate-800 z-10">
+                <div id="qrcode" class="w-full h-full"></div>
+            </div>
+
+            <div class="border-t border-slate-900 pt-2 grid grid-cols-2 text-[8px] font-bold text-slate-400 uppercase text-center tracking-wider bg-slate-900/40 rounded-lg py-1 p-1">
+                <div class="border-r border-slate-800">
+                    <span class="text-[6px] text-slate-500 block uppercase font-bold">Slot Time</span>
+                    <span id="id_time_slot" class="text-white text-[7px] block truncate px-0.5">-</span>
+                </div>
+                <div>
+                    <span class="text-[6px] text-slate-500 block uppercase font-bold">Valid Till</span>
+                    <span id="id_validity" class="text-red-400 block font-mono">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-    // ⚠️ तुमच्या गुगल वेब ॲपची (Web App URL) लिंक इथे टाका:
-    const googleScriptUrl = "https://script.google.com/macros/s/AKfycbwMdHsAahx1GQ_g32H_SerYlpuTatnDdLpuJiy1V5Z89Nvy7qC4JVV0_77CSgoJEuwN/exec";
-    
-    let currentLoggedUser = "admin";
-    let isDataSavedSuccessfully = false;
-    let qrEngineInstance = null;
-    let compressedPhotoBase64 = ""; // ग्लोबल व्हेरिएबल
+        // ⚠️ तुमच्या गुगल वेब ॲपची (Web App URL) लिंक इथे टाका:
+        const googleScriptUrl = "https://script.google.com/macros/s/AKfycbwqY09pZ8bW96O-0bTptwYwPAnX4o5n_q1gZ2yK_lqU5S9XmO5P_LhM1DshB6XUaswI/exec";
 
-    // सुरक्षा पडताळणी: युझर लॉग इन आहे का ते पाहणे
-    document.addEventListener("DOMContentLoaded", function() {
-        const sessionUser = sessionStorage.getItem('libraryLoggedStaff');
-        const sessionUserName = sessionStorage.getItem('libraryLoggedStaffName');
-        
-        if (!sessionUser) {
-            alert("Security Alert: Session expired or invalid. Please login first.");
-            window.location.href = "login.html"; // लॉगिन पेजवर पाठवणे
-            return;
-        }
-        
-        currentLoggedUser = sessionUser;
-        document.getElementById('loggedUserDisplay').innerText = `👤 Operator: ${sessionUserName || sessionUser}`;
-        
-        // फॉर्मवरील आजची डीफॉल्ट तारीख सेट करणे
-        const today = new Date();
-        const day = String(today.getDate()).padStart(2, '0');
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const year = today.getFullYear();
-        
-        document.getElementById('form_current_date').innerText = `${day}/${month}/${year}`;
-        document.getElementById('rcpt_date').innerText = `${day}/${month}/${year}`;
-        document.getElementById('startDate').value = `${year}-${month}-${day}`;
-        
-        calculateFees(); 
-    });
+        let currentActiveStaffUser = "admin";
+        let isRenewalModeActive = false;
+        let originalJoinDateForRenewal = "";
+        let isDataSavedSuccessfully = false;
 
-    // फोटो इनपुट आणि क्लिक फ्रेम ट्रिगर लॉजिक
-    document.getElementById('photoPreview').addEventListener("click", function() {
-        document.getElementById('photoInput').click();
-    });
-
-    // 📷 फोटो कॉम्प्रेस करण्याचे आणि ग्लोबल व्हेरिएबलमध्ये साठवण्याचे फंक्शन
-    function previewImage(input) {
-        if (input.files && input.files[0]) {
-            const file = input.files[0];
-            const reader = new FileReader();
+        // १. स्टाफ लॉगिन सिस्टम प्रक्रिया
+        function processStaffLogin() {
+            const user = document.getElementById('staffUser').value.trim();
+            const pass = document.getElementById('staffPass').value.trim();
+            const errorEl = document.getElementById('loginErrorMsg');
             
-            reader.onload = function(e) {
+            if(!user || !pass) {
+                alert("कृपया लॉगिन तपशील प्रविष्ट करा!");
+                return;
+            }
+
+            errorEl.classList.add('hidden');
+            const timestamp = new Date().getTime();
+            const finalUrl = `${googleScriptUrl}?action=login&username=${encodeURIComponent(user)}&password=${encodeURIComponent(pass)}&callback=handleLoginResponse&_=${timestamp}`;
+
+            const script = document.createElement('script');
+            script.src = finalUrl;
+            document.body.appendChild(script);
+        }
+
+        window.handleLoginResponse = function(response) {
+            if (response && response.status === "success") {
+                currentActiveStaffUser = response.staffName;
+                document.getElementById('loginStatusLabel').innerText = `Staff Mode: ${currentActiveStaffUser}`;
+                document.getElementById('loginOverlay').classList.add('hidden');
+            } else {
+                document.getElementById('loginErrorMsg').classList.remove('hidden');
+            }
+        };
+
+        // २. ऑटोमॅटिक फी आणि व्हॅलिडिटी कॅल्क्युलेशन
+        function calculateFees() {
+            const duration = parseInt(document.getElementById('duration').value, 10);
+            const ratePerMonth = 600; // दरमहा अभ्यासिका शुल्क
+            const total = duration * ratePerMonth;
+            document.getElementById('totalAmount').value = total;
+
+            const startInput = document.getElementById('startDate').value;
+            if (!startInput) return;
+
+            const startDate = new Date(startInput);
+            const expiryDate = new Date(startDate.getTime());
+            expiryDate.setMonth(expiryDate.getMonth() + duration);
+
+            const expDay = String(expiryDate.getDate()).padStart(2, '0');
+            const expMonth = String(expiryDate.getMonth() + 1).padStart(2, '0');
+            const expYear = expiryDate.getFullYear();
+            const expiryStr = `${expDay}/${expMonth}/${expYear}`;
+
+            document.getElementById('rcpt_duration').innerText = `${duration} Month(s)`;
+            document.getElementById('rcpt_validity').innerText = `${String(startDate.getDate()).padStart(2, '0')}/${String(startDate.getMonth()+1).padStart(2, '0')}/${startDate.getFullYear()} to ${expiryStr}`;
+            document.getElementById('id_validity').innerText = expiryStr;
+            document.getElementById('rcpt_amount').innerText = total.toFixed(2);
+        }
+
+        // ३. इनपुट फील्ड्स थेट प्रिंट लेआउटशी सिंक करणे
+        function syncFormView() {
+            const fullName = document.getElementById('input_full_name').value;
+            const parentName = document.getElementById('input_parent_name').value;
+            const parentOcc = document.getElementById('input_parent_occ').value;
+            const dob = document.getElementById('input_dob').value;
+            const gender = document.getElementById('input_gender').value;
+            const blood = document.getElementById('input_blood_group').value;
+            const addr = document.getElementById('input_address').value;
+            const pin = document.getElementById('input_pincode').value;
+            const mob = document.getElementById('input_mobile').value;
+            const pmob = document.getElementById('input_parent_mobile').value;
+            const exam = document.getElementById('input_exam_purpose').value;
+            const idType = document.getElementById('input_id_type').value;
+            const idNo = document.getElementById('input_id_no').value;
+            const slot = document.getElementById('input_time_slot').value;
+
+            document.getElementById('view_full_name').innerText = fullName || "-";
+            document.getElementById('rcpt_student_name').innerText = fullName || "-";
+            document.getElementById('id_student_name').innerText = fullName || "-";
+
+            document.getElementById('view_parent_name').innerText = parentName || "-";
+            document.getElementById('view_parent_occ').innerText = parentOcc || "-";
+
+            if (dob) {
+                const d = new Date(dob);
+                document.getElementById('view_dob').innerText = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth()+1).padStart(2, '0')}/${d.getFullYear()}`;
+            } else {
+                document.getElementById('view_dob').innerText = "-";
+            }
+
+            document.getElementById('view_gender').innerText = gender || "-";
+            document.getElementById('view_blood_group').innerText = blood || "-";
+            document.getElementById('view_address').innerText = addr || "-";
+            document.getElementById('view_pincode').innerText = pin || "-";
+            document.getElementById('view_mobile').innerText = mob || "-";
+            document.getElementById('view_parent_mobile').innerText = pmob || "-";
+            document.getElementById('view_exam_purpose').innerText = exam || "-";
+            document.getElementById('view_id_type').innerText = idType || "-";
+            document.getElementById('view_id_no').innerText = idNo || "-";
+
+            document.getElementById('view_time_slot').innerText = slot || "-";
+            document.getElementById('id_time_slot').innerText = slot || "-";
+        }
+
+        // ४. डेटाबेस शोध आणि नूतनीकरण (Search Member Record)
+        function searchMemberRecord() {
+            const regNo = document.getElementById('searchRegNo').value.trim().toUpperCase();
+            if (!regNo) {
+                alert("कृपया शोधण्यासाठी वैध नोंदणी क्रमांक प्रविष्ट करा!");
+                return;
+            }
+
+            const timestamp = new Date().getTime();
+            const finalUrl = `${googleScriptUrl}?action=search&regNo=${encodeURIComponent(regNo)}&callback=handleSearchResponse&_=${timestamp}`;
+
+            const script = document.createElement('script');
+            script.src = finalUrl;
+            document.body.appendChild(script);
+        }
+
+        window.handleSearchResponse = function(response) {
+            if (response && response.status === "success") {
+                isRenewalModeActive = true;
+                originalJoinDateForRenewal = response.data.join_date;
+                
+                document.getElementById('formModeBadge').innerText = "RENEWAL MODE";
+                document.getElementById('formModeBadge').className = "text-[10px] bg-amber-50 text-amber-600 border border-amber-200 font-bold px-2.5 py-1 rounded-full uppercase tracking-wider";
+
+                document.getElementById('input_full_name').value = response.data.student_name || "";
+                document.getElementById('input_parent_name').value = response.data.parent_name || "";
+                document.getElementById('input_parent_occ').value = response.data.parent_occupation || "";
+                
+                if (response.data.dob) {
+                    const parts = response.data.dob.split('/');
+                    if(parts.length === 3) document.getElementById('input_dob').value = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                }
+                
+                document.getElementById('input_gender').value = response.data.gender || "Female";
+                document.getElementById('input_blood_group').value = response.data.blood_group || "";
+                document.getElementById('input_address').value = response.data.address || "";
+                document.getElementById('input_pincode').value = response.data.pincode || "";
+                document.getElementById('input_mobile').value = response.data.mobile || "";
+                document.getElementById('input_parent_mobile').value = response.data.parent_mobile || "";
+                document.getElementById('input_exam_purpose').value = response.data.exam_purpose || "";
+                document.getElementById('input_id_type').value = response.data.id_type || "Aadhar Card";
+                document.getElementById('input_id_no').value = response.data.id_no || "";
+
+                document.getElementById('view_reg_no').innerText = response.data.reg_no;
+                document.getElementById('rcpt_reg_no').innerText = response.data.reg_no;
+                document.getElementById('id_reg_no').innerText = response.data.reg_no;
+
+                if (response.data.student_photo && response.data.student_photo.trim() !== "") {
+                    compressedPhotoBase64 = response.data.student_photo;
+                    document.getElementById('photoPreview').innerHTML = `<img src="${compressedPhotoBase64}" class="w-full h-full object-cover">`;
+                    document.getElementById('id_photo_frame').innerHTML = `<img src="${compressedPhotoBase64}" class="w-full h-full object-cover">`;
+                }
+
+                generateQRCodeSystem(response.data.reg_no);
+                syncFormView();
+                calculateFees();
+
+                const logTableBody = document.getElementById('historyTableBody');
+                logTableBody.innerHTML = "";
+                document.getElementById('historyLogsSection').classList.remove('hidden');
+
+                if (response.history && response.history.length > 0) {
+                    response.history.forEach(log => {
+                        logTableBody.innerHTML += `
+                            <tr class="border-b border-gray-100">
+                                <td class="p-2 font-mono text-gray-900">${log.receipt_no}</td>
+                                <td class="p-2">${log.tx_date}</td>
+                                <td class="p-2">${log.duration} Month(s)</td>
+                                <td class="p-2 font-bold text-gray-900">₹${log.amount}</td>
+                                <td class="p-2 font-mono text-[11px]">${log.start_date} to ${log.end_date}</td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    logTableBody.innerHTML = "<tr><td colspan='5' class='p-2 text-center text-gray-400 italic'>No previous logs found in Receipt_Logs</td></tr>";
+                }
+                alert(`सदस्य रेकॉर्ड सापडला! नूतनीकरण शुल्क स्वीकारण्यासाठी फॉर्म सबमिट करा.`);
+            } else {
+                alert("❌ नोंदणी क्रमांक सापडला नाही! कृपया तपासा.");
+            }
+        };
+
+        // ५. डेटा गुगल शीटमध्ये सेव्ह करणे
+        function saveDataToGoogleSheets() {
+            const fullName = document.getElementById('input_full_name').value.trim();
+            const parentName = document.getElementById('input_parent_name').value.trim();
+            const mobile = document.getElementById('input_mobile').value.trim();
+            const pincode = document.getElementById('input_pincode').value.trim();
+            const idNo = document.getElementById('input_id_no').value.trim();
+            const startDate = document.getElementById('startDate').value;
+
+            if (!fullName || !parentName || !mobile || !pincode || !idNo || !startDate) {
+                alert("⚠️ कृपया सर्व आवश्यक (*) माहिती भरा!");
+                return;
+            }
+
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.innerHTML = "⏳ Saving Data... Please Wait...";
+            saveBtn.disabled = true;
+            saveBtn.style.backgroundColor = "#9ca3af";
+            saveBtn.style.cursor = "not-allowed";
+
+            const params = {
+                action: "saveData",
+                is_renewal: isRenewalModeActive,
+                reg_no: isRenewalModeActive ? document.getElementById('view_reg_no').innerText : "",
+                orig_join_date_input: originalJoinDateForRenewal,
+                full_name: fullName,
+                parent_name: parentName,
+                parent_occ: document.getElementById('input_parent_occ').value.trim(),
+                dob: document.getElementById('input_dob').value,
+                gender: document.getElementById('input_gender').value,
+                blood_group: document.getElementById('input_blood_group').value.trim(),
+                address: document.getElementById('input_address').value.trim(),
+                pincode: pincode,
+                mobile: mobile,
+                parent_mobile: document.getElementById('input_parent_mobile').value.trim(),
+                exam_purpose: document.getElementById('input_exam_purpose').value.trim(),
+                id_type: document.getElementById('input_id_type').value,
+                id_no: idNo,
+                time_slot: document.getElementById('input_time_slot').value,
+                duration: document.getElementById('duration').value,
+                start_date: startDate,
+                total_amount: document.getElementById('totalAmount').value,
+                staff_user: currentActiveStaffUser,
+                photo_base64: compressedPhotoBase64
+            };
+
+            const timestamp = new Date().getTime();
+            let queryString = "";
+            for (let key in params) {
+                queryString += `&${key}=${encodeURIComponent(params[key])}`;
+            }
+            
+            const finalUrl = `${googleScriptUrl}?_=${timestamp}${queryString}&callback=handleSaveResponse`;
+
+            const script = document.createElement('script');
+            script.src = finalUrl;
+            document.body.appendChild(script);
+        }
+
+        window.handleSaveResponse = function(response) {
+            if (response && response.result === "success") {
+                isDataSavedSuccessfully = true;
+                
+                document.getElementById('view_reg_no').innerText = response.regNo;
+                document.getElementById('rcpt_reg_no').innerText = response.regNo;
+                document.getElementById('id_reg_no').innerText = response.regNo;
+                document.getElementById('rcpt_no').innerText = response.receiptNo;
+
+                generateQRCodeSystem(response.regNo);
+
+                document.getElementById('downloadFormBtn').classList.remove('hidden');
+                document.getElementById('downloadReceiptBtn').classList.remove('hidden');
+                document.getElementById('downloadIdCardBtn').classList.remove('hidden');
+                document.getElementById('id-card-box').classList.remove('hidden');
+                document.getElementById('receipt-capture-area').classList.remove('no-print');
+
+                const saveBtn = document.getElementById('saveBtn');
+                saveBtn.innerHTML = "✅ Saved Successfully";
+                saveBtn.style.backgroundColor = "#059669";
+
+                alert(`🎉 डेटा यशस्वीरित्या सेव्ह झाला!\nनोंदणी क्र: ${response.regNo}\nपावती क्र: ${response.receiptNo}`);
+            } else {
+                alert("❌ त्रुटी: डेटा सर्व्हरवर सेव्ह होऊ शकला नाही.");
+                const saveBtn = document.getElementById('saveBtn');
+                saveBtn.innerHTML = "💾 Save Data";
+                saveBtn.disabled = false;
+                saveBtn.style.backgroundColor = "";
+                saveBtn.style.cursor = "pointer";
+            }
+        };
+
+        // ६. आयडी कार्डसाठी क्यूआर कोड जनरेट करणे
+        function generateQRCodeSystem(regNoText) {
+            const qrContainer = document.getElementById("qrcode");
+            qrContainer.innerHTML = ""; 
+            new QRCode(qrContainer, {
+                text: `RegNo:${regNoText}`,
+                width: 72,
+                height: 72,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+
+        // ७. डॉक्युमेंट्स डाऊनलोड फंक्शन्स (PDF आणि थेट अचूक मापाचे ID Card JPG)
+        function downloadFormPDF() {
+            if(!isDataSavedSuccessfully) { alert("कृपया आधी डेटा सेव्ह करा!"); return; }
+            const element = document.getElementById('a4-admission-form');
+            const regStr = document.getElementById('view_reg_no').innerText;
+            const nameStr = document.getElementById('input_full_name').value.replace(/\s+/g, '_');
+            
+            const opt = {
+                margin: 0,
+                filename: `Admission_Form_${regStr}_${nameStr}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+
+        function downloadReceiptPDF() {
+            if(!isDataSavedSuccessfully) { alert("कृपया आधी डेटा सेव्ह करा!"); return; }
+            const element = document.querySelector('.receipt-page');
+            const rcptStr = document.getElementById('rcpt_no').innerText;
+            
+            const opt = {
+                margin: 5,
+                filename: `Receipt_${rcptStr}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+
+        // ए४ पीडीएफ ऐवजी थेट सुंदर आयडी कार्ड डाऊनलोड करण्याची नवीन पद्धत (क्रॅश होणार नाही)
+        function downloadIdCardJPG() {
+            if(!isDataSavedSuccessfully) { alert("कृपया आधी डेटा सेव्ह करा!"); return; }
+            
+            // लायब्ररी लोड होईपर्यंत १ सेकंद थांबा जेणेकरून क्यूआर कोड रेंडर झालेला असेल
+            setTimeout(() => {
+                const element = document.getElementById('id-card-printable-area');
+                const regStr = document.getElementById('view_reg_no').innerText;
+                const nameStr = document.getElementById('input_full_name').value.replace(/\s+/g, '_');
+
+                // थेट स्क्रीन शॉट प्रमाणे परफेक्ट कडा मॅच करून डाऊनलोड करणे
+                html2canvas(element, {
+                    scale: 3, // हाय-क्वालिटी प्रिंटसाठी ३ पट मोठी इमेज
+                    useCORS: true,
+                    backgroundColor: null // पारदर्शक कडांसाठी
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `ID_Card_${regStr}_${nameStr}.jpg`;
+                    link.href = canvas.toDataURL('image/jpeg', 0.95);
+                    link.click();
+                });
+            }, 500);
+        }
+
+        // ८. सिस्टीम आणि फॉर्म पूर्णपणे री-सेट करणे
+        function clearAndResetFormSystem() {
+            document.getElementById('input_full_name').value = "";
+            document.getElementById('input_parent_name').value = "";
+            document.getElementById('input_parent_occ').value = "";
+            document.getElementById('input_dob').value = "";
+            document.getElementById('input_gender').value = "Female";
+            document.getElementById('input_blood_group').value = "";
+            document.getElementById('input_address').value = "";
+            document.getElementById('input_pincode').value = "";
+            document.getElementById('input_mobile').value = "";
+            document.getElementById('input_parent_mobile').value = "";
+            document.getElementById('input_exam_purpose').value = "";
+            document.getElementById('input_id_no').value = "";
+            document.getElementById('photoFile').value = "";
+
+            isRenewalModeActive = false;
+            originalJoinDateForRenewal = "";
+            document.getElementById('formModeBadge').innerText = "NEW ADMISSION";
+            document.getElementById('formModeBadge').className = "text-[10px] bg-blue-50 text-blue-600 border border-blue-200 font-bold px-2.5 py-1 rounded-full uppercase tracking-wider";
+
+            document.getElementById('view_reg_no').innerText = "-";
+            document.getElementById('rcpt_reg_no').innerText = "-";
+            document.getElementById('id_reg_no').innerText = "-";
+            document.getElementById('rcpt_no').innerText = "REC-XXXX";
+            document.getElementById('qrcode').innerHTML = "";
+            document.getElementById('view_dob').innerText = "-";
+            document.getElementById('historyLogsSection').classList.add('hidden');
+            document.getElementById('id_photo_frame').innerHTML = "No Photo";
+
+            syncFormView();
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            
+            document.getElementById('form_current_date').innerText = `${day}/${month}/${year}`;
+            document.getElementById('rcpt_date').innerText = `${day}/${month}/${year}`;
+            document.getElementById('startDate').value = `${year}-${month}-${day}`;
+            calculateFees(); 
+            alert("प्रणाली यशस्वीरित्या री-सेट झाली आहे!");
+        }
+
+        // ९. फोटो फाइल कॉम्प्रेशन लॉजिक (३००x४०० पिक्सेल जेपीजी)
+        let compressedPhotoBase64 = ""; 
+        document.getElementById('photoFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
                     
-                    // परफेक्ट आयडी कार्ड / पासपोर्ट साईझ पिक्सेल माप
                     canvas.width = 300;
                     canvas.height = 400;
-                    
-                    // फोटो ३००x४०० मध्ये कॉम्प्रेस करणे
                     ctx.drawImage(img, 0, 0, 300, 400);
                     
-                    // क्वालिटी ८०% करून जेपीजी करणे (जागा वाचवण्यासाठी)
                     compressedPhotoBase64 = canvas.toDataURL('image/jpeg', 0.8);
                     
-                    // स्क्रीनवर आणि आयडी कार्ड प्रिव्ह्यूवर फोटो दाखवणे
                     document.getElementById('photoPreview').innerHTML = `<img src="${compressedPhotoBase64}" class="w-full h-full object-cover">`;
-                    document.getElementById('idCardPhotoFrame').innerHTML = `<img src="${compressedPhotoBase64}" class="w-full h-full object-cover">`;
+                    document.getElementById('id_photo_frame').innerHTML = `<img src="${compressedPhotoBase64}" class="w-full h-full object-cover">`;
                 };
-                img.src = e.target.result;
+                img.src = event.target.result;
             };
             reader.readAsDataURL(file);
-        }
-    }
-
-    // फी आणि मुदत संपण्याची तारीख (Expiry Date) स्वयंचलित मोजणे
-    function calculateFees() {
-        const durationSelect = document.getElementById('durationSelect');
-        const months = parseInt(durationSelect.value, 10);
-        
-        // मासिक शुल्क ५०० रुपये नियमन दर
-        const totalCalculatedAmount = months * 500;
-        document.getElementById('fee_total').innerText = totalCalculatedAmount;
-
-        const startDateVal = document.getElementById('startDate').value;
-        if (startDateVal) {
-            const parts = startDateVal.split('-');
-            const sDate = new Date(parts[0], parts[1] - 1, parts[2]);
-            
-            // मुदत महिन्यांनी पुढे वाढवणे
-            sDate.setMonth(sDate.getMonth() + months);
-            
-            const dayStr = String(sDate.getDate()).padStart(2, '0');
-            const monthStr = String(sDate.getMonth() + 1).padStart(2, '0');
-            const yearStr = sDate.getFullYear();
-            
-            document.getElementById('displayToDate').innerText = `${dayStr}/${monthStr}/${yearStr}`;
-        }
-    }
-
-    // आयडी कार्डचे लाईव्ह प्रिव्ह्यू सिंक्रोनाइझ करणे
-    function syncIdCardPreview() {
-        document.getElementById('id_name').innerText = (document.getElementById('studentName').value || "-").toUpperCase();
-        document.getElementById('id_mobile').innerText = document.getElementById('studentMobile').value || "-";
-        document.getElementById('id_valid_to').innerText = document.getElementById('displayToDate').innerText;
-    }
-
-    // JSONP रेकॉर्ड पाठवण्याचे मुख्य सेव्ह फंक्शन
-    function saveToSheet() {
-        const form = document.getElementById('admissionForm');
-        if (!form.checkValidity()) {
-            form.reportValidity();
-            return;
-        }
-
-        const saveBtn = document.getElementById('saveBtn');
-        saveBtn.innerHTML = "⏳ Processing... Please Wait";
-        saveBtn.disabled = true;
-        saveBtn.style.backgroundColor = "#6b7280";
-        saveBtn.style.cursor = "not-allowed";
-
-        alert("माहितीवर प्रक्रिया सुरू आहे!\nनोंदणी क्रमांक आणि पावती क्रमांक बॅकग्राउंडमध्ये तयार होत आहेत. कृपया मेसेज येईपर्यंत थांबा.");
-
-        const formData = new FormData(form);
-        const params = new URLSearchParams();
-        formData.forEach((value, key) => params.append(key, value));
-        
-        // 📷 कॉम्प्रेस झालेला फोटो पॅरामीटर म्हणून जोडणे:
-        params.append('photo_base64', compressedPhotoBase64);
-        
-        params.append('action', 'saveData');
-        params.append('to_date', document.getElementById('displayToDate').innerText);
-        params.append('total_amount', document.getElementById('fee_total').innerText);
-        params.append('staff_user', currentLoggedUser);
-
-        const timestamp = new Date().getTime();
-        const fullFinalUrl = `${googleScriptUrl}?${params.toString()}&callback=handleBackendSaveResponse&_=${timestamp}`;
-
-        const script = document.createElement('script');
-        script.src = fullFinalUrl;
-        script.id = "jsonpSaveScript";
-        script.onerror = function() {
-            alert("तांत्रिक त्रुटी: गुगल सर्व्हरशी संपर्क होऊ शकला नाही.");
-            saveBtn.innerHTML = "💾 Save Data";
-            saveBtn.disabled = false;
-            saveBtn.style.backgroundColor = "";
-            saveBtn.style.cursor = "pointer";
-        };
-        document.body.appendChild(script);
-    }
-
-    // सेव्ह झाल्यावर गुगल सर्व्हर कडून आलेले उत्तर हाताळणे
-    window.handleBackendSaveResponse = function(response) {
-        const oldScript = document.getElementById('jsonpSaveScript');
-        if (oldScript) oldScript.remove();
-
-        const saveBtn = document.getElementById('saveBtn');
-        saveBtn.innerHTML = "💾 Save Data";
-        saveBtn.disabled = false;
-        saveBtn.style.backgroundColor = "";
-        saveBtn.style.cursor = "pointer";
-
-        if (response && response.result === "success") {
-            isDataSavedSuccessfully = true;
-            alert(`🎉 यश आले! रेकॉर्ड सुरक्षित सेव्ह झाला आहे.\n\nनोंदणी क्रमांक: ${response.regNo}\nपावती क्रमांक: ${response.receiptNo}`);
-
-            // सर्व स्क्रीन लेबल्स अपडेट करणे
-            document.getElementById('displayRegNo').innerText = response.regNo;
-            document.getElementById('displayReceiptNo').innerText = response.receiptNo;
-            document.getElementById('hiddenRegNo').value = response.regNo;
-            
-            // प्रिंट फॉर्म लेबल्स भरणे
-            document.getElementById('form_reg_no').innerText = response.regNo;
-            document.getElementById('lbl_name').innerText = document.getElementById('studentName').value;
-            document.getElementById('lbl_parent').innerText = document.getElementById('parentName').value || "-";
-            document.getElementById('lbl_occ').innerText = document.getElementById('parentOcc').value || "-";
-            document.getElementById('lbl_dob').innerText = document.getElementById('dobInput').value || "-";
-            document.getElementById('lbl_gender').innerText = document.getElementsByName('gender')[0].value;
-            document.getElementById('lbl_bg').innerText = document.getElementsByName('blood_group')[0].value || "-";
-            document.getElementById('lbl_status').innerText = response.status.toUpperCase();
-            document.getElementById('lbl_address').innerText = document.getElementById('addressInput').value || "-";
-            document.getElementById('lbl_pincode').innerText = document.getElementById('pincodeInput').value || "-";
-            document.getElementById('lbl_mobile').innerText = document.getElementById('studentMobile').value;
-            document.getElementById('lbl_pmobile').innerText = document.getElementById('parentMobile').value || "-";
-            document.getElementById('lbl_exam').innerText = document.getElementById('examPurpose').value || "-";
-            document.getElementById('lbl_idtype').innerText = document.getElementsByName('id_type')[0].value;
-            document.getElementById('lbl_idno').innerText = document.getElementsByName('id_no')[0].value || "-";
-            
-            document.getElementById('lbl_duration').innerText = `${document.getElementById('durationSelect').value} Month(s)`;
-            document.getElementById('lbl_from').innerText = response.fromDate;
-            document.getElementById('lbl_to').innerText = response.toDate;
-            document.getElementById('lbl_amount').innerText = response.amount;
-            document.getElementById('form_staff_sign').innerText = currentLoggedUser.toUpperCase();
-
-            // शुल्क पावती लेबल्स भरणे
-            document.getElementById('rcpt_no').innerText = response.receiptNo;
-            document.getElementById('rcpt_student_name').innerText = document.getElementById('studentName').value;
-            document.getElementById('rcpt_reg_no').innerText = response.regNo;
-            document.getElementById('rcpt_mobile').innerText = document.getElementById('studentMobile').value;
-            document.getElementById('rcpt_duration').innerText = `${document.getElementById('durationSelect').value} Month(s)`;
-            document.getElementById('rcpt_from').innerText = response.fromDate;
-            document.getElementById('rcpt_to').innerText = response.toDate;
-            document.getElementById('rcpt_amount').innerText = response.amount;
-            document.getElementById('rcpt_staff_sign').innerText = currentLoggedUser.toUpperCase();
-
-            // आयडी कार्ड लेबल्स भरणे
-            document.getElementById('id_reg_no').innerText = response.regNo;
-            document.getElementById('id_name').innerText = document.getElementById('studentName').value.toUpperCase();
-            document.getElementById('id_mobile').innerText = document.getElementById('studentMobile').value;
-            document.getElementById('id_valid_to').innerText = response.toDate;
-
-            // ⚡ QR कोड मध्ये फक्त सुरक्षित RegNo एम्बेड करणे (सुरक्षेसाठी)
-            const qrTargetDiv = document.getElementById('id_qrcode');
-            qrTargetDiv.innerHTML = "";
-            if (qrEngineInstance) { qrEngineInstance = null; }
-            qrEngineInstance = new QRCode(qrTargetDiv, {
-                text: `RegNo: ${response.regNo}`,
-                width: 70,
-                height: 70,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
-            });
-
-            // छुपे प्रिंट आणि डाउनलोडचे बटन्स दृश्यमान करणे
-            document.getElementById('downloadFormBtn').classList.remove('hidden');
-            document.getElementById('downloadReceiptBtn').classList.remove('hidden');
-            document.getElementById('downloadIdCardBtn').classList.remove('hidden');
-            document.getElementById('receipt-capture-area').classList.remove('no-print');
-            document.getElementById('id-card-box').classList.remove('hidden');
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-            alert("त्रुटी: " + (response.error || "माहिती जतन करताना सिस्टीममध्ये अडचण आली."));
-        }
-    };
-
-    // पावती डाउनलोड करण्यासाठी स्वतंत्र PDF जनरेटर फंक्शन
-    function downloadReceiptPDF() {
-        if (!isDataSavedSuccessfully) { alert("Lock data records first!"); return; }
-        const element = document.getElementById('receipt-capture-area');
-        const rcptNo = document.getElementById('displayReceiptNo').innerText || "Receipt";
-        const opt = {
-            margin: [5, 5, 5, 5],
-            filename: `Receipt_${rcptNo}.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 3, useCORS: true },
-            jsPDF: { unit: 'mm', format: 'a5', orientation: 'landscape' }
-        };
-        html2pdf().set(opt).from(element).save();
-    }
-
-    // 🪪 आयडी कार्ड थेट 'JPG Image' म्हणून डाऊनलोड करण्याचे दुरुस्त केलेले फंक्शन
-    function downloadIdCardAsJPG() {
-        if (!isDataSavedSuccessfully) { 
-            alert("आधी डेटा सेव्ह (Save Data) करा!"); 
-            return; 
-        }
-        
-        const idCardBox = document.getElementById('id-card-box');
-        
-        // html2canvas द्वारे अचूक आयडी कार्डच्या चौकटीचा HD स्क्रीनशॉट घेणे
-        html2canvas(idCardBox, {
-            scale: 3, // प्रिंटिंगसाठी स्पष्ट (HD) क्वालिटी
-            useCORS: true, 
-            backgroundColor: null 
-        }).then(canvas => {
-            const imageLink = canvas.toDataURL('image/jpeg', 1.0);
-            
-            const downloadTrigger = document.createElement('a');
-            const sName = (document.getElementsByName('full_name')[0].value || "Student").toString().trim().replace(/\s+/g, '_');
-            const regNo = document.getElementById('displayRegNo').innerText || "ID";
-            
-            downloadTrigger.download = `${regNo}_${sName}_ID_Card.jpg`;
-            downloadTrigger.href = imageLink;
-            document.body.appendChild(downloadTrigger);
-            downloadTrigger.click();
-            document.body.removeChild(downloadTrigger);
         });
-    }
 
-    // सभासद शोधणे आणि नूतनीकरणासाठी माहिती ऑटो-फिल करणे
-    function searchAndPopulateMember() {
-        const searchInput = document.getElementById('searchRegNo').value.toString().trim().toUpperCase();
-        if (!searchInput) {
-            alert("कृपया शोधण्यासाठी वैध नोंदणी क्रमांक (Reg No) प्रविष्ट करा.");
-            return;
-        }
-
-        alert("डेटाबेसमध्ये शोध घेत आहे, कृपया प्रतीक्षा करा...");
-        const timestamp = new Date().getTime();
-        const searchUrl = `${googleScriptUrl}?action=search&regNo=${encodeURIComponent(searchInput)}&callback=handleBackendSearchResponse&_=${timestamp}`;
-
-        const script = document.createElement('script');
-        script.src = searchUrl;
-        script.id = "jsonpSearchScript";
-        document.body.appendChild(script);
-    }
-
-    // शोध इंजिन कडून आलेला डेटा फॉर्ममध्ये भरणे
-    window.handleBackendSearchResponse = function(response) {
-        const oldScript = document.getElementById('jsonpSearchScript');
-        if (oldScript) oldScript.remove();
-
-        if (response && response.status === "success") {
-            const member = response.data;
-            alert(`🔍 रेकॉर्ड सापडला: ${member.student_name}\nनूतनीकरण (Renewal) करण्यासाठी फॉर्ममध्ये माहिती भरली आहे.`);
-
-            // फॉर्म मोड्स नूतनीकरण (Renewal) वर सेट करणे
-            document.getElementById('isRenewalFlag').value = "true";
-            document.getElementById('hiddenRegNo').value = member.reg_no;
-            document.getElementById('origJoinDateInput').value = member.join_date;
-
-            // इनपुट बॉक्समध्ये माहिती भरणे
-            document.getElementById('studentName').value = member.student_name;
-            document.getElementById('parentName').value = member.parent_name || "";
-            document.getElementById('parentOcc').value = member.parent_occupation || "";
-            document.getElementById('pincodeInput').value = member.pincode || "";
-            document.getElementById('studentMobile').value = member.mobile;
-            document.getElementById('parentMobile').value = member.parent_mobile || "";
-            document.getElementById('addressInput').value = member.address || "";
-            document.getElementById('examPurpose').value = member.exam_purpose || "";
-            document.getElementsByName('gender')[0].value = member.gender || "Male";
-            document.getElementsByName('blood_group')[0].value = member.blood_group || "";
-            document.getElementsByName('id_type')[0].value = member.id_type || "Aadhaar";
-            document.getElementsByName('id_no')[0].value = member.id_no || "";
-
-            if (member.dob) {
-                try {
-                    const parts = member.dob.split('/');
-                    if(parts.length === 3) {
-                        document.getElementById('dobInput').value = `${parts[2]}-${parts[1]}-${parts[0]}`;
-                    }
-                } catch(e){}
-            }
-
-            // 📷 जर डेटाबेसमध्ये आधीचा फोटो उपलब्ध असेल तर तो दाखवणे
-            if (member.student_photo && member.student_photo.trim() !== "") {
-                compressedPhotoBase64 = member.student_photo; // जुना फोटो ग्लोबल व्हेरिएबलमध्ये ठेवला
-                document.getElementById('photoPreview').innerHTML = `<img src="${member.student_photo}" class="w-full h-full object-cover">`;
-                document.getElementById('idCardPhotoFrame').innerHTML = `<img src="${member.student_photo}" class="w-full h-full object-cover">`;
-            } else {
-                compressedPhotoBase64 = "";
-                document.getElementById('photoPreview').innerHTML = "Affix Photo Here";
-                document.getElementById('idCardPhotoFrame').innerHTML = "No Photo";
-            }
-
-            // नूतनीकरण इतिहास (Timeline Logs) सादर करणे
-            const historyBlock = document.getElementById('historyBlock');
-            const historyTableBody = document.getElementById('historyTableBody');
+        // १०. सुरुवातीला ऑटो-लोड होणाऱ्या गोष्टी
+        document.addEventListener("DOMContentLoaded", function() {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
             
-            if (response.history && response.history.length > 0) {
-                historyBlock.classList.remove('hidden');
-                let htmlRows = "";
-                response.history.forEach(log => {
-                    htmlRows += `<tr class="hover:bg-gray-50">
-                        <td class="p-2 font-mono font-bold text-gray-700">${log.receipt_no}</td>
-                        <td class="p-2 text-gray-600">${log.tx_date}</td>
-                        <td class="p-2 font-medium">${log.duration} Month(s)</td>
-                        <td class="p-2 font-mono font-bold text-emerald-600">₹${log.amount}/-</td>
-                        <td class="p-2 text-gray-500 font-mono">${log.start_date} - ${log.end_date}</td>
-                    </tr>`;
-                });
-                historyTableBody.innerHTML = htmlRows;
-            } else {
-                historyBlock.classList.add('hidden');
-            }
-
-            syncIdCardPreview();
+            document.getElementById('form_current_date').innerText = `${day}/${month}/${year}`;
+            document.getElementById('rcpt_date').innerText = `${day}/${month}/${year}`;
+            document.getElementById('startDate').value = `${year}-${month}-${day}`;
+            
             calculateFees();
-        } else {
-            alert("शोध त्रुटी: दिलेला नोंदणी क्रमांक डेटाबेसमध्ये सापडला नाही.");
-        }
-    };
-
-    // फॉर्म पूर्णपणे रिसेट आणि फ्लश करणे
-    function flushForm() {
-        const form = document.getElementById('admissionForm');
-        form.reset();
-        
-        document.getElementById('displayRegNo').innerText = "-";
-        document.getElementById('displayReceiptNo').innerText = "-";
-        document.getElementById('id_reg_no').innerText = "-";
-        document.getElementById('id_name').innerText = "-";
-        document.getElementById('id_mobile').innerText = "-";
-        document.getElementById('id_valid_to').innerText = "-";
-        document.getElementById('id_qrcode').innerText = "";
-        document.getElementById('searchRegNo').value = "";
-        document.getElementById('historyTableBody').innerHTML = "<tr><td colspan='5' class='p-2 text-center text-gray-400 italic text-xs'>No history records found</td></tr>";
-        document.getElementById('photoPreview').innerHTML = "Affix Photo Here";
-        document.getElementById('idCardPhotoFrame').innerHTML = "No Photo";
-
-        document.getElementById('downloadFormBtn').classList.add('hidden');
-        document.getElementById('downloadReceiptBtn').classList.add('hidden');
-        document.getElementById('downloadIdCardBtn').classList.add('hidden');
-        document.getElementById('receipt-capture-area').classList.add('no-print');
-        document.getElementById('id-card-box').classList.add('hidden');
-        document.getElementById('historyBlock').classList.add('hidden');
-
-        isDataSavedSuccessfully = false; 
-        compressedPhotoBase64 = ""; // फोटो व्हेरिएबल रिसेट
-        
-        const saveBtn = document.getElementById('saveBtn');
-        saveBtn.innerHTML = "💾 Save Data";
-        saveBtn.disabled = false;
-        saveBtn.style.backgroundColor = ""; 
-        saveBtn.style.cursor = "pointer";
-
-        const today = new Date();
-        const day = String(today.getDate()).padStart(2, '0');
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const year = today.getFullYear();
-        
-        document.getElementById('form_current_date').innerText = `${day}/${month}/${year}`;
-        document.getElementById('rcpt_date').innerText = `${day}/${month}/${year}`;
-        document.getElementById('startDate').value = `${year}-${month}-${day}`;
-        calculateFees(); 
-        alert("नवीन फॉर्म लोड झाला आहे!");
-    }
+        });
     </script>
 </body>
 </html>
