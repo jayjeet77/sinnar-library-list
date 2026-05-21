@@ -777,51 +777,84 @@
         </div>
     </div>
 </div>
-<div id="staff-login-section" class="content-section" style="display: none;">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            
-            <div id="staffLoginForm" class="card shadow-sm p-4 bg-white rounded border">
-                <h3 class="text-center mb-4 text-dark"><i class="bi bi-person-badge"></i> कर्मचारी लॉगिन</h3>
-                <div id="loginError" class="alert alert-danger text-sm p-2 text-center" style="display: none;">
-                    ❌ चुकीचे युझरनेम किंवा पासवर्ड!
-                </div>
-                <div class="mb-3">
-                    <label class="form-label text-dark fw-bold">युझरनेम (Username)</label>
-                    <input type="text" id="staffUser" class="form-control" placeholder="युझरनेम टाका">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label text-dark fw-bold">पासवर्ड (Password)</label>
-                    <input type="password" id="staffPass" class="form-control" placeholder="पासवर्ड टाका">
-                </div>
-                <button class="btn btn-primary w-100 fw-bold" id="loginBtn" onclick="checkStaffLogin()">🔓 सिस्टीम अनलॉक करा</button>
+<div id="staff-login-section" class="content-section">
+    <div class="container py-4">
+        
+        <div id="staffLoginForm" class="card shadow border-0 mx-auto" style="max-width: 450px; background: #ffffff; border-radius: 12px;">
+            <div class="card-header border-0 text-center py-3" style="background: var(--title-color); color: white; border-radius: 12px 12px 0 0;">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-shield-lock-fill"></i> डिजिटल काउंटर लॉगिन</h5>
+                <small class="opacity-75">केवळ अधिकृत कर्मचारी वृंदासाठी</small>
             </div>
-
-            <div id="staffDashboard" class="card shadow p-4 text-center border-success bg-white rounded" style="display: none;">
-                <h3 class="text-success mb-3"><i class="bi bi-shield-check"></i> कर्मचारी काउंटर सुरू आहे</h3>
-                <p class="text-muted">स्वागत आहे, <span id="activeStaffName" class="fw-bold text-dark">-</span></p>
-                <hr>
+            <div class="card-body p-4">
+                <div id="loginErrorMsg" class="alert alert-danger py-2 mb-3" style="display: none; font-size: 0.85rem;"></div>
                 
-                <div class="d-grid gap-3 my-4">
-                    <a href="mahila abhyasika form final.html" target="_blank" class="btn btn-outline-dark btn-lg text-start fs-6 p-3">
-                        📄 १. महिला अभ्यासिका प्रवेश अर्ज
-                    </a>
-                    <a href="membership form final .html" target="_blank" class="btn btn-outline-dark btn-lg text-start fs-6 p-3">
-                        📑 २. वाचक सभासद प्रवेश अर्ज
-                    </a>
-                    <a href="attendance1.html" target="_blank" class="btn btn-outline-dark btn-lg text-start fs-6 p-3">
-                        🚪 ३. हजेरी प्रणाली (In-Out)
-                    </a>
-                </div>
-                
-                <hr>
-                <button class="btn btn-danger w-100 fw-bold" onclick="staffLogout()">🔒 सुरक्षित लॉगआऊट (Close)</button>
+                <form id="actualLoginForm" onsubmit="handleStaffLogin(event)">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold" style="color: var(--text-dark);">कर्मचारी युझरनेम <span class="mandatory">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light text-muted"><i class="bi bi-person-circle"></i></span>
+                            <input type="text" id="staffUser" class="form-control" placeholder="username" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold" style="color: var(--text-dark);">सुरक्षा पासवर्ड <span class="mandatory">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light text-muted"><i class="bi bi-key-fill"></i></span>
+                            <input type="password" id="staffPass" class="form-control" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    <button type="submit" id="staffLoginBtn" class="btn w-100 text-white fw-bold mt-2" style="background: var(--accent-color); transition: 0.2s;">
+                        लॉगिन करा <i class="bi bi-box-arrow-in-right"></i>
+                    </button>
+                </form>
             </div>
-
         </div>
+
+        <div id="staffDashboard" class="card shadow border-0 mx-auto" style="max-width: 800px; display: none; background: #ffffff; border-radius: 12px;">
+            <div class="card-header border-0 d-flex justify-content-between align-items-center py-3" style="background: #2e3025; color: white; border-radius: 12px 12px 0 0;">
+                <div>
+                    <h5 class="mb-0 fw-bold"><i class="bi bi-cpu-fill"></i> कर्मचारी डॅशबोर्ड पैनल</h5>
+                    <small class="text-success fw-bold"><i class="bi bi-circle-fill" style="font-size: 8px;"></i> काउंटर सक्रीय: <span id="activeStaffName">डिजिटल असिस्टंट</span></small>
+                </div>
+                <button onclick="staffLogout()" class="btn btn-sm btn-outline-danger fw-bold text-white border-white">
+                    काउंटर बंद करा <i class="bi bi-power"></i>
+                </button>
+            </div>
+            
+            <div class="card-body p-4 text-center">
+                <p class="text-muted small">खालील नियंत्रण पॅनेलमधून तुम्ही लायब्ररीचे मुख्य प्रवेश अर्ज नियंत्रित आणि व्यवस्थापित करू शकता.</p>
+                <div class="row g-3 justify-content-center mt-2">
+                    
+                    <div class="col-sm-4">
+                        <div class="p-3 border rounded shadow-sm h-100 bg-light">
+                            <i class="bi bi-calendar-check-fill text-primary" style="font-size: 2rem;"></i>
+                            <h6 class="fw-bold mt-2 mb-3 text-dark">विद्यार्थी हजेरी</h6>
+                            <a href="attendance1.html" class="btn btn-sm btn-primary w-100 fw-bold">नोंदवही उघडा <i class="bi bi-box-arrow-up-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="p-3 border rounded shadow-sm h-100 bg-light">
+                            <i class="bi bi-journal-text text-success" style="font-size: 2rem;"></i>
+                            <h6 class="fw-bold mt-2 mb-3 text-dark">महिला अभ्यासिका</h6>
+                            <a href="mahila abhyasika form final.html" class="btn btn-sm btn-success w-100 fw-bold">नवा अर्ज उघडा <i class="bi bi-box-arrow-up-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="p-3 border rounded shadow-sm h-100 bg-light">
+                            <i class="bi bi-person-plus-fill text-warning" style="font-size: 2rem;"></i>
+                            <h6 class="fw-bold mt-2 mb-3 text-dark">वाचक सभासदत्व</h6>
+                            <a href="membership form final .html" class="btn btn-sm btn-warning text-dark w-100 fw-bold">नवा अर्ज उघडा <i class="bi bi-box-arrow-up-right"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </div>
-</div>
-<footer style="background-color: #494C3B; color: white; text-align: center; padding: 10px 0; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.1);">
+</div><footer style="background-color: #494C3B; color: white; text-align: center; padding: 10px 0; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.1);">
     <div class="container">
         <p style="margin-bottom: 5px; font-weight: normal; font-size: 0.9rem;">© 2026 सिन्नर सार्वजनिक वाचनालय</p>
         
@@ -1403,15 +1436,31 @@ function toggleSidebar() {
 
     nav.classList.toggle("active-sidebar");
 }
-// 🎯 पायरी ४: कर्मचारी पासवर्ड तपासणी फंक्शन
-// 🎯 पायरी ५: अपग्रेडेड पासवर्ड तपासणी आणि लॉगआऊट फंक्शन
-// 🔒 गुगल शीटद्वारे मल्टिपल कर्मचारी लॉगिन पडताळणी (Multi-Staff Google Sheet Login)
-function checkStaffPassword() {
-    var usernameField = document.getElementById("staffUsername");
-    var passwordField = document.getElementById("staffPassword");
-    var errorDiv = document.getElementById("loginError");
+// =================================================================
+// 🔒 गुगल शीटद्वारे कर्मचारी लॉगिन पडताळणी (Google Sheet Staff Login)
+// =================================================================
+
+// पेज लोड झाल्यावर लॉगिन स्टेटस तपासणे
+document.addEventListener("DOMContentLoaded", function() {
+    if (sessionStorage.getItem("isStaffLoggedIn") === "true") {
+        if(document.getElementById("staffLoginForm")) document.getElementById("staffLoginForm").style.display = "none";
+        if(document.getElementById("staffDashboard")) {
+            document.getElementById("staffDashboard").style.display = "block";
+            document.getElementById("activeStaffName").innerText = sessionStorage.getItem("staffName") || "अधिकृत कर्मचारी";
+        }
+    }
+});
+
+// कर्मचारी लॉगिन तपासणारे मुख्य फंक्शन (Form Submit वर चालणारे)
+function handleStaffLogin(event) {
+    if(event) event.preventDefault();
+    
+    var usernameField = document.getElementById("staffUser");
+    var passwordField = document.getElementById("staffPass");
+    var errorDiv = document.getElementById("loginErrorMsg");
     var loginForm = document.getElementById("staffLoginForm");
     var dashboard = document.getElementById("staffDashboard");
+    var loginBtn = document.getElementById("staffLoginBtn");
     
     var inputUser = usernameField.value.trim();
     var inputPass = passwordField.value;
@@ -1421,11 +1470,11 @@ function checkStaffPassword() {
         return;
     }
 
-    // लॉगिन बटण तात्पुरते लॉक करणे
-    var loginBtn = document.querySelector("#staffLoginForm button");
+    // बटण लॉक करणे
     var originalBtnText = loginBtn.innerHTML;
     loginBtn.innerHTML = "⏳ पडताळणी सुरू आहे...";
     loginBtn.disabled = true;
+    if(errorDiv) errorDiv.style.display = "none";
 
     // तुमच्या गुगल स्क्रिप्टची मॅक्रो लिंक
     const googleScriptUrl = "https://script.google.com/macros/s/AKfycbxdDoaR-nIxphxhct54hVZH2H3B5BEITCYXTDD2TEtNHydZr5nQwqdzI3zZWyx2LgzE/exec";
@@ -1443,21 +1492,30 @@ function checkStaffPassword() {
     .then(res => res.json())
     .then(response => {
         if (response.status === "SUCCESS") {
-            errorDiv.style.display = "none";
+            if(errorDiv) errorDiv.style.display = "none";
             usernameField.value = "";
             passwordField.value = "";
             
-            // 🔒 सुरक्षा लॉक: ब्राऊझर मेमरीत लॉगिन स्टेटस सेव्ह करणे (attendance1.html साठी)
+            // 🔒 सुरक्षा लॉक: ब्राऊझर मेमरीत लॉगिन स्टेटस सेव्ह करणे
             sessionStorage.setItem("isStaffLoggedIn", "true");
+            sessionStorage.setItem("staffName", response.staffName || inputUser);
             
-            // लॉगिन फॉर्म लपवून मुख्य डॅशबोर्ड पर्याय दाखवणे
-            loginForm.style.display = "none";
-            dashboard.style.display = "block";
+            // फॉर्म लपवून डॅशबोर्ड दाखवणे
+            if(loginForm) loginForm.style.display = "none";
+            if(dashboard) {
+                dashboard.style.display = "block";
+                document.getElementById("activeStaffName").innerText = response.staffName || inputUser;
+            }
             
-            alert("लॉगिन यशस्वी झाले! कर्मचारी डॅशबोर्ड उघडला आहे.");
+            alert("🔓 लॉगिन यशस्वी झाले! कर्मचारी डॅशबोर्ड उघडला आहे.");
         } else {
-            // जर गुगल शीटमध्ये युझरनेम किंवा पासवर्ड मॅच नाही झाला तर
-            errorDiv.style.display = "block";
+            // चुकीचा पासवर्ड असल्यास
+            if(errorDiv) {
+                errorDiv.style.display = "block";
+                errorDiv.innerText = "❌ चुकीचे युझरनेम किंवा पासवर्ड!";
+            } else {
+                alert("❌ चुकीचे युझरनेम किंवा पासवर्ड!");
+            }
             passwordField.value = "";
         }
         
@@ -1467,7 +1525,7 @@ function checkStaffPassword() {
     })
     .catch(err => {
         console.error("Login Error:", err);
-        alert("लॉगिन करताना तांत्रिक अडचण आली. इंटरनेट कनेक्शन किंवा गुगल स्क्रिप्ट तपासा.");
+        alert("लॉगिन करताना तांत्रिक अडचण आली. इंटरनेट किंवा गुगल स्क्रिप्ट तपासा.");
         loginBtn.innerHTML = originalBtnText;
         loginBtn.disabled = false;
     });
@@ -1475,113 +1533,25 @@ function checkStaffPassword() {
 
 // सुरक्षित लॉगआऊट फंक्शन
 function staffLogout() {
-    sessionStorage.removeItem("isStaffLoggedIn"); 
-    document.getElementById("staffLoginForm").style.display = "block";
-    document.getElementById("staffDashboard").style.display = "none";
-    alert("कर्मचारी काउंटर सुरक्षितपणे बंद केले गेले आहे.");
-	}
-
-	// 🌐 तुमच्या गुगल ॲप स्क्रिप्टची URL इथे टाका
-const NEW_LOGIN_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxdDoaR-nIxphxhct54hVZH2H3B5BEITCYXTDD2TEtNHydZr5nQwqdzI3zZWyx2LgzE/exec";
-
-// पेज लोड झाल्यावर लॉगिन स्टेटस तपासणे
-document.addEventListener("DOMContentLoaded", function() {
-    if (sessionStorage.getItem("isStaffLoggedIn") === "true") {
-        var staffName = sessionStorage.getItem("staffName") || "कर्मचारी";
-        document.getElementById("staffLoginForm").style.display = "none";
-        document.getElementById("staffDashboard").style.display = "block";
-        document.getElementById("activeStaffName").innerText = staffName;
-    }
-});
-
-// कर्मचारी लॉगिन तपासणारे फंक्शन
-function checkStaffLogin() {
-    var user = document.getElementById("staffUser").value.trim();
-    var pass = document.getElementById("staffPass").value.trim();
-    var errorDiv = document.getElementById("loginError");
-    var loginBtn = document.getElementById("loginBtn");
-    
-    if (user === "" || pass === "") {
-        errorDiv.style.display = "block";
-        errorDiv.innerText = "❌ कृपया युझरनेम आणि पासवर्ड दोन्ही टाका!";
-        return;
-    }
-
-    errorDiv.style.display = "none";
-    var originalBtnText = loginBtn.innerHTML;
-    loginBtn.innerHTML = "<span class='spinner-border spinner-border-sm'></span> पडताळणी होत आहे...";
-    loginBtn.disabled = true;
-
-    // गुगल स्क्रिप्ट कडे डेटा पाठवणे (JSONP द्वारे)
-    // 🔄 जुनी लाईन: var url = GOOGLE_SCRIPT_URL + "?action=login...
-// ✅ नवीन सुधारीत लाईन:
-var url = NEW_LOGIN_SCRIPT_URL + "?action=login&username=" + encodeURIComponent(user) + "&password=" + encodeURIComponent(pass) + "&callback=handleLoginResponse";
-    
-    var oldScript = document.getElementById("jsonpLoginScript");
-    if (oldScript) oldScript.remove();
-
-    var script = document.createElement("script");
-    script.id = "jsonpLoginScript";
-    script.src = url;
-    document.body.appendChild(script);
-}
-
-// गुगल स्क्रिप्ट कडून आलेला प्रतिसाद हाताळणे
-function handleLoginResponse(response) {
-    var errorDiv = document.getElementById("loginError");
-    var loginBtn = document.getElementById("loginBtn");
-    var passwordField = document.getElementById("staffPass");
-    var originalBtnText = "🔓 सिस्टीम अनलॉक करा";
-
-    if (response && response.status === "success") {
-        // लॉगिन यशस्वी झाले! Session सेट करणे
-        sessionStorage.setItem("isStaffLoggedIn", "true");
-        sessionStorage.setItem("staffName", response.staffName);
-        
-        document.getElementById("staffLoginForm").style.display = "none";
-        document.getElementById("staffDashboard").style.display = "block";
-        document.getElementById("activeStaffName").innerText = response.staffName;
-        
-        // फॉर्म रिकामा करणे
-        document.getElementById("staffUser").value = "";
-        passwordField.value = "";
-        
-        alert("🔓 लॉगिन यशस्वी! कर्मचारी डॅशबोर्ड उघडला आहे.");
-    } else {
-        // पासवर्ड किंवा युझरनेम चुकीचे असल्यास
-        errorDiv.style.display = "block";
-        errorDiv.innerText = "❌ चुकीचे युझरनेम किंवा पासवर्ड!";
-        passwordField.value = "";
-    }
-    
-    loginBtn.innerHTML = originalBtnText;
-    loginBtn.disabled = false;
-}
-
-// सुरक्षित लॉगआऊट फंक्शन
-function staffLogout() {
-    if(confirm("तुम्हाला काउंटर बंद करायचे आहे का?")) {
-        sessionStorage.removeItem("isStaffLoggedIn");
-        sessionStorage.removeItem("staffName");
-        document.getElementById("staffLoginForm").style.display = "block";
-        document.getElementById("staffDashboard").style.display = "none";
-        alert("🔒 कर्मचारी काउंटर सुरक्षितपणे बंद (लॉगआऊट) केले गेले आहे.");
+    if(confirm("तुम्हाला काउंटर बंद (लॉगआऊट) करायचे आहे का?")) {
+        sessionStorage.removeItem("isStaffLoggedIn"); 
+        sessionStorage.removeItem("staffName"); 
+        if(document.getElementById("staffLoginForm")) document.getElementById("staffLoginForm").style.display = "block";
+        if(document.getElementById("staffDashboard")) document.getElementById("staffDashboard").style.display = "none";
+        alert("🔒 कर्मचारी काउंटर सुरक्षितपणे बंद केले गेले आहे.");
     }
 }
 </script>    
+
 <div class="modal fade" id="imageModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content bg-dark border-0">
      <div class="modal-body text-center p-2 position-relative">
-
-    <!-- Close Button -->
-    <button type="button" class="btn-close btn-close-black position-absolute top-0 end-0 m-2" data-bs-dismiss="modal"></button>
-
-    <img id="modalImage" src="" class="img-fluid rounded">
-    <p id="modalCaption" class="text-white small mt-2 mb-0"></p>
-</div>
+        <button type="button" class="btn-close btn-close-black position-absolute top-0 end-0 m-2" data-bs-dismiss="modal"></button>
+        <img id="modalImage" src="" class="img-fluid rounded">
+        <p id="modalCaption" class="text-white small mt-2 mb-0"></p>
+     </div>
     </div>
   </div>
-</div>
-</body>
+</div></body>
 </html>
