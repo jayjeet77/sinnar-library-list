@@ -199,7 +199,7 @@
     <a href="javascript:void(0)" onclick="showSection('contact-section', this); toggleSidebar()">संपर्क</a>
     <a href="javascript:void(0)" onclick="showSection('feedback-section', this); toggleSidebar()">मान्यवरांच्या प्रतिक्रिया</a>
     <a href="javascript:void(0)" onclick="showSection('staff-section', this); toggleSidebar()">कर्मचारी वृंद</a>
-    <a href="javascript:void(0)" onclick="showSection('admission-section', this); toggleSidebar()">प्रवेश अर्ज</a>
+    <a href="javascript:void(0)" onclick="showSection('staff-counter-section', this); toggleSidebar()">🔐 कर्मचारी विभाग</a>
 </div>
 
  <div id="home-section" class="content-section active">
@@ -659,6 +659,61 @@
         </div>
     </div>
 
+</div>
+<div id="staff-counter-section" class="tab-content" style="display: none;">
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                
+                <div id="staffLoginForm" class="card shadow border-0 p-4 rounded-4 text-center" style="background-color: #ffffff;">
+                    <div class="mb-3">
+                        <i class="bi bi-shield-lock-fill" style="font-size: 3rem; color: var(--title-color, #494C3B);"></i>
+                    </div>
+                    <h3 class="fw-bold mb-2" style="color: var(--title-color, #494C3B);">कर्मचारी लॉगिन</h3>
+                    <p class="text-muted small mb-4">हा विभाग फक्त वाचनालयाच्या कर्मचाऱ्यांसाठी सुरक्षित आहे.</p>
+                    
+                    <div class="mb-3">
+                        <input type="password" id="staffPassword" class="form-control form-control-lg text-center rounded-3" placeholder="सुरक्षा पासवर्ड टाका">
+                    </div>
+                    
+                    <button class="btn btn-lg w-100 rounded-3 text-white" style="background-color: var(--title-color, #494C3B);" onclick="checkStaffPassword()">
+                        प्रवेश करा
+                    </button>
+                    
+                    <div id="loginError" class="text-danger small mt-2" style="display: none;">
+                        चुकीचा पासवर्ड! कृपया पुन्हा प्रयत्न करा.
+                    </div>
+                </div>
+
+                <div id="staffDashboard" class="card shadow border-0 p-4 rounded-4 text-center" style="background-color: #ffffff; display: none;">
+                    <div class="mb-3">
+                        <i class="bi bi-person-check-fill" style="font-size: 3rem; color: #28a745;"></i>
+                    </div>
+                    <h3 class="fw-bold mb-1" style="color: var(--title-color, #494C3B);">कर्मचारी डॅशबोर्ड</h3>
+                    <p class="text-muted small mb-4">कृपया खालीलपैकी आवश्यक कामाची निवड करा:</p>
+                    
+                    <div class="d-grid gap-3">
+                        <a href="https://jayjeet77.github.io/vachak-form/" target="_blank" class="btn btn-outline-dark btn-lg rounded-3 text-start p-3">
+                            📝 १. वाचक सभासद प्रवेश अर्ज
+                        </a>
+                        
+                        <button onclick="showSection('admission-section', null)" class="btn btn-outline-dark btn-lg rounded-3 text-start p-3">
+                            📝 २. अभ्यासिका प्रवेश अर्ज
+                        </button>
+                        
+                        <a href="attendance1.html" class="btn btn-outline-dark btn-lg rounded-3 text-start p-3">
+                            ⏱️ ३. हजेरी स्कॅनर (Attendance)
+                        </a>
+                    </div>
+                    
+                    <button onclick="staffLogout()" class="btn btn-sm btn-link text-danger mt-4 text-decoration-none">
+                        🔐 सुरक्षित लॉगआऊट करा
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>
 <div id="admission-section" class="content-section container">
     <div class="card p-4 border-0 shadow-sm" style="background-color: #fdfaf4; border-radius: 15px;">
@@ -1355,7 +1410,83 @@ function toggleSidebar() {
 
     nav.classList.toggle("active-sidebar");
 }
-</script>    
+// 🎯 पायरी ४: कर्मचारी पासवर्ड तपासणी फंक्शन
+// 🎯 पायरी ५: अपग्रेडेड पासवर्ड तपासणी आणि लॉगआऊट फंक्शन
+// 🔒 गुगल शीटद्वारे मल्टिपल कर्मचारी लॉगिन पडताळणी (Multi-Staff Google Sheet Login)
+function checkStaffPassword() {
+    var usernameField = document.getElementById("staffUsername");
+    var passwordField = document.getElementById("staffPassword");
+    var errorDiv = document.getElementById("loginError");
+    var loginForm = document.getElementById("staffLoginForm");
+    var dashboard = document.getElementById("staffDashboard");
+    
+    var inputUser = usernameField.value.trim();
+    var inputPass = passwordField.value;
+
+    if (inputUser === "" || inputPass === "") {
+        alert("कृपया युझरनेम आणि पासवर्ड दोन्ही टाका!");
+        return;
+    }
+
+    // लॉगिन बटण तात्पुरते लॉक करणे
+    var loginBtn = document.querySelector("#staffLoginForm button");
+    var originalBtnText = loginBtn.innerHTML;
+    loginBtn.innerHTML = "⏳ पडताळणी सुरू आहे...";
+    loginBtn.disabled = true;
+
+    // तुमच्या गुगल स्क्रिप्टची मॅक्रो लिंक
+    const googleScriptUrl = "https://script.google.com/macros/s/AKfycbxwv0JnqmwYrGr22sMzwfCt9JPd9wxXX3E64RR5wjBpc0jcXmDnnCdJSXL7rjlSQAU/exec";
+
+    // गुगल शीटला डेटा तपासण्यासाठी पाठवणे
+    fetch(googleScriptUrl, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ 
+            action: "staffLogin", 
+            username: inputUser, 
+            password: inputPass 
+        })
+    })
+    .then(res => res.json())
+    .then(response => {
+        if (response.status === "SUCCESS") {
+            errorDiv.style.display = "none";
+            usernameField.value = "";
+            passwordField.value = "";
+            
+            // 🔒 सुरक्षा लॉक: ब्राऊझर मेमरीत लॉगिन स्टेटस सेव्ह करणे (attendance1.html साठी)
+            sessionStorage.setItem("isStaffLoggedIn", "true");
+            
+            // लॉगिन फॉर्म लपवून मुख्य डॅशबोर्ड पर्याय दाखवणे
+            loginForm.style.display = "none";
+            dashboard.style.display = "block";
+            
+            alert("लॉगिन यशस्वी झाले! कर्मचारी डॅशबोर्ड उघडला आहे.");
+        } else {
+            // जर गुगल शीटमध्ये युझरनेम किंवा पासवर्ड मॅच नाही झाला तर
+            errorDiv.style.display = "block";
+            passwordField.value = "";
+        }
+        
+        // बटण पूर्ववत करणे
+        loginBtn.innerHTML = originalBtnText;
+        loginBtn.disabled = false;
+    })
+    .catch(err => {
+        console.error("Login Error:", err);
+        alert("लॉगिन करताना तांत्रिक अडचण आली. इंटरनेट कनेक्शन किंवा गुगल स्क्रिप्ट तपासा.");
+        loginBtn.innerHTML = originalBtnText;
+        loginBtn.disabled = false;
+    });
+}
+
+// सुरक्षित लॉगआऊट फंक्शन
+function staffLogout() {
+    sessionStorage.removeItem("isStaffLoggedIn"); 
+    document.getElementById("staffLoginForm").style.display = "block";
+    document.getElementById("staffDashboard").style.display = "none";
+    alert("कर्मचारी काउंटर सुरक्षितपणे बंद केले गेले आहे.");
+}</script>    
 <div class="modal fade" id="imageModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content bg-dark border-0">
