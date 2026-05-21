@@ -199,7 +199,7 @@
     <a href="javascript:void(0)" onclick="showSection('contact-section', this); toggleSidebar()">संपर्क</a>
     <a href="javascript:void(0)" onclick="showSection('feedback-section', this); toggleSidebar()">मान्यवरांच्या प्रतिक्रिया</a>
     <a href="javascript:void(0)" onclick="showSection('staff-section', this); toggleSidebar()">कर्मचारी वृंद</a>
-   <a href="javascript:void(0)" onclick="showSection('staff-login-section', this); toggleSidebar()">🔐 कर्मचारी विभाग</a>
+   <a href="javascript:void(0)" onclick="showSection('staff-section', this); toggleSidebar()">🔐 कर्मचारी विभाग</a>
 </div>
 
  <div id="home-section" class="content-section active">
@@ -777,119 +777,50 @@
         </div>
     </div>
 </div>
-<div id="admission-section" class="content-section container">
-    <div class="card p-4 border-0 shadow-sm" style="background-color: #fdfaf4; border-radius: 15px;">
-        <h4 class="fw-bold text-center mb-4" style="color: var(--title-color);">
-            प्रवेश अर्ज व माहिती
-        </h4>
-
-        <div class="row row-cols-1 row-cols-md-2 g-3 mb-4">
-            <div class="col">
-                <div class="card border-0 shadow-sm">
-                    <img src="lib1.jpg" class="img-fluid rounded" style="aspect-ratio: 16/9; object-fit: cover; cursor: pointer;" onclick="openImage(this)">
-                    <p class="small text-center mt-2">अभ्यासिका अंतर्गत बैठक व्यवस्था</p>
+<div id="staff-section" class="content-section container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            
+            <div id="staffLoginForm" class="card shadow-sm p-4 bg-white rounded border">
+                <h3 class="text-center mb-4 text-dark"><i class="bi bi-person-badge"></i> कर्मचारी लॉगिन</h3>
+                <div id="loginError" class="alert alert-danger text-sm p-2 text-center" style="display: none;">
+                    ❌ चुकीचे युझरनेम किंवा पासवर्ड!
                 </div>
-            </div>
-            <div class="col">
-                <div class="card border-0 shadow-sm">
-                    <img src="lib2.jpg" class="img-fluid rounded" style="aspect-ratio: 16/9; object-fit: cover; cursor: pointer;" onclick="openImage(this)">
-                    <p class="small text-center mt-2">अभ्यासिका अंतर्गत बैठक व्यवस्था</p>
+                <div class="mb-3">
+                    <label class="form-label text-dark fw-bold">युझरनेम (Username)</label>
+                    <input type="text" id="staffUser" class="form-control" placeholder="युझरनेम टाका">
                 </div>
+                <div class="mb-3">
+                    <label class="form-label text-dark fw-bold">पासवर्ड (Password)</label>
+                    <input type="password" id="staffPass" class="form-control" placeholder="पासवर्ड टाका">
+                </div>
+                <button class="btn btn-primary w-100 fw-bold" id="loginBtn" onclick="checkStaffLogin()">🔓 सिस्टीम अनलॉक करा</button>
             </div>
-        </div>
 
-        <div class="row g-4 text-center justify-content-center">
-            <div class="col-md-6">
-                <div class="p-3 rounded border bg-white h-100 shadow-sm">
-                    <h5 class="fw-bold" style="color: var(--title-color);">वाचक सभासद अर्ज</h5>
-                    <p class="small text-muted">वाचनालयाचे वाचक सभासद होण्यासाठी खालील अर्जावर क्लिक करा.</p>
-                    <a href="membership form final .html" target="_blank" class="btn btn-sm w-100 shadow-sm" style="background-color: #494C3B; color: white; border-radius: 8px;">
-                        <i class="bi bi-file-earmark-pdf"></i> अर्ज उघडा / डाउनलोड करा
+            <div id="staffDashboard" class="card shadow p-4 text-center border-success bg-white rounded" style="display: none;">
+                <h3 class="text-success mb-3"><i class="bi bi-shield-check"></i> कर्मचारी काउंटर सुरू आहे</h3>
+                <p class="text-muted">स्वागत आहे, <span id="activeStaffName" class="fw-bold text-dark">-</span></p>
+                <hr>
+                
+                <div class="d-grid gap-3 my-4">
+                    <a href="mahila abhyasika form final.html" target="_blank" class="btn btn-outline-dark btn-lg text-start fs-6 p-3">
+                        📄 १. महिला अभ्यासिका प्रवेश अर्ज
+                    </a>
+                    <a href="membership form final .html" target="_blank" class="btn btn-outline-dark btn-lg text-start fs-6 p-3">
+                        📑 २. वाचक सभासद प्रवेश अर्ज
+                    </a>
+                    <a href="attendance1.html" target="_blank" class="btn btn-outline-dark btn-lg text-start fs-6 p-3">
+                        🚪 ३. हजेरी प्रणाली (In-Out)
                     </a>
                 </div>
+                
+                <hr>
+                <button class="btn btn-danger w-100 fw-bold" onclick="staffLogout()">🔒 सुरक्षित लॉगआऊट (Close)</button>
             </div>
 
-            <div class="col-md-6">
-                <div class="p-3 rounded border bg-white h-100 shadow-sm">
-                    <h5 class="fw-bold" style="color: var(--title-color);">महिला अभ्यासिका अर्ज</h5>
-                    <p class="small text-muted">अभ्यासिकेत प्रवेश घेण्यासाठी खालील अर्जावर क्लिक करा.</p>
-                    <a href="mahila abhyasika form final.html" target="_blank" class="btn btn-sm w-100 shadow-sm" style="background-color: #9d4d27; color: white; border-radius: 8px;">
-                        <i class="bi bi-file-earmark-pdf"></i> अर्ज उघडा / डाउनलोड करा
-                    </a>
-                </div>
-            </div>
         </div>
-
-        <div class="row mt-4">
-            <div class="col-12">
-                <div class="p-3 shadow-sm" style="background-color: #fff4e5; border-left: 5px solid #ffcc80; border-radius: 8px;">
-                    <p class="mb-0 text-dark" style="font-size: 0.9rem; line-height: 1.5; text-align: justify;">
-                        <i class="bi bi-info-circle-fill text-warning me-2"></i>
-                        <strong>सूचना:</strong> अर्ज भरून झाल्यावर त्याची पीडीएफ तयार होईल. ती डाउनलोड करून प्रिंट काढावी आणि आवश्यक त्या कागदपत्रांसह सही करून वाचनालयाच्या कार्यालयात सादर करावी.</p>
-				</div> 
-			</div> 
-		</div> 
-	</div> 
-</div>
-<div class="modal fade" id="memberModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header" style="background: var(--title-color); color: white;">
-          <h6 class="modal-title">नवीन वाचक सभासद नोंदणी अर्ज</h6>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-            <form id="membershipForm">
-                 <p class="form-note">
-            ⚠️ तुमची माहिती केवळ सभासद नोंदणीसाठी वापरली जाईल.
-        </p>
-    <div class="row g-2">
-        <div class="col-12"><label class="form-label small">पूर्ण नाव <span class="mandatory">*</span></label><input type="text" id="m_name" class="form-control form-control-sm" required placeholder="आडनाव नाव वडिलांचे नाव"></div>
-        <div class="col-md-6"><label class="form-label small">मोबाईल <span class="mandatory">*</span></label><input type="tel" id="m_mobile" class="form-control form-control-sm" required pattern="[0-9]{10}"></div>
-        <div class="col-md-6"><label class="form-label small">ईमेल आयडी</label><input type="email" id="m_email" class="form-control form-control-sm"></div>
-        <div class="col-md-6"><label class="form-label small">आधार क्रमांक (शेवटचे ४ अंक) <span class="mandatory">*</span></label><input type="text" id="m_aadhaar" class="form-control form-control-sm"required pattern="[0-9]{4}" maxlength="4"
-        inputmode="numeric"
-        oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-        placeholder="शेवटचे ४ अंक"></div>
-        <div class="col-md-6"><label class="form-label small">व्यवसाय <span class="mandatory">*</span></label><input type="text" id="m_job" class="form-control form-control-sm" required></div>
-        <div class="col-md-6"><label class="form-label small">जन्म तारीख <span class="mandatory">*</span></label><input type="date" id="m_dob" class="form-control form-control-sm" required></div>
-        <div class="col-md-6"><label class="form-label small">सभासद वर्गनिवडा <span class="mandatory">*</span></label>
-            <select id="m_class" class="form-select form-select-sm" required>
-                <option value="">-- निवडा --</option>
-                <option value="वर्ग १ (अनामत ₹३००, मासिक ₹१०)">वर्ग १ (अनामत ₹३००, दरमहा ₹१०)</option>
-                <option value="वर्ग २ (अनामत ₹५००, मासिक ₹२०)">वर्ग २ (अनामत ₹५००, दरमहा ₹२०)</option>
-                <option value="वर्ग ३ (अनामत ₹७५, मासिक ₹१५)">वर्ग ३ (अनामत ₹७५, दरमहा ₹१५)</option>
-                <option value="वर्ग ४ (अनामत ₹३७५, मासिक ₹२५)">वर्ग ४ (अनामत ₹३७५, दरमहा ₹२५)</option>
-                <option value="वर्ग ५ (अनामत ₹५७५, मासिक ₹३0)">वर्ग ५ (अनामत ₹५७५,दरमहा ₹३०)</option>
-            </select>
-        </div>
-        <div class="col-12"><label class="form-label small">सध्याचा पत्ता <span class="mandatory">*</span></label><textarea id="m_address" class="form-control form-control-sm" rows="2" required></textarea></div>
-        <div class="col-12"><div class="form-check"><input class="form-check-input" type="checkbox" id="sameAddress" onclick="copyAddress()"><label class="form-check-label small fw-bold text-primary" for="sameAddress">कायमचा पत्ता हाच आहे</label></div></div>
-        <div class="col-12"><label class="form-label small">कायमचा पत्ता <span class="mandatory">*</span></label><textarea id="m_perm_address" class="form-control form-control-sm" rows="2" required></textarea></div>
-        <div class="col-12 mt-3"><button type="submit" id="submitBtn" class="btn btn-success w-100 fw-bold">अर्ज सादर करा</button></div>
-    </div>
-</form>
-          
-        </div>
-      </div>
     </div>
 </div>
-<div id="exitToast" style="
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0,0,0,0.8);
-    color: #fff;
-    padding: 10px 18px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    display: none;
-    z-index: 9999;">
-    पुन्हा back दाबा exit साठी
-</div>
-</div> <!-- तुमचा मजकूर इथे संपतो -->
-
 <footer style="background-color: #494C3B; color: white; text-align: center; padding: 10px 0; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.1);">
     <div class="container">
         <p style="margin-bottom: 5px; font-weight: normal; font-size: 0.9rem;">© 2026 सिन्नर सार्वजनिक वाचनालय</p>
@@ -1497,7 +1428,7 @@ function checkStaffPassword() {
     loginBtn.disabled = true;
 
     // तुमच्या गुगल स्क्रिप्टची मॅक्रो लिंक
-    const googleScriptUrl = "https://script.google.com/macros/s/AKfycbxwv0JnqmwYrGr22sMzwfCt9JPd9wxXX3E64RR5wjBpc0jcXmDnnCdJSXL7rjlSQAU/exec";
+    const googleScriptUrl = "https://script.google.com/macros/s/AKfycbxdDoaR-nIxphxhct54hVZH2H3B5BEITCYXTDD2TEtNHydZr5nQwqdzI3zZWyx2LgzE/exec";
 
     // गुगल शीटला डेटा तपासण्यासाठी पाठवणे
     fetch(googleScriptUrl, {
@@ -1548,7 +1479,96 @@ function staffLogout() {
     document.getElementById("staffLoginForm").style.display = "block";
     document.getElementById("staffDashboard").style.display = "none";
     alert("कर्मचारी काउंटर सुरक्षितपणे बंद केले गेले आहे.");
-}</script>    
+	}
+
+	// 🌐 तुमच्या गुगल ॲप स्क्रिप्टची URL इथे टाका
+const NEW_LOGIN_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxdDoaR-nIxphxhct54hVZH2H3B5BEITCYXTDD2TEtNHydZr5nQwqdzI3zZWyx2LgzE/exec";
+
+// पेज लोड झाल्यावर लॉगिन स्टेटस तपासणे
+document.addEventListener("DOMContentLoaded", function() {
+    if (sessionStorage.getItem("isStaffLoggedIn") === "true") {
+        var staffName = sessionStorage.getItem("staffName") || "कर्मचारी";
+        document.getElementById("staffLoginForm").style.display = "none";
+        document.getElementById("staffDashboard").style.display = "block";
+        document.getElementById("activeStaffName").innerText = staffName;
+    }
+});
+
+// कर्मचारी लॉगिन तपासणारे फंक्शन
+function checkStaffLogin() {
+    var user = document.getElementById("staffUser").value.trim();
+    var pass = document.getElementById("staffPass").value.trim();
+    var errorDiv = document.getElementById("loginError");
+    var loginBtn = document.getElementById("loginBtn");
+    
+    if (user === "" || pass === "") {
+        errorDiv.style.display = "block";
+        errorDiv.innerText = "❌ कृपया युझरनेम आणि पासवर्ड दोन्ही टाका!";
+        return;
+    }
+
+    errorDiv.style.display = "none";
+    var originalBtnText = loginBtn.innerHTML;
+    loginBtn.innerHTML = "<span class='spinner-border spinner-border-sm'></span> पडताळणी होत आहे...";
+    loginBtn.disabled = true;
+
+    // गुगल स्क्रिप्ट कडे डेटा पाठवणे (JSONP द्वारे)
+    // 🔄 जुनी लाईन: var url = GOOGLE_SCRIPT_URL + "?action=login...
+// ✅ नवीन सुधारीत लाईन:
+var url = NEW_LOGIN_SCRIPT_URL + "?action=login&username=" + encodeURIComponent(user) + "&password=" + encodeURIComponent(pass) + "&callback=handleLoginResponse";
+    
+    var oldScript = document.getElementById("jsonpLoginScript");
+    if (oldScript) oldScript.remove();
+
+    var script = document.createElement("script");
+    script.id = "jsonpLoginScript";
+    script.src = url;
+    document.body.appendChild(script);
+}
+
+// गुगल स्क्रिप्ट कडून आलेला प्रतिसाद हाताळणे
+function handleLoginResponse(response) {
+    var errorDiv = document.getElementById("loginError");
+    var loginBtn = document.getElementById("loginBtn");
+    var passwordField = document.getElementById("staffPass");
+    var originalBtnText = "🔓 सिस्टीम अनलॉक करा";
+
+    if (response && response.status === "success") {
+        // लॉगिन यशस्वी झाले! Session सेट करणे
+        sessionStorage.setItem("isStaffLoggedIn", "true");
+        sessionStorage.setItem("staffName", response.staffName);
+        
+        document.getElementById("staffLoginForm").style.display = "none";
+        document.getElementById("staffDashboard").style.display = "block";
+        document.getElementById("activeStaffName").innerText = response.staffName;
+        
+        // फॉर्म रिकामा करणे
+        document.getElementById("staffUser").value = "";
+        passwordField.value = "";
+        
+        alert("🔓 लॉगिन यशस्वी! कर्मचारी डॅशबोर्ड उघडला आहे.");
+    } else {
+        // पासवर्ड किंवा युझरनेम चुकीचे असल्यास
+        errorDiv.style.display = "block";
+        errorDiv.innerText = "❌ चुकीचे युझरनेम किंवा पासवर्ड!";
+        passwordField.value = "";
+    }
+    
+    loginBtn.innerHTML = originalBtnText;
+    loginBtn.disabled = false;
+}
+
+// सुरक्षित लॉगआऊट फंक्शन
+function staffLogout() {
+    if(confirm("तुम्हाला काउंटर बंद करायचे आहे का?")) {
+        sessionStorage.removeItem("isStaffLoggedIn");
+        sessionStorage.removeItem("staffName");
+        document.getElementById("staffLoginForm").style.display = "block";
+        document.getElementById("staffDashboard").style.display = "none";
+        alert("🔒 कर्मचारी काउंटर सुरक्षितपणे बंद (लॉगआऊट) केले गेले आहे.");
+    }
+}
+</script>    
 <div class="modal fade" id="imageModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content bg-dark border-0">
