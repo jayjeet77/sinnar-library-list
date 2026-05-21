@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Scanner - Sinnar Public Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .scanner-laser {
+            position: absolute;
+            height: 3px;
+            width: 100%;
+            background: linear-gradient(to right, transparent, #ef4444, transparent);
+            animation: scan 2s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col justify-between p-4 sm:p-6">
+
+    <div class="max-w-5xl w-full mx-auto flex flex-col sm:flex-row justify-between items-center bg-slate-900 border border-slate-800 p-4 rounded-xl shadow-2xl gap-4">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center font-black text-lg shadow-md">वा</div>
+            <div>
+                <h1 class="text-sm font-bold tracking-tight text-white">सिन्नर सार्वजनिक वाचनालय</h1>
+                <p class="text-[10px] text-slate-400 font-medium">डिजिटल अभ्यासिका हजेरी प्रणाली • २०२६</p>
+            </div>
+        </div>
+
+        <div id="headerLoginArea" class="flex items-center gap-2 flex-wrap justify-center">
+            <input type="text" id="staffUser" placeholder="युझरनेम" class="bg-slate-950 border border-slate-800 text-slate-200 text-xs rounded-lg px-3 py-2 w-28 focus:outline-none focus:border-blue-500 font-bold">
+            <input type="password" id="staffPass" placeholder="पासवर्ड" class="bg-slate-950 border border-slate-800 text-slate-200 text-xs rounded-lg px-3 py-2 w-28 focus:outline-none focus:border-blue-500 font-bold">
+            <button id="loginBtn" onclick="loginStaff()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-black px-4 py-2 rounded-lg shadow transition">लॉगइन</button>
+            <span id="authError" class="text-red-500 text-xs font-bold hidden">❌ चूक!</span>
+        </div>
+
+        <div id="staffWelcomeArea" class="hidden flex items-center">
+            <span id="welcomeStaffName" class="text-xs font-bold text-emerald-400 bg-emerald-950/30 border border-emerald-900/50 px-3 py-2 rounded-lg">👤 कर्मचारी: लोड होत आहे...</span>
+        </div>
+
+        <div>
+            <button onclick="secureLogout();" class="bg-red-950/40 hover:bg-red-600 border border-red-900/60 text-red-200 hover:text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow transition flex items-center gap-1.5">
+                🔒 सुरक्षित लॉगआऊट (Close)
+            </button>
+        </div>
+    </div>
+
+    <div id="mainAttendanceContent" class="max-w-5xl w-full mx-auto flex-1 flex flex-col justify-between hidden">
+        
+        <div class="max-w-5xl w-full mx-auto grid grid-cols-1 md:grid-cols-5 gap-6 my-6 flex-1 items-stretch">
+            
+            <div class="md:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between shadow-2xl relative overflow-hidden">
+                <div class="mb-2">
+                    <span class="text-[9px] bg-red-500/10 text-red-400 border border-red-500/20 font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Live Camera</span>
+                    <h2 class="text-sm font-black text-white mt-1">QR कोड स्कॅन करा</h2>
+                </div>
+
+                <div class="relative w-full max-w-xs mx-auto aspect-video bg-slate-950 rounded-xl border border-slate-800 flex items-center justify-center overflow-hidden my-3">
+                    <div class="scanner-laser z-10"></div>
+                    <div id="reader" class="w-full h-full object-cover"></div>
+                </div>
+
+                <div class="text-[11px] text-slate-400 text-center px-2">
+                    विद्यार्थ्यांचे डिजिटल आयडी कार्ड कॅमेऱ्यासमोर धरा.
+                </div>
+            </div>
+
+            <div class="md:col-span-3 flex flex-col gap-4">
+                
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-2xl">
+                    <span class="text-[10px] text-blue-400 font-bold uppercase tracking-wider block mb-1.5">मॅन्युअल हजेरी नोंदणी</span>
+                    <div class="flex gap-3">
+                        <input type="text" id="manualRegNo" placeholder="REGISTRATION NUMBER टाका (e.g. SIN-0001)" class="bg-slate-950 border-2 border-slate-800 text-slate-100 text-sm font-bold rounded-xl px-4 py-3 w-full uppercase font-mono tracking-widest focus:outline-none focus:border-blue-500 transition-colors">
+                        <button id="submitBtn" onclick="processManualAttendance()" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-black px-6 py-3 rounded-xl shadow whitespace-nowrap transition disabled:opacity-55">SUBMIT</button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
+                    <div id="statusCard" class="bg-slate-900 border border-slate-800 rounded-2xl p-4 text-center flex flex-col justify-center items-center gap-3 shadow-2xl transition-all duration-300">
+                        <div id="statusIconCircle" class="w-14 h-14 bg-slate-800 rounded-full flex items-center justify-center text-2xl shadow-inner border border-slate-700">
+                            ⏱️
+                        </div>
+                        <div>
+                            <h3 id="statusTitle" class="text-sm font-black text-white">स्कॅनर रेडी आहे...</h3>
+                            <p id="statusMessage" class="text-[11px] text-slate-400 mt-0.5 px-2">डेटा लोड होत आहे, प्रतीक्षा करा...</p>
+                        </div>
+                    </div>
+
+                    <div id="studentProfileWidget" class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col justify-center shadow-2xl opacity-40 transition-all duration-300">
+                        <div class="flex gap-3 items-center">
+                            <div id="studentScanPhoto" class="w-14 h-18 bg-slate-950 border border-slate-800 rounded-lg overflow-hidden flex items-center justify-center text-[8px] text-slate-600 text-center font-bold shrink-0">
+                                No Photo
+                            </div>
+                            <div class="flex-1 text-[11px] space-y-1">
+                                <div>
+                                    <span class="text-[9px] text-slate-500 block uppercase font-bold">Student Name</span>
+                                    <p id="scanProfileName" class="font-bold text-slate-300 truncate">-</p>
+                                </div>
+                                <div>
+                                    <span class="text-[9px] text-slate-500 block uppercase font-bold">Reg No</span>
+                                    <p id="scanProfileId" class="font-mono font-bold text-blue-400 bg-blue-950/40 px-1.5 py-0.5 rounded border border-blue-900/30 inline-block">-</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="max-w-5xl w-full mx-auto bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-2xl">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-5 gap-3 border-b border-slate-800 pb-4">
+                <h3 class="text-sm font-black text-slate-200 uppercase tracking-widest flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                    📊 रिअल-टाइम आजचे हजेरी रेकॉर्ड्स (Recent Swipes)
+                </h3>
+                
+                <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+                    <span id="totalLogsCount" class="text-xs bg-slate-800 text-slate-300 px-3 py-2 rounded-xl font-bold border border-slate-700/50 shadow-inner">
+                        एकूण रेकॉर्ड: ०
+                    </span>
+                    
+                    <div id="liveGirlsCountBox" class="bg-emerald-950/40 border-2 border-emerald-500/50 rounded-xl px-5 py-2 shadow-[0_0_15px_rgba(16,185,129,0.1)] transition-all duration-300">
+                        <span id="liveGirlsCount" class="text-base sm:text-lg font-black text-emerald-400 flex items-center gap-2 tracking-wide">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block shadow-[0_0_8px_#10b981]"></span>
+                            हजर मुली: <span class="text-xl sm:text-2xl text-white font-black ml-1" id="girlsCountNumber">०</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto max-h-[280px] overflow-y-auto pr-1">
+                <table class="w-full text-left text-sm border-collapse">
+                    <thead>
+                        <tr class="text-slate-400 border-b-2 border-slate-800 font-bold text-xs bg-slate-950/40 sticky top-0">
+                            <th class="pb-3 pt-2 pl-2">Reg No</th>
+                            <th class="pb-3 pt-2">विद्यार्थ्याचे नाव</th>
+                            <th class="pb-3 pt-2">वेळ (Time)</th>
+                            <th class="pb-3 pt-2">प्रकार (Mode)</th>
+                            <th class="pb-3 pt-2 pr-2 text-end">स्टेटस (Status)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="liveLogTableBody" class="divide-y divide-slate-850">
+                        <tr>
+                            <td colspan="5" class="py-6 text-center text-slate-500 italic text-xs">डेटा लोड होत आहे...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="max-w-5xl w-full mx-auto text-center pt-5 text-[10px] text-slate-600 font-medium tracking-wide">
+        वेবসাইট डिझाईन व सूचीकरण: जितेंद्र जगताप • सिन्नर सार्वजनिक वाचनालय डिजिटल लायब्ररी प्रकल्प २०२६
+    </div>
+
+    <script>
+        const googleScriptUrl = "https://script.google.com/macros/s/AKfycbzgkFaRY_ALnbMQj0yeq5mLAoHjWsouG-sOME7jIvl_2g1XF7Llg8BCAyEzxvoeuTWz/exec";
+        let isProcessing = false;
+        let html5QrcodeScanner = null;
+
+        // १. पेज सुरू झाल्यावर आधीचे सत्र सुरू आहे का ते तपासणे
+        window.addEventListener('DOMContentLoaded', () => {
+            if (sessionStorage.getItem("attendance_authenticated") === "true") {
+                showAttendanceSystem(sessionStorage.getItem("attendance_staff_name"));
+            }
+        });
+
+        // २. नवीन इन-लाईन लॉगिन फंक्शन
+        function loginStaff() {
+            var userField = document.getElementById("staffUser").value.trim();
+            var passField = document.getElementById("staffPass").value.trim();
+            var errorSpan = document.getElementById("authError");
+            var loginBtn = document.getElementById("loginBtn");
+            
+            if(userField === "" || passField === "") {
+                alert("⚠️ कृपया युझरनेम आणि पासवर्ड भरा!");
+                return;
+            }
+            
+            loginBtn.innerText = "...";
+            loginBtn.disabled = true;
+            errorSpan.classList.add("hidden");
+            
+            fetch(googleScriptUrl, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify({ "action": "login", "username": userField, "password": passField })
+            })
+            .then(res => res.json())
+            .then(data => {
+                loginBtn.innerText = "लॉगइन";
+                loginBtn.disabled = false;
+                
+                if (data.status === "success") {
+                    sessionStorage.setItem("attendance_authenticated", "true");
+                    sessionStorage.setItem("attendance_staff_name", data.staffName);
+                    showAttendanceSystem(data.staffName);
+                } else {
+                    errorSpan.classList.remove("hidden");
+                    document.getElementById("staffPass").value = "";
+                }
+            })
+            .catch(err => {
+                loginBtn.innerText = "लॉगइन";
+                loginBtn.disabled = false;
+                alert("❌ सर्व्हरशी संपर्क होऊ शकला नाही!");
+            });
+        }
+
+        // ३. सिस्टीम उघडणे आणि स्कॅनर सक्रिय करणे
+        function showAttendanceSystem(staffName) {
+            document.getElementById("headerLoginArea").classList.add("hidden");
+            document.getElementById("staffWelcomeArea").classList.remove("hidden");
+            document.getElementById("welcomeStaffName").innerText = "👤 कर्मचारी: " + staffName;
+            document.getElementById("mainAttendanceContent").classList.remove("hidden");
+            
+            fetchTodayRecords();
+
+            if(!html5QrcodeScanner) {
+                html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 20, qrbox: { width: 220, height: 150 } }, false);
+                html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+            }
+        }
+
+        function fetchTodayRecords() {
+            fetch(googleScriptUrl)
+            .then(res => res.json())
+            .then(response => {
+                if(response.status === "SUCCESS") {
+                    updateDashboardCounts(response.girlsCount);
+                    renderLogTable(response.logs);
+                    resetStatusCard("⏱️", "स्कॅनर रेडी आहे...", "नवीन आयडी कार्ड स्कॅन करण्याची प्रतीक्षा आहे.", "bg-slate-900", "border-slate-800");
+                }
+            })
+            .catch(err => {
+                console.error("Error loading logs: ", err);
+                resetStatusCard("⚠️", "कनेक्शन एरर!", "गुगल शीटवरून डेटा लोड होऊ शकला नाही.", "bg-amber-950/40", "border-amber-900");
+            });
+        }
+
+        function onScanSuccess(decodedText, decodedResult) {
+            let cleanRegNo = decodedText.trim().toUpperCase();
+            if (!isProcessing && cleanRegNo !== "") {
+                sendAttendanceToSheet(cleanRegNo, "QR Scan");
+            }
+        }
+
+        function onScanFailure(error) {}
+
+        function processManualAttendance() {
+            let inputField = document.getElementById("manualRegNo");
+            let regNo = inputField.value.trim().toUpperCase();
+            if(regNo === "") {
+                alert("कृपया वैध Registration Number टाका!");
+                return;
+            }
+            sendAttendanceToSheet(regNo, "Manual");
+            inputField.value = "";
+        }
+
+        function sendAttendanceToSheet(registrationNo, attendanceMode) {
+            if(isProcessing) return;
+            isProcessing = true;
+            toggleControls(true);
+
+            resetStatusCard("⏳", "तпасणी सुरू आहे...", "गुगल शीटमध्ये ॲडमिशन वैधता तपासत आहे...", "bg-blue-950/40", "border-blue-900");
+
+            fetch(googleScriptUrl, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify({ regNo: registrationNo, mode: attendanceMode })
+            })
+            .then(res => res.json())
+            .then(response => {
+                if (response.status === "SUCCESS") {
+                    resetStatusCard("👍", "हजेरी यशस्वी!", "डेटा शीटमध्ये सुरक्षित नोंदवला गेला.", "bg-emerald-950/50", "border-emerald-500");
+                    
+                    document.getElementById("studentProfileWidget").style.opacity = "1";
+                    document.getElementById("scanProfileName").innerText = response.name || "विद्यार्थिनी";
+                    document.getElementById("scanProfileId").innerText = registrationNo;
+                    
+                    if (response.photo && response.photo !== "") {
+                        document.getElementById("studentScanPhoto").innerHTML = `<img src="${response.photo}" class="w-full h-full object-cover rounded-lg">`;
+                    } else {
+                        document.getElementById("studentScanPhoto").innerHTML = "<span class='text-emerald-400 font-bold text-center p-1'>वैध प्रवेश</span>";
+                    }
+                } else if (response.status === "EXPIRED") {
+                    resetStatusCard("❌", "प्रवेश अवैध!", "ॲडमिशन संपले आहे किंवा फी शिल्लक आहे!", "bg-red-950/50", "border-red-900");
+                    document.getElementById("studentProfileWidget").style.opacity = "1";
+                    document.getElementById("scanProfileName").innerText = response.name || "विद्यार्थिनी";
+                    document.getElementById("scanProfileId").innerText = registrationNo;
+                    document.getElementById("studentScanPhoto").innerHTML = "<span class='text-red-400 font-bold text-center p-1'>Expired</span>";
+                } else if (response.status === "NOT_FOUND") {
+                    resetStatusCard("❌", "सापडला नाही!", "हा रजिस्ट्रेशन नंबर रजिस्टरमध्ये उपलब्ध नाही.", "bg-red-950/50", "border-red-900");
+                }
+
+                setTimeout(() => {
+                    fetchTodayRecords();
+                    isProcessing = false;
+                    toggleControls(false);
+                    document.getElementById("studentProfileWidget").style.opacity = "0.4";
+                }, 3000);
+            })
+            .catch(err => {
+                resetStatusCard("❌", "एरर आली!", "हजेरी नोंदवता आली नाही. नेटवर्क तपासा.", "bg-red-950/50", "border-red-900");
+                isProcessing = false;
+                toggleControls(false);
+            });
+        }
+
+        function updateDashboardCounts(count) {
+            document.getElementById("girlsCountNumber").innerText = count;
+            document.getElementById("totalLogsCount").innerText = "एकूण रेकॉर्ड: " + count;
+        }
+
+        function renderLogTable(logs) {
+            let tbody = document.getElementById("liveLogTableBody");
+            if(!logs || logs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-500 italic text-xs">अद्याप कोणतेही स्कॅनिंग रेकॉर्ड नाही. आजची पहिली हजेरी नोंदवा.</td></tr>`;
+                return;
+            }
+            
+            let html = "";
+            logs.forEach(log => {
+                html += `<tr class="hover:bg-slate-950/30 transition-colors text-xs font-medium">
+                    <td class="py-3 pl-2 font-mono font-bold text-slate-300">${log.regNo}</td>
+                    <td class="py-3 font-bold text-white">${log.name}</td>
+                    <td class="py-3 text-slate-400 font-mono">${log.time}</td>
+                    <td class="py-3 text-slate-400"><span class="bg-slate-800 text-[10px] px-1.5 py-0.5 rounded border border-slate-700">${log.mode}</span></td>
+                    <td class="py-3 pr-2 text-end text-emerald-400 font-bold">🟢 ${log.status}</td>
+                </tr>`;
+            });
+            tbody.innerHTML = html;
+        }
+
+        function resetStatusCard(icon, title, msg, bgColor, borderColor) {
+            let card = document.getElementById("statusCard");
+            document.getElementById("statusIconCircle").innerText = icon;
+            document.getElementById("statusTitle").innerText = title;
+            document.getElementById("statusMessage").innerText = msg;
+            card.className = `bg-slate-900 border border-slate-800 rounded-2xl p-4 text-center flex flex-col justify-center items-center gap-3 shadow-2xl transition-all duration-300 ${bgColor} ${borderColor}`;
+        }
+
+        function toggleControls(disable) {
+            document.getElementById("submitBtn").disabled = disable;
+            document.getElementById("manualRegNo").disabled = disable;
+        }
+
+        // 🔒 सुरक्षित लॉगआऊट (Close) फंक्शन
+        function secureLogout() {
+            sessionStorage.removeItem("attendance_authenticated");
+            sessionStorage.removeItem("attendance_staff_name");
+            alert("हजेरी प्रणाली सुरक्षितपणे बंद केली जात आहे...");
+            window.location.href = 'index1.html'; 
+        }
+        
+        // पासवर्ड टाकून Enter दाबल्यास थेट लॉगिन होण्यासाठी
+        document.getElementById("staffPass").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") { loginStaff(); }
+        });
+    </script>
+</body>
+</html>
