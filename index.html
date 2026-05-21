@@ -199,7 +199,7 @@
     <a href="javascript:void(0)" onclick="showSection('contact-section', this); toggleSidebar()">संपर्क</a>
     <a href="javascript:void(0)" onclick="showSection('feedback-section', this); toggleSidebar()">मान्यवरांच्या प्रतिक्रिया</a>
     <a href="javascript:void(0)" onclick="showSection('staff-section', this); toggleSidebar()">कर्मचारी वृंद</a>
-   <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#staffModal" onclick="toggleSidebar()">🔐 कर्मचारी विभाग</a>
+   <a href="javascript:void(0)" onclick="showSection('staff-login-section', this); toggleSidebar()">🔐 कर्मचारी विभाग</a>
 </div>
 
  <div id="home-section" class="content-section active">
@@ -660,6 +660,68 @@
     </div>
 
 </div>
+	</div>
+</div>
+
+<div id="staff-counter-section" class="content-section container">
+    <div class="row justify-content-center my-4">
+        <div class="col-md-5">
+            <div class="card bg-dark text-white border-secondary shadow-lg">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-shield-lock text-emerald-400" style="font-size: 3rem; color: #10b981;"></i>
+                        <h4 class="mt-2 fw-bold">कर्मचारी लॉगिन काउंटर</h4>
+                        <p class="text-muted small">वाचनालय व्यवस्थापन प्रणाली</p>
+                    </div>
+                    
+                    <div id="staffLoginForm">
+                        <div class="mb-3">
+                            <label class="form-label text-slate-300 small">युझरनेम (Username)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-secondary border-0 text-white"><i class="bi bi-person"></i></span>
+                                <input type="text" id="staffUsername" class="form-control bg-dark text-white border-secondary" placeholder="युझरनेम टाका">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label text-slate-300 small">पासवर्ड (Password)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-secondary border-0 text-white"><i class="bi bi-key"></i></span>
+                                <input type="password" id="staffPassword" class="form-control bg-dark text-white border-secondary" placeholder="पासवर्ड टाका">
+                            </div>
+                        </div>
+                        
+                        <div id="loginError" class="alert alert-danger p-2 small mb-3 text-center" style="display: none;">
+                            ❌ युझरनेम किंवा पासवर्ड चुकीचा आहे!
+                        </div>
+                        
+                        <button type="button" onclick="checkStaffPassword()" class="btn btn-success w-100 py-2 fw-bold text-white" style="background-color: #10b981; border: none;">
+                            लॉगिन करा
+                        </button>
+                    </div>
+
+                    <div id="staffDashboard" style="display: none;">
+                        <div class="alert alert-success text-center py-2 small mb-4">
+                            🟢 काउंटर सक्रिय आहे!
+                        </div>
+                        <div class="d-grid gap-3">
+                            <a href="attendance1.html" class="btn btn-outline-light py-3 fw-bold d-flex flex-column align-items-center justify-content-center gap-2">
+                                <i class="bi bi-camera text-2xl text-emerald-400" style="color: #10b981;"></i>
+                                <span>हजेरी रजिस्टर / स्कॅनर विंडो उघडा</span>
+                            </a>
+                            
+                            <button type="button" onclick="staffLogout()" class="btn btn-danger w-100 mt-2 py-2 fw-bold">
+                                सुरक्षित लॉगआऊट (Close Counter)
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="feedback-section" class="content-section container">
 <div id="staff-counter-section" class="tab-content" style="display: none;">
     <div class="container my-5">
         <div class="row justify-content-center">
