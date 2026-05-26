@@ -498,7 +498,7 @@
 
 <script>
 // ⚠️ तुमची नवीन वेब ॲप URL इथे पेस्ट करा
-const googleScriptUrl = "https://script.google.com/macros/s/AKfycbzNJk0nLEtOcB7mORwW2C0OorQwduc2owrNfD1OB3PAJ4DwEo8p9TY_aBYNnz9sXmiZ/exec"; 
+const googleScriptUrl = "https://script.google.com/macros/s/AKfycbyU63UGQoKf098CH7gJWJ0nFSU6k5BKdWBz4yCuetPgluiBIEXdvLc8y5vNkGeqVylL/exec"; 
 var currentLoggedUser = ""; 
 let isDataSavedSuccessfully = false; 
 
@@ -589,31 +589,7 @@ function saveToSheet() {
         alert("Please complete all required fields correctly before saving!");
         return;
     }
-// १. फोटो डेटा पकडणे
-    const photoPreview = document.getElementById('photoPreview');
-    const photoImg = photoPreview.querySelector('img');
-    let photoBase64 = photoImg ? photoImg.src : "";
-
-    // २. फॉर्म डेटा आणि फोटो एकत्र करणे
-    const formData = new FormData(form);
-    const params = new URLSearchParams();
     
-    formData.forEach((value, key) => {
-        params.append(key, value);
-    });
-
-    // फोटोचा डेटा जोडणे
-    params.append('photo_base64', photoBase64);
-    params.append('action', 'saveData');
-    params.append('to_date', document.getElementById('displayToDate').innerText);
-    params.append('total_amount', document.getElementById('fee_total').innerText);
-    params.append('staff_user', currentLoggedUser);
-
-    // ३. Google Script ला कॉल करणे
-    const script = document.createElement('script');
-    script.src = `${googleScriptUrl}?${params.toString()}&callback=handleSaveResponse`;
-    document.body.appendChild(script);
-}
     const saveBtn = document.getElementById('saveBtn');
     saveBtn.innerHTML = "⏳ Syncing...";
     saveBtn.disabled = true;
