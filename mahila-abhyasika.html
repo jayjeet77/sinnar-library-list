@@ -589,7 +589,15 @@ function saveToSheet() {
         alert("Please complete all required fields correctly before saving!");
         return;
     }
-    
+    // --- नवीन भाग: फोटो डेटा पकडण्यासाठी ---
+    const photoPreview = document.getElementById('photoPreview');
+    const photoImg = photoPreview.querySelector('img');
+    let photoBase64 = "";
+
+    if (photoImg) {
+        photoBase64 = photoImg.src; // हे इमेजचे Base64 डेटा आहे
+    }
+    // ------------------------------------
     const saveBtn = document.getElementById('saveBtn');
     saveBtn.innerHTML = "⏳ Syncing...";
     saveBtn.disabled = true;
