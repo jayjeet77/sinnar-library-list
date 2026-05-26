@@ -590,6 +590,7 @@ function saveToSheet() {
         return;
     }
     // --- नवीन भाग: फोटो डेटा पकडण्यासाठी ---
+    
     const photoPreview = document.getElementById('photoPreview');
     const photoImg = photoPreview.querySelector('img');
     let photoBase64 = "";
@@ -598,6 +599,16 @@ function saveToSheet() {
         photoBase64 = photoImg.src; // हे इमेजचे Base64 डेटा आहे
     }
     // ------------------------------------
+    // २. आता हा डेटा 'params' मध्ये ॲड करा
+const formData = new FormData(form);
+const params = new URLSearchParams();
+formData.forEach((value, key) => params.append(key, value));
+
+// येथे 'photo_base64' नावाची की (key) वापरून डेटा पाठवा
+params.append('photo_base64', photoBase64); 
+
+// ३. आता हे सर्व तुमच्या स्क्रिप्टला पाठवले जाईल
+params.append('action', 'saveData');
     const saveBtn = document.getElementById('saveBtn');
     saveBtn.innerHTML = "⏳ Syncing...";
     saveBtn.disabled = true;
