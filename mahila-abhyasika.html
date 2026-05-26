@@ -589,26 +589,31 @@ function saveToSheet() {
         alert("Please complete all required fields correctly before saving!");
         return;
     }
-    // --- नवीन भाग: फोटो डेटा पकडण्यासाठी ---
-    
+// १. फोटो डेटा पकडणे
     const photoPreview = document.getElementById('photoPreview');
     const photoImg = photoPreview.querySelector('img');
-    let photoBase64 = "";
+    let photoBase64 = photoImg ? photoImg.src : "";
 
-    if (photoImg) {
-        photoBase64 = photoImg.src; // हे इमेजचे Base64 डेटा आहे
-    }
-    // ------------------------------------
-    // २. आता हा डेटा 'params' मध्ये ॲड करा
-const formData = new FormData(form);
-const params = new URLSearchParams();
-formData.forEach((value, key) => params.append(key, value));
+    // २. फॉर्म डेटा आणि फोटो एकत्र करणे
+    const formData = new FormData(form);
+    const params = new URLSearchParams();
+    
+    formData.forEach((value, key) => {
+        params.append(key, value);
+    });
 
-// येथे 'photo_base64' नावाची की (key) वापरून डेटा पाठवा
-params.append('photo_base64', photoBase64); 
+    // फोटोचा डेटा जोडणे
+    params.append('photo_base64', photoBase64);
+    params.append('action', 'saveData');
+    params.append('to_date', document.getElementById('displayToDate').innerText);
+    params.append('total_amount', document.getElementById('fee_total').innerText);
+    params.append('staff_user', currentLoggedUser);
 
-// ३. आता हे सर्व तुमच्या स्क्रिप्टला पाठवले जाईल
-params.append('action', 'saveData');
+    // ३. Google Script ला कॉल करणे
+    const script = document.createElement('script');
+    script.src = `${googleScriptUrl}?${params.toString()}&callback=handleSaveResponse`;
+    document.body.appendChild(script);
+}
     const saveBtn = document.getElementById('saveBtn');
     saveBtn.innerHTML = "⏳ Syncing...";
     saveBtn.disabled = true;
