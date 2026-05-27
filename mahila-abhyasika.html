@@ -552,56 +552,61 @@ function calculateFees() {
     }
 }
 
-/* 🔐 अपडेटेड अत्यंत वेगवान लॉगिन लॉजिक */
+/* 🔐 अचूक आणि थेट सर्व्हर लॉगिन लॉजिक */
 function staffLogin() {
     const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value.trim();
-    if (!user || !pass) { alert("Please input credentials!"); return; }
+    
+    if (!user || !pass) { 
+        alert("कृपया युझरनेम आणि पासवर्ड दोन्ही भरा!"); 
+        return; 
+    }
 
-    // लॉगिन बटण तात्पुरते लॉक करणे जेणेकरून डबल क्लिक होणार नाही
+    // लॉगिन बटण तात्पुरते लॉक करणे
     const loginBtn = document.querySelector("#loginSection button");
     const originalText = loginBtn.innerHTML;
-    loginBtn.innerHTML = "⏳ Wait...";
+    loginBtn.innerHTML = "⏳ सर्व्हरशी संपर्क होत आहे...";
     loginBtn.disabled = true;
 
     // जुनी जुनी स्क्रिप्ट विंडो साफ करणे
     const oldScript = document.getElementById('login-script-trigger');
     if(oldScript) oldScript.remove();
 
-    // 🌟 सुरक्षेसाठी तारीख-वेळ (Timestamp) जोडून फ्रेश रिक्वेस्ट पाठवणे
+    // 🌟 थेट क्युरी पॅरामीटर्ससह क्लीन JSONP रिक्वेस्ट
     const script = document.createElement('script');
     script.id = 'login-script-trigger';
-    script.src = `${googleScriptUrl}?action=login&username=${encodeURIComponent(user)}&password=${encodeURIComponent(pass)}&_ts=${Date.now()}&callback=handleLoginResponse`;
+    script.src = googleScriptUrl + "?action=login&username=" + encodeURIComponent(user) + "&password=" + encodeURIComponent(pass) + "&callback=handleLoginResponse&_ts=" + Date.now();
     
-    // नेटवर्क एरर आल्यास बटण पुन्हा सुरू करणे
     script.onerror = function() {
-        alert("गुगल क्लाउड सर्व्हरशी संपर्क होऊ शकला नाही. इंटरनेट तपासा किंवा नवीन URL तपासा!");
+        alert("गुगल क्लाउड सर्व्हरशी संपर्क होऊ शकला नाही! कृपया इंटरनेट आणि तुमची URL तपासा.");
         loginBtn.innerHTML = originalText;
         loginBtn.disabled = false;
     };
     
     document.body.appendChild(script);
 }
-/* 🎯 लॉगिन उत्तराची पडताळणी */
 /* 🎯 लॉगिन उत्तराची अचूक पडताळणी */
+/* 🎯 सर्व्हरकडून आलेल्या उत्तराची तपासणी */
 function handleLoginResponse(response) {
     const loginBtn = document.querySelector("#loginSection button");
     
     if (response && response.status === "success") {
         currentLoggedUser = response.staffName || "Staff Admin"; 
+        
+        // लॉगिन यशस्वी झाल्यावर स्क्रीन बदलणे
         document.getElementById('loginSection').classList.add('hidden');
         document.getElementById('staffControls').classList.remove('hidden');
-        document.getElementById('welcomeMsg').innerText = "👤 Staff: " + currentLoggedUser; 
-        alert("Login Successful! Welcome, " + currentLoggedUser);
+        document.getElementById('welcomeMsg').innerText = "👤 ऑपरेटर: " + currentLoggedUser; 
+        
+        alert("लॉगिन यशस्वी! स्वागत आहे, " + currentLoggedUser);
     } else {
-        alert("🚨 चुकीचा युझरनेम किंवा पासवर्ड! कृपया पुन्हा तपासा.");
+        alert("🚨 चुकीचा युझरनेम किंवा पासवर्ड! कृपया गुगल शीटमधील 'Staff' टॅब तपासा.");
         if(loginBtn) {
             loginBtn.innerHTML = "Login";
             loginBtn.disabled = false;
         }
     }
-}
-function logout() {
+}function logout() {
     currentLoggedUser = "";
     document.getElementById('loginSection').classList.remove('hidden');
     document.getElementById('staffControls').classList.add('hidden');
