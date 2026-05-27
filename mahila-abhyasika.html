@@ -729,10 +729,25 @@ function searchMember() {
     const regNo = document.getElementById('searchRegNo').value.trim();
     if (!regNo) { alert("Input registration ID!"); return; }
     
-    const script = document.createElement('script');
-    script.src = `${googleScriptUrl}?action=search&regNo=${regNo}&callback=handleSearchResponse`;
-    document.body.appendChild(script);
-}
+   fetch(googleScriptUrl, {
+    method: "POST",
+    body: params
+})
+.then(res => res.json())
+.then(response => {
+
+    console.log("Save Response:", response);
+
+    handleSaveResponse(response);
+
+})
+.catch(err => {
+
+    console.error(err);
+
+    alert("Save Failed!");
+
+});
 
 function handleSearchResponse(response) {
     if (response.result === "found") {
