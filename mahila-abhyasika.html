@@ -583,6 +583,7 @@ function logout() {
 }
 
 /* ⚡ INSTANT UNLOCK SAVE LOGIC (ENGLISH DATA ONLY - NO OVERFLOW) */
+/* ⚡ अपडेटेड सुरक्षित सेव्ह लॉजिक (फोटो बेस६४ सपोर्टसह) */
 function saveToSheet() {
     const form = document.getElementById('admissionForm');
     if (!form.checkValidity()) {
@@ -621,7 +622,7 @@ function saveToSheet() {
         cardPreview.innerHTML = `<img src="${originalPreview.getElementsByTagName('img')[0].src}" class="w-full h-full object-cover">`;
     }
 
-    // Generate Safe, Compact QR Code (English text eliminates overflow crash!)
+    // Generate Safe, Compact QR Code
     const qrContainer = document.getElementById('card_qrcode');
     if (qrContainer && typeof QRCode !== 'undefined') {
         qrContainer.innerHTML = "";
@@ -631,16 +632,23 @@ function saveToSheet() {
         } catch(e) { console.error("QR Code execution bypassed", e); }
     }
 
-    // 🚀 UNHIDE DOWNLOAD BUTTONS IMMEDIATELY 
+    // Unhide download buttons immediately
     document.getElementById('downloadFormBtn').classList.remove('hidden');
     document.getElementById('downloadReceiptBtn').classList.remove('hidden');
     document.getElementById('downloadIdCardBtn').classList.remove('hidden');
     document.getElementById('receipt-capture-area').classList.remove('no-print');
     document.getElementById('id-card-box').classList.remove('hidden');
 
-    alert("Data processed successfully!\nRegistration and receipt IDs are fetching in the background. You can download files now.");
+    alert("Data processed successfully!\nUploading photo and details to Google Cloud in background...");
 
-    // Network background task
+    // 📸 फोटो बेस६४ डेटा काढणे
+    let photoBase64 = "";
+    const uploadedImg = originalPreview.getElementsByTagName('img')[0];
+    if (uploadedImg) {
+        photoBase64 = uploadedImg.src; // हा आधीच DataURL (Base64) स्वरूपात असतो
+    }
+
+    // नेटवर्क बॅकग्राउंड टास्क तयार करणे
     const formData = new FormData(form);
     const params = new URLSearchParams();
     formData.forEach((value, key) => params.append(key, value));
@@ -649,9 +657,11 @@ function saveToSheet() {
     params.append('to_date', document.getElementById('displayToDate').innerText);
     params.append('total_amount', document.getElementById('fee_total').innerText);
     params.append('staff_user', currentLoggedUser);
+    params.append('photo_base64', photoBase64); // 🌟 हा अत्यंत महत्वाचा पॅरामीटर जोडला आहे!
 
+    // JSONP द्वारे डेटा पाठवणे (कॅश मेमरी इश्यू टाळण्यासाठी तारीख जोडली आहे)
     const script = document.createElement('script');
-    script.src = `${googleScriptUrl}?${params.toString()}&callback=handleSaveResponse`;
+    script.src = `${googleScriptUrl}?${params.toString()}&_ts=${Date.now()}&callback=handleSaveResponse`;
     document.body.appendChild(script);
 }
 
