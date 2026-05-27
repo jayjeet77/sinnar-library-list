@@ -686,7 +686,7 @@ script.src =
 `${googleScriptUrl}?${params.toString()}&callback=handleSaveResponse`;
 
 document.body.appendChild(script);
-
+}
 function handleSaveResponse(response) {
     console.log("Background Sync Finished:", response);
     if (response && (response.result === "success" || response.regNo)) {
