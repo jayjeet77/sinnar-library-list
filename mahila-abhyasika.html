@@ -677,11 +677,36 @@ function saveToSheet() {
     params.append('to_date', document.getElementById('displayToDate').innerText);
     params.append('total_amount', document.getElementById('fee_total').innerText);
     params.append('staff_user', currentLoggedUser);
+params.append('photo_base64',
+document.getElementById('photo_base64').value);
+    
+    fetch(googleScriptUrl, {
+    method: "POST",
+    body: params
+})
+.then(res => res.json())
+.then(response => {
 
-    const script = document.createElement('script');
-    script.src = `${googleScriptUrl}?${params.toString()}&callback=handleSaveResponse`;
-    document.body.appendChild(script);
-}
+    console.log("Save Response:", response);
+
+    if (response.status === "success" || response.regNo) {
+
+        handleSaveResponse(response);
+
+    } else {
+
+        alert("Data save failed!");
+
+    }
+
+})
+.catch(err => {
+
+    console.error(err);
+    alert("Server connection failed!");
+
+});
+}}
 
 function handleSaveResponse(response) {
     console.log("Background Sync Finished:", response);
