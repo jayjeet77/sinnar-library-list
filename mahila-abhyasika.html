@@ -552,7 +552,7 @@ function calculateFees() {
     }
 }
 
-/* 🔐 सिन्नर वाचनालय - १००% अचूक आणि फिक्स लॉगिन व्यवस्था */
+/* 🔐 तुमच्या मूळ HTML आयडीनुसार १००% अचूक लॉगिन व्यवस्था */
 function staffLogin() {
     const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value.trim();
@@ -562,8 +562,8 @@ function staffLogin() {
         return; 
     }
 
-    // 🌟 तुमच्या मूळ ओळ १७१ नुसार थेट अचूक आयडीने बटण लॉक करणे
-    const loginBtn = document.getElementById("loginBtn");
+    // 🌟 तुमच्या ओळ १७१ मधील मूळ आयडी 'submitBtn' चा अचूक वापर
+    const loginBtn = document.getElementById("submitBtn");
     const originalText = loginBtn ? loginBtn.innerHTML : "Login";
     if (loginBtn) {
         loginBtn.innerHTML = "⏳ सर्व्हरशी संपर्क होत आहे...";
@@ -574,7 +574,7 @@ function staffLogin() {
     const oldScript = document.getElementById('login-script-trigger');
     if(oldScript) oldScript.remove();
 
-    // शुद्ध आणि थेट JSONP रिक्वेस्ट (CORS फ्री)
+    // शुद्ध आणि थेट JSONP रिक्वेस्ट (CORS आणि ४०० एरर मुक्त)
     const script = document.createElement('script');
     script.id = 'login-script-trigger';
     script.src = googleScriptUrl + "?action=login&username=" + encodeURIComponent(user) + "&password=" + encodeURIComponent(pass) + "&callback=handleLoginResponse&_ts=" + Date.now();
@@ -590,24 +590,24 @@ function staffLogin() {
     document.body.appendChild(script);
 }
 
-/* 🎯 सर्व्हरकडून आलेल्या उत्तराची अचूक पडताळणी */
+/* 🎯 सर्व्हरकडून आलेल्या उत्तराची पडताळणी */
 function handleLoginResponse(response) {
-    const loginBtn = document.getElementById("loginBtn");
+    const loginBtn = document.getElementById("submitBtn");
     
     if (response && response.status === "success") {
         currentLoggedUser = response.staffName || "Staff Admin"; 
         
-        // 🌟 तुमच्या मूळ डिझाईननुसार योग्य घटक लपवणे आणि उघडणे
-        const loginBox = document.getElementById('login-box') || document.getElementById('loginSection');
+        // 🌟 तुमच्या मूळ ओळ ५९ आणि ६० नुसार अचूक स्क्रीन बदलणे
+        const loginBox = document.getElementById('login-box');
         if (loginBox) loginBox.classList.add('hidden');
         
-        const mainContent = document.getElementById('main-content') || document.getElementById('staffControls');
+        const mainContent = document.getElementById('main-content');
         if (mainContent) mainContent.classList.remove('hidden');
         
-        // ऑपरेटरचे नाव स्क्रीनवर दाखवणे
-        const opNameLabel = document.getElementById('active_operator_name') || document.getElementById('welcomeMsg');
+        // 🌟 तुमच्या ओळ ३६५ मधील मूळ आयडी 'active_operator_name' नुसार नाव दाखवणे
+        const opNameLabel = document.getElementById('active_operator_name');
         if (opNameLabel) {
-            opNameLabel.innerText = opNameLabel.id === "welcomeMsg" ? "👤 Staff: " + currentLoggedUser : currentLoggedUser;
+            opNameLabel.innerText = currentLoggedUser;
         }
         
         alert("लॉगिन यशस्वी! स्वागत आहे, " + currentLoggedUser);
@@ -618,8 +618,7 @@ function handleLoginResponse(response) {
             loginBtn.disabled = false;
         }
     }
-} 
-    
+}    
     function logout() {
     currentLoggedUser = "";
     document.getElementById('loginSection').classList.remove('hidden');
