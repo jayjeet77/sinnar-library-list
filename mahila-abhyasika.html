@@ -602,7 +602,8 @@ alert("Login button clicked");
         alert("Login Error!");
 
     }
-}function logout() {
+}
+    function logout() {
     currentLoggedUser = "";
     document.getElementById('loginSection').classList.remove('hidden');
     document.getElementById('staffControls').classList.add('hidden');
@@ -698,7 +699,7 @@ document.getElementById('photo_base64').value);
     alert("Save Failed!");
 
 });
-    }
+}
 function handleSaveResponse(response) {
     console.log("Background Sync Finished:", response);
     if (response && (response.result === "success" || response.regNo)) {
@@ -726,28 +727,25 @@ function handleSaveResponse(response) {
 }
 
 function searchMember() {
-    const regNo = document.getElementById('searchRegNo').value.trim();
-    if (!regNo) { alert("Input registration ID!"); return; }
-    
-   fetch(googleScriptUrl, {
-    method: "POST",
-    body: params
-})
-.then(res => res.json())
-.then(response => {
 
-    console.log("Save Response:", response);
+    const regNo =
+        document.getElementById('searchRegNo').value.trim();
 
-    handleSaveResponse(response);
+    if (!regNo) {
 
-})
-.catch(err => {
+        alert("Input registration ID!");
+        return;
 
-    console.error(err);
+    }
 
-    alert("Save Failed!");
+    const script = document.createElement('script');
 
-});
+    script.src =
+        `${googleScriptUrl}?action=search&regNo=${regNo}&callback=handleSearchResponse`;
+
+    document.body.appendChild(script);
+
+}
 
 function handleSearchResponse(response) {
     if (response.result === "found") {
