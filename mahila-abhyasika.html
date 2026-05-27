@@ -213,6 +213,7 @@
                             Affix Photo Here
                         </div>
                         <input type="file" id="photoInput" accept="image/*" class="hidden" onchange="previewImage(this)">
+                        <input type="hidden" id="photo_base64">
                     </div>
 
                     <table>
@@ -767,11 +768,22 @@ function handleSearchResponse(response) {
 }
 
 function previewImage(input) {
+
     if (input.files && input.files[0]) {
-        var reader = new FileReader();
+
+        const reader = new FileReader();
+
         reader.onload = function(e) {
-            document.getElementById('photoPreview').innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
+
+            // Preview image
+            document.getElementById('photoPreview').innerHTML =
+                `<img src="${e.target.result}" class="w-full h-full object-cover">`;
+
+            // IMPORTANT → save base64
+            document.getElementById('photo_base64').value =
+                e.target.result;
         };
+
         reader.readAsDataURL(input.files[0]);
     }
 }
