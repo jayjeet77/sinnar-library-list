@@ -679,14 +679,25 @@ function saveToSheet() {
     params.append('staff_user', currentLoggedUser);
 params.append('photo_base64',
 document.getElementById('photo_base64').value);
-  window.handleSaveResponse = handleSaveResponse;  
-const script = document.createElement('script');
+ fetch(googleScriptUrl, {
+    method: "POST",
+    body: params
+})
+.then(res => res.json())
+.then(response => {
 
-script.src =
-`${googleScriptUrl}?${params.toString()}&callback=handleSaveResponse`;
+    console.log(response);
 
-document.body.appendChild(script);
-}
+    handleSaveResponse(response);
+
+})
+.catch(err => {
+
+    console.error(err);
+
+    alert("Save Failed!");
+
+});
 function handleSaveResponse(response) {
     console.log("Background Sync Finished:", response);
     if (response && (response.result === "success" || response.regNo)) {
