@@ -555,17 +555,23 @@ function calculateFees() {
 
 async function staffLogin() {
 
-    const user = document.getElementById('username').value.trim();
-    const pass = document.getElementById('password').value.trim();
+    const user =
+        document.getElementById('username').value.trim();
+
+    const pass =
+        document.getElementById('password').value.trim();
 
     if (!user || !pass) {
+
         alert("Please input credentials!");
         return;
+
     }
 
     try {
 
         const params = new URLSearchParams();
+
         params.append("action", "login");
         params.append("username", user);
         params.append("password", pass);
@@ -583,8 +589,11 @@ async function staffLogin() {
 
             currentLoggedUser = data.staffName;
 
-            document.getElementById('loginSection').classList.add('hidden');
-            document.getElementById('staffControls').classList.remove('hidden');
+            document.getElementById('loginSection')
+                .classList.add('hidden');
+
+            document.getElementById('staffControls')
+                .classList.remove('hidden');
 
             document.getElementById('welcomeMsg').innerText =
                 "👤 Staff: " + currentLoggedUser;
@@ -597,7 +606,7 @@ async function staffLogin() {
 
         }
 
-    } catch (err) {
+    } catch(err) {
 
         console.error(err);
         alert("Login Error!");
@@ -609,8 +618,11 @@ function logout() {
 
     currentLoggedUser = "";
 
-    document.getElementById('loginSection').classList.remove('hidden');
-    document.getElementById('staffControls').classList.add('hidden');
+    document.getElementById('loginSection')
+        .classList.remove('hidden');
+
+    document.getElementById('staffControls')
+        .classList.add('hidden');
 
     document.getElementById('username').value = "";
     document.getElementById('password').value = "";
@@ -618,61 +630,53 @@ function logout() {
 
 function saveToSheet() {
 
-    const form = document.getElementById('admissionForm');
+    const form =
+        document.getElementById('admissionForm');
 
     if (!form.checkValidity()) {
 
         alert("Please complete all required fields!");
         return;
+
     }
 
-    const saveBtn = document.getElementById('saveBtn');
+    const saveBtn =
+        document.getElementById('saveBtn');
 
     saveBtn.innerHTML = "⏳ Saving...";
     saveBtn.disabled = true;
 
     const formData = new FormData(form);
 
-    const params = new URLSearchParams();
+    formData.append("action", "saveData");
 
-    formData.forEach((value, key) => {
-
-        params.append(key, value);
-
-    });
-
-    params.append("action", "saveData");
-
-    params.append(
+    formData.append(
         "total_amount",
         document.getElementById('fee_total').innerText
     );
 
-    params.append(
+    formData.append(
+        "to_date",
+        document.getElementById('displayToDate').innerText
+    );
+
+    formData.append(
         "staff_user",
         currentLoggedUser
     );
 
-    params.append(
-        "photo_base64",
-        document.getElementById('photo_base64').value
-    );
-
     fetch(googleScriptUrl, {
         method: "POST",
-        body: params
+        body: formData
     })
-
     .then(res => res.json())
-
     .then(response => {
 
-        console.log("SAVE RESPONSE:", response);
+        console.log("Save Response:", response);
 
         handleSaveResponse(response);
 
     })
-
     .catch(err => {
 
         console.error(err);
@@ -688,40 +692,78 @@ function saveToSheet() {
 
 function handleSaveResponse(response) {
 
-    console.log("Background Sync Finished:", response);
+    console.log(
+        "Background Sync Finished:",
+        response
+    );
 
-    if (response.result === "success") {
+    const saveBtn =
+        document.getElementById('saveBtn');
 
-        document.getElementById('displayRegNo').innerText =
-            response.regNo;
+    if (
+        response &&
+        response.result === "success"
+    ) {
 
-        document.getElementById('rcpt_reg_no').innerText =
-            response.regNo;
+        isDataSavedSuccessfully = true;
 
-        document.getElementById('displayReceiptNoTop').innerText =
-            response.receiptNo;
+        saveBtn.innerHTML =
+            "✅ Data Saved";
 
-        document.getElementById('displayReceiptNo').innerText =
-            response.receiptNo;
+        saveBtn.style.backgroundColor =
+            "#16a34a";
 
-        document.getElementById('card_display_reg_no').innerText =
-            response.regNo;
+        const finalRegNo =
+            response.regNo || "SIN-XXXX";
+
+        const finalRcptNo =
+            response.receiptNo || "RCP-XXXX";
+
+        document.getElementById('displayRegNo')
+            .innerText = finalRegNo;
+
+        document.getElementById('rcpt_reg_no')
+            .innerText = finalRegNo;
+
+        document.getElementById('displayReceiptNoTop')
+            .innerText = finalRcptNo;
+
+        document.getElementById('displayReceiptNo')
+            .innerText = finalRcptNo;
+
+        document.getElementById('card_display_reg_no')
+            .innerText = finalRegNo;
+
+        document.getElementById('downloadFormBtn')
+            .classList.remove('hidden');
+
+        document.getElementById('downloadReceiptBtn')
+            .classList.remove('hidden');
+
+        document.getElementById('downloadIdCardBtn')
+            .classList.remove('hidden');
 
         alert("Data Saved Successfully!");
 
     } else {
 
-        alert("Save Failed!");
+        saveBtn.disabled = false;
 
-        console.log(response);
+        saveBtn.innerHTML =
+            "💾 Save Data";
 
+        alert(
+            response.message ||
+            "Save Failed!"
+        );
     }
 }
 
 function searchMember() {
 
     const regNo =
-        document.getElementById('searchRegNo').value.trim();
+        document.getElementById('searchRegNo')
+        .value.trim();
 
     if (!regNo) {
 
@@ -730,7 +772,8 @@ function searchMember() {
 
     }
 
-    const script = document.createElement('script');
+    const script =
+        document.createElement('script');
 
     script.src =
         `${googleScriptUrl}?action=search&regNo=${regNo}&callback=handleSearchResponse`;
@@ -744,49 +787,58 @@ function handleSearchResponse(response) {
 
     if (response.status === "success") {
 
-        document.getElementById('is_renewal').value = "true";
+        const d = response.data;
 
-        document.getElementById('reg_no_input').value =
-            response.data.reg_no;
+        document.getElementById('is_renewal')
+            .value = "true";
 
-        document.getElementById('displayRegNo').innerText =
-            response.data.reg_no;
+        document.getElementById('reg_no_input')
+            .value = d.reg_no;
 
-        document.getElementsByName('full_name')[0].value =
-            response.data.student_name;
+        document.getElementById('orig_join_date_input')
+            .value = d.join_date;
 
-        document.getElementsByName('address')[0].value =
-            response.data.address;
+        document.getElementById('displayRegNo')
+            .innerText = d.reg_no;
 
-        document.getElementsByName('pincode')[0].value =
-            response.data.pincode;
+        document.getElementById('rcpt_reg_no')
+            .innerText = d.reg_no;
 
-        document.getElementsByName('dob')[0].value =
-            response.data.dob;
+        document.getElementsByName('full_name')[0]
+            .value = d.student_name || "";
 
-        document.getElementsByName('parent_name')[0].value =
-            response.data.parent_name;
+        document.getElementsByName('address')[0]
+            .value = d.address || "";
 
-        document.getElementsByName('parent_occ')[0].value =
-            response.data.parent_occupation;
+        document.getElementsByName('pincode')[0]
+            .value = d.pincode || "";
 
-        document.getElementsByName('mobile')[0].value =
-            response.data.mobile;
+        document.getElementsByName('dob')[0]
+            .value = d.dob || "";
 
-        document.getElementsByName('parent_mobile')[0].value =
-            response.data.parent_mobile;
+        document.getElementsByName('parent_name')[0]
+            .value = d.parent_name || "";
 
-        document.getElementsByName('exam_purpose')[0].value =
-            response.data.exam_purpose;
+        document.getElementsByName('parent_occ')[0]
+            .value = d.parent_occupation || "";
 
-        document.getElementsByName('id_type')[0].value =
-            response.data.id_type;
+        document.getElementsByName('student_mobile')[0]
+            .value = d.mobile || "";
 
-        document.getElementsByName('id_no')[0].value =
-            response.data.id_no;
+        document.getElementsByName('parent_mobile')[0]
+            .value = d.parent_mobile || "";
 
-        document.getElementsByName('time_slot')[0].value =
-            response.data.time_slot || "";
+        document.getElementsByName('purpose')[0]
+            .value = d.exam_purpose || "";
+
+        document.getElementsByName('id_type')[0]
+            .value = d.id_type || "";
+
+        document.getElementsByName('id_no')[0]
+            .value = d.id_no || "";
+
+        document.getElementsByName('time_slot')[0]
+            .value = d.time_slot || "";
 
         alert("Member Found!");
 
@@ -795,8 +847,7 @@ function handleSearchResponse(response) {
         alert("No member found!");
 
     }
-}
-function previewImage(input) {
+}function previewImage(input) {
 
     if (input.files && input.files[0]) {
 
