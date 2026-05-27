@@ -498,7 +498,7 @@
 
 <script>
 // ⚠️ तुमची नवीन वेब ॲप URL इथे पेस्ट करा
-const googleScriptUrl = "https://script.google.com/macros/s/AKfycbwPGYG7GEyvKzZOx-Ho91hl76pteLsSke09IoLM2QRAomRnbkjaIH2do1u0gvlOblcT/exec"; 
+const googleScriptUrl = "https://script.google.com/macros/s/AKfycbyU63UGQoKf098CH7gJWJ0nFSU6k5BKdWBz4yCuetPgluiBIEXdvLc8y5vNkGeqVylL/exec"; 
 var currentLoggedUser = ""; 
 let isDataSavedSuccessfully = false; 
 
@@ -552,73 +552,29 @@ function calculateFees() {
     }
 }
 
-/* 🔐 सिन्नर सार्वजनिक वाचनालय - अंतिम त्रुटीमुक्त लॉगिन व्यवस्था */
 function staffLogin() {
     const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value.trim();
-    
-    if (!user || !pass) { 
-        alert("कृपया युझरनेम आणि पासवर्ड दोन्ही भरा!"); 
-        return; 
-    }
+    if (!user || !pass) { alert("Please input credentials!"); return; }
 
-    // ओळ १७१ मधील तुमचा मूळ आयडी 'submitBtn'
-    const loginBtn = document.getElementById("submitBtn");
-    const originalText = loginBtn ? loginBtn.innerHTML : "Login";
-    if (loginBtn) {
-        loginBtn.innerHTML = "⏳ सर्व्हरशी संपर्क होत आहे...";
-        loginBtn.disabled = true;
-    }
-
-    // जुनी तात्पुरती स्क्रिप्ट विंडो साफ करणे
-    const oldScript = document.getElementById('login-script-trigger');
-    if(oldScript) oldScript.remove();
-
-    // शुद्ध आणि थेट JSONP रिक्वेस्ट (CORS आणि ४०० एरर मुक्त)
     const script = document.createElement('script');
-    script.id = 'login-script-trigger';
-    script.src = googleScriptUrl + "?action=login&username=" + encodeURIComponent(user) + "&password=" + encodeURIComponent(pass) + "&callback=handleLoginResponse&_ts=" + Date.now();
-    
-    script.onerror = function() {
-        alert("गुगल क्लाउड सर्व्हरशी संपर्क होऊ शकला नाही!\n\n💡 उपाय: तुमच्या गुगल स्क्रिप्ट विंडोमध्ये जाऊन एक नवीन (New Deployment) करा आणि 'Who has access' मध्ये 'Anyone' निवडून नवीन लिंक इथे पेस्ट करा.");
-        if (loginBtn) {
-            loginBtn.innerHTML = originalText;
-            loginBtn.disabled = false;
-        }
-    };
-    
+    script.src = `${googleScriptUrl}?action=login&username=${encodeURIComponent(user)}&password=${encodeURIComponent(pass)}&callback=handleLoginResponse`;
     document.body.appendChild(script);
 }
 
-/* 🎯 सर्व्हरकडून आलेल्या उत्तराची पडताळणी */
 function handleLoginResponse(response) {
-    const loginBtn = document.getElementById("submitBtn");
-    
     if (response && response.status === "success") {
-        currentLoggedUser = response.staffName || "Staff Admin"; 
-        
-        // ओळ ५९ आणि ६० मधील तुमचे मूळ आयडी
-        const loginBox = document.getElementById('login-box');
-        if (loginBox) loginBox.classList.add('hidden');
-        
-        const mainContent = document.getElementById('main-content');
-        if (mainContent) mainContent.classList.remove('hidden');
-        
-        // ओळ ३६५ मधील तुमचा मूळ आयडी
-        const opNameLabel = document.getElementById('active_operator_name');
-        if (opNameLabel) {
-            opNameLabel.innerText = currentLoggedUser;
-        }
-        
-        alert("लॉगिन यशस्वी! स्वागत आहे, " + currentLoggedUser);
+        currentLoggedUser = response.staffName; 
+        document.getElementById('loginSection').classList.add('hidden');
+        document.getElementById('staffControls').classList.remove('hidden');
+        document.getElementById('welcomeMsg').innerText = "👤 Staff: " + currentLoggedUser; 
+        alert("Login Successful! Welcome, " + currentLoggedUser);
     } else {
-        alert("🚨 चुकीचा युझरनेम किंवा पासवर्ड! कृपया गुगल शीटमधील 'Staff' टॅब तपासा.");
-        if(loginBtn) {
-            loginBtn.innerHTML = "🔑 Login to System";
-            loginBtn.disabled = false;
-        }
+        alert("Invalid credentials structure!");
     }
-}    function logout() {
+}
+
+function logout() {
     currentLoggedUser = "";
     document.getElementById('loginSection').classList.remove('hidden');
     document.getElementById('staffControls').classList.add('hidden');
@@ -627,7 +583,6 @@ function handleLoginResponse(response) {
 }
 
 /* ⚡ INSTANT UNLOCK SAVE LOGIC (ENGLISH DATA ONLY - NO OVERFLOW) */
-/* ⚡ अपडेटेड सुरक्षित सेव्ह लॉजिक (फोटो बेस६४ सपोर्टसह) */
 function saveToSheet() {
     const form = document.getElementById('admissionForm');
     if (!form.checkValidity()) {
@@ -666,7 +621,7 @@ function saveToSheet() {
         cardPreview.innerHTML = `<img src="${originalPreview.getElementsByTagName('img')[0].src}" class="w-full h-full object-cover">`;
     }
 
-    // Generate Safe, Compact QR Code
+    // Generate Safe, Compact QR Code (English text eliminates overflow crash!)
     const qrContainer = document.getElementById('card_qrcode');
     if (qrContainer && typeof QRCode !== 'undefined') {
         qrContainer.innerHTML = "";
@@ -676,23 +631,16 @@ function saveToSheet() {
         } catch(e) { console.error("QR Code execution bypassed", e); }
     }
 
-    // Unhide download buttons immediately
+    // 🚀 UNHIDE DOWNLOAD BUTTONS IMMEDIATELY 
     document.getElementById('downloadFormBtn').classList.remove('hidden');
     document.getElementById('downloadReceiptBtn').classList.remove('hidden');
     document.getElementById('downloadIdCardBtn').classList.remove('hidden');
     document.getElementById('receipt-capture-area').classList.remove('no-print');
     document.getElementById('id-card-box').classList.remove('hidden');
 
-    alert("Data processed successfully!\nUploading photo and details to Google Cloud in background...");
+    alert("Data processed successfully!\nRegistration and receipt IDs are fetching in the background. You can download files now.");
 
-    // 📸 फोटो बेस६४ डेटा काढणे
-    let photoBase64 = "";
-    const uploadedImg = originalPreview.getElementsByTagName('img')[0];
-    if (uploadedImg) {
-        photoBase64 = uploadedImg.src; // हा आधीच DataURL (Base64) स्वरूपात असतो
-    }
-
-    // नेटवर्क बॅकग्राउंड टास्क तयार करणे
+    // Network background task
     const formData = new FormData(form);
     const params = new URLSearchParams();
     formData.forEach((value, key) => params.append(key, value));
@@ -701,11 +649,9 @@ function saveToSheet() {
     params.append('to_date', document.getElementById('displayToDate').innerText);
     params.append('total_amount', document.getElementById('fee_total').innerText);
     params.append('staff_user', currentLoggedUser);
-    params.append('photo_base64', photoBase64); // 🌟 हा अत्यंत महत्वाचा पॅरामीटर जोडला आहे!
 
-    // JSONP द्वारे डेटा पाठवणे (कॅश मेमरी इश्यू टाळण्यासाठी तारीख जोडली आहे)
     const script = document.createElement('script');
-    script.src = `${googleScriptUrl}?${params.toString()}&_ts=${Date.now()}&callback=handleSaveResponse`;
+    script.src = `${googleScriptUrl}?${params.toString()}&callback=handleSaveResponse`;
     document.body.appendChild(script);
 }
 
