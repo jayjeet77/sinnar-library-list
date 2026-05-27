@@ -554,7 +554,7 @@ function calculateFees() {
 }
 
 async function staffLogin() {
-alert("Login button clicked");
+
     const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value.trim();
 
@@ -565,13 +565,14 @@ alert("Login button clicked");
 
     try {
 
+        const params = new URLSearchParams();
+        params.append("action", "login");
+        params.append("username", user);
+        params.append("password", pass);
+
         const response = await fetch(googleScriptUrl, {
             method: "POST",
-            body: JSON.stringify({
-                action: "login",
-                username: user,
-                password: pass
-            })
+            body: params
         });
 
         const data = await response.json();
@@ -588,7 +589,7 @@ alert("Login button clicked");
             document.getElementById('welcomeMsg').innerText =
                 "👤 Staff: " + currentLoggedUser;
 
-            alert("Login Successful! Welcome, " + currentLoggedUser);
+            alert("Login Successful!");
 
         } else {
 
@@ -603,126 +604,117 @@ alert("Login button clicked");
 
     }
 }
-    function logout() {
+
+function logout() {
+
     currentLoggedUser = "";
+
     document.getElementById('loginSection').classList.remove('hidden');
     document.getElementById('staffControls').classList.add('hidden');
+
     document.getElementById('username').value = "";
     document.getElementById('password').value = "";
 }
 
-/* ⚡ INSTANT UNLOCK SAVE LOGIC (ENGLISH DATA ONLY - NO OVERFLOW) */
 function saveToSheet() {
+
     const form = document.getElementById('admissionForm');
+
     if (!form.checkValidity()) {
-        alert("Please complete all required fields correctly before saving!");
+
+        alert("Please complete all required fields!");
         return;
     }
-    
+
     const saveBtn = document.getElementById('saveBtn');
-    saveBtn.innerHTML = "⏳ Syncing...";
+
+    saveBtn.innerHTML = "⏳ Saving...";
     saveBtn.disabled = true;
 
-    // Fast Trigger Flag
-    isDataSavedSuccessfully = true; 
-    
-    saveBtn.innerHTML = "✅ Data Locked/Saved";
-    saveBtn.style.backgroundColor = "#cccccc"; 
-    saveBtn.style.cursor = "not-allowed";
-
-    const name = (document.getElementsByName('full_name')[0].value || "").trim();
-    const phone = (document.getElementsByName('student_mobile')[0].value || "").trim();
-    const address = (document.getElementsByName('address')[0].value || "").trim();
-    const batch = document.getElementsByName('time_slot')[0].value;
-
-    // Unhide preview layers
-    document.getElementById('card_display_name').innerText = name;
-    document.getElementById('card_display_phone').innerText = phone;
-    document.getElementById('card_display_address').innerText = address;
-    document.getElementById('card_display_batch').innerText = batch;
-    document.getElementById('rcpt_name').innerText = name;
-    document.getElementById('rcpt_time').innerText = batch;
-
-    // Image mapping
-    const originalPreview = document.getElementById('photoPreview');
-    const cardPreview = document.getElementById('cardPhotoPreview');
-    if (originalPreview && cardPreview && originalPreview.getElementsByTagName('img').length > 0) {
-        cardPreview.innerHTML = `<img src="${originalPreview.getElementsByTagName('img')[0].src}" class="w-full h-full object-cover">`;
-    }
-
-    // Generate Safe, Compact QR Code (English text eliminates overflow crash!)
-    const qrContainer = document.getElementById('card_qrcode');
-    if (qrContainer && typeof QRCode !== 'undefined') {
-        qrContainer.innerHTML = "";
-        const cleanQrText = `ID: Pending\nName: ${name.substring(0,35)}\nMob: ${phone}\nSlot: Shortened`;
-        try {
-            new QRCode(qrContainer, { text: cleanQrText, width: 120, height: 120, correctLevel: QRCode.CorrectLevel.L });
-        } catch(e) { console.error("QR Code execution bypassed", e); }
-    }
-
-    // 🚀 UNHIDE DOWNLOAD BUTTONS IMMEDIATELY 
-    document.getElementById('downloadFormBtn').classList.remove('hidden');
-    document.getElementById('downloadReceiptBtn').classList.remove('hidden');
-    document.getElementById('downloadIdCardBtn').classList.remove('hidden');
-    document.getElementById('receipt-capture-area').classList.remove('no-print');
-    document.getElementById('id-card-box').classList.remove('hidden');
-
-    alert("Data processed successfully!\nRegistration and receipt IDs are fetching in the background. You can download files now.");
-
-    // Network background task
     const formData = new FormData(form);
+
     const params = new URLSearchParams();
-    formData.forEach((value, key) => params.append(key, value));
-    
-    params.append('action', 'saveData');
-    params.append('to_date', document.getElementById('displayToDate').innerText);
-    params.append('total_amount', document.getElementById('fee_total').innerText);
-    params.append('staff_user', currentLoggedUser);
-params.append('photo_base64',
-document.getElementById('photo_base64').value);
- fetch(googleScriptUrl, {
-    method: "POST",
-    body: params
-})
-.then(res => res.json())
-.then(response => {
 
-    console.log(response);
+    formData.forEach((value, key) => {
 
-    handleSaveResponse(response);
+        params.append(key, value);
 
-})
-.catch(err => {
+    });
 
-    console.error(err);
+    params.append("action", "saveData");
 
-    alert("Save Failed!");
+    params.append(
+        "total_amount",
+        document.getElementById('fee_total').innerText
+    );
 
-});
+    params.append(
+        "staff_user",
+        currentLoggedUser
+    );
+
+    params.append(
+        "photo_base64",
+        document.getElementById('photo_base64').value
+    );
+
+    fetch(googleScriptUrl, {
+        method: "POST",
+        body: params
+    })
+
+    .then(res => res.json())
+
+    .then(response => {
+
+        console.log("SAVE RESPONSE:", response);
+
+        handleSaveResponse(response);
+
+    })
+
+    .catch(err => {
+
+        console.error(err);
+
+        alert("Save Failed!");
+
+        saveBtn.disabled = false;
+
+        saveBtn.innerHTML = "💾 Save Data";
+
+    });
 }
+
 function handleSaveResponse(response) {
+
     console.log("Background Sync Finished:", response);
-    if (response && (response.result === "success" || response.regNo)) {
-        const finalRegNo = response.regNo || "SIN-XXXX";
-        const finalRcptNo = response.receiptNo || "REC-XXXX";
 
-        document.getElementById('displayRegNo').innerText = finalRegNo;
-        document.getElementById('rcpt_reg_no').innerText = finalRegNo;
-        document.getElementById('displayReceiptNoTop').innerText = finalRcptNo;
-        document.getElementById('displayReceiptNo').innerText = finalRcptNo;
-        document.getElementById('card_display_reg_no').innerText = finalRegNo;
+    if (response.result === "success") {
 
-        // Quietly upgrade the QR code text with the permanent registration number
-        const name = document.getElementsByName('full_name')[0].value;
-        const phone = document.getElementsByName('student_mobile')[0].value;
-        const qrContainer = document.getElementById('card_qrcode');
-        if (qrContainer && typeof QRCode !== 'undefined') {
-            qrContainer.innerHTML = "";
-            const finalQrText = `RegNo: ${finalRegNo}\nName: ${name.substring(0,35)}\nMob: ${phone}`;
-            try {
-                new QRCode(qrContainer, { text: finalQrText, width: 120, height: 120, correctLevel: QRCode.CorrectLevel.L });
-            } catch(e) { console.error(e); }
-        }
+        document.getElementById('displayRegNo').innerText =
+            response.regNo;
+
+        document.getElementById('rcpt_reg_no').innerText =
+            response.regNo;
+
+        document.getElementById('displayReceiptNoTop').innerText =
+            response.receiptNo;
+
+        document.getElementById('displayReceiptNo').innerText =
+            response.receiptNo;
+
+        document.getElementById('card_display_reg_no').innerText =
+            response.regNo;
+
+        alert("Data Saved Successfully!");
+
+    } else {
+
+        alert("Save Failed!");
+
+        console.log(response);
+
     }
 }
 
@@ -744,58 +736,66 @@ function searchMember() {
         `${googleScriptUrl}?action=search&regNo=${regNo}&callback=handleSearchResponse`;
 
     document.body.appendChild(script);
-
 }
 
 function handleSearchResponse(response) {
-    if (response.result === "found") {
+
+    console.log(response);
+
+    if (response.status === "success") {
+
         document.getElementById('is_renewal').value = "true";
-        document.getElementById('reg_no_input').value = response.data.regNo;
-        document.getElementById('orig_join_date_input').value = response.data.originalJoinDate;
-        
-        document.getElementById('displayRegNo').innerText = response.data.regNo;
-        document.getElementById('rcpt_reg_no').innerText = response.data.regNo;
-        document.getElementById('displayOrigJoinDate').innerText = response.data.originalJoinDate;
-        
-        document.getElementsByName('full_name')[0].value = response.data.fullName;
-        document.getElementsByName('address')[0].value = response.data.address;
-        document.getElementsByName('pincode')[0].value = response.data.pincode;
-        document.getElementsByName('dob')[0].value = response.data.dob;
-        document.getElementsByName('parent_name')[0].value = response.data.parentName;
-        document.getElementsByName('parent_occ')[0].value = response.data.parentOcc;
-        document.getElementsByName('student_mobile')[0].value = response.data.studentMobile;
-        document.getElementsByName('parent_mobile')[0].value = response.data.parentMobile;
-        document.getElementsByName('education')[0].value = response.data.education;
-        document.getElementsByName('college')[0].value = response.data.college;
-        document.getElementsByName('purpose')[0].value = response.data.purpose;
-        document.getElementsByName('id_type')[0].value = response.data.idType;
-        document.getElementsByName('id_no')[0].value = response.data.idNo;
-        document.getElementsByName('time_slot')[0].value = response.data.timeSlot;
-        
-        const tbody = document.getElementById('historyTableBody');
-        if (response.history && response.history.length > 0) {
-            let rowsHtml = "";
-            response.history.forEach((row, idx) => {
-                rowsHtml += `<tr class='text-xs'>
-                    <td>${idx + 1}</td>
-                    <td>${row.date}</td>
-                    <td>${row.duration} Months</td>
-                    <td>${row.receiptNo}</td>
-                    <td>₹ ${row.amount}</td>
-                </tr>`;
-            });
-            tbody.innerHTML = rowsHtml;
-        } else {
-            tbody.innerHTML = "<tr><td colspan='5' class='p-2 text-center text-gray-400 italic text-xs'>No history found</td></tr>";
-        }
-        
-        calculateFees();
-        alert("Candidate record linked successfully! Choose new duration for renewal.");
+
+        document.getElementById('reg_no_input').value =
+            response.data.reg_no;
+
+        document.getElementById('displayRegNo').innerText =
+            response.data.reg_no;
+
+        document.getElementsByName('full_name')[0].value =
+            response.data.student_name;
+
+        document.getElementsByName('address')[0].value =
+            response.data.address;
+
+        document.getElementsByName('pincode')[0].value =
+            response.data.pincode;
+
+        document.getElementsByName('dob')[0].value =
+            response.data.dob;
+
+        document.getElementsByName('parent_name')[0].value =
+            response.data.parent_name;
+
+        document.getElementsByName('parent_occ')[0].value =
+            response.data.parent_occupation;
+
+        document.getElementsByName('mobile')[0].value =
+            response.data.mobile;
+
+        document.getElementsByName('parent_mobile')[0].value =
+            response.data.parent_mobile;
+
+        document.getElementsByName('exam_purpose')[0].value =
+            response.data.exam_purpose;
+
+        document.getElementsByName('id_type')[0].value =
+            response.data.id_type;
+
+        document.getElementsByName('id_no')[0].value =
+            response.data.id_no;
+
+        document.getElementsByName('time_slot')[0].value =
+            response.data.time_slot || "";
+
+        alert("Member Found!");
+
     } else {
-        alert("No candidate profile found with this ID!");
+
+        alert("No member found!");
+
     }
 }
-
 function previewImage(input) {
 
     if (input.files && input.files[0]) {
