@@ -687,7 +687,7 @@ script.src =
 
 document.body.appendChild(script);
 }
-function handleSaveResponse(response) {
+window.handleSaveResponse = function(response) {
     console.log("Background Sync Finished:", response);
     if (response && (response.result === "success" || response.regNo)) {
         const finalRegNo = response.regNo || "SIN-XXXX";
