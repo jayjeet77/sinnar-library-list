@@ -552,7 +552,7 @@ function calculateFees() {
     }
 }
 
-/* 🔐 तुमच्या मूळ HTML आयडीनुसार १००% अचूक लॉगिन व्यवस्था */
+/* 🔐 सिन्नर सार्वजनिक वाचनालय - अंतिम त्रुटीमुक्त लॉगिन व्यवस्था */
 function staffLogin() {
     const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value.trim();
@@ -562,7 +562,7 @@ function staffLogin() {
         return; 
     }
 
-    // 🌟 तुमच्या ओळ १७१ मधील मूळ आयडी 'submitBtn' चा अचूक वापर
+    // ओळ १७१ मधील तुमचा मूळ आयडी 'submitBtn'
     const loginBtn = document.getElementById("submitBtn");
     const originalText = loginBtn ? loginBtn.innerHTML : "Login";
     if (loginBtn) {
@@ -580,7 +580,7 @@ function staffLogin() {
     script.src = googleScriptUrl + "?action=login&username=" + encodeURIComponent(user) + "&password=" + encodeURIComponent(pass) + "&callback=handleLoginResponse&_ts=" + Date.now();
     
     script.onerror = function() {
-        alert("गुगल क्लाउड सर्व्हरशी संपर्क होऊ शकला नाही! कृपया तुमची Web App URL अचूक आहे का ते तपासा.");
+        alert("गुगल क्लाउड सर्व्हरशी संपर्क होऊ शकला नाही!\n\n💡 उपाय: तुमच्या गुगल स्क्रिप्ट विंडोमध्ये जाऊन एक नवीन (New Deployment) करा आणि 'Who has access' मध्ये 'Anyone' निवडून नवीन लिंक इथे पेस्ट करा.");
         if (loginBtn) {
             loginBtn.innerHTML = originalText;
             loginBtn.disabled = false;
@@ -597,14 +597,14 @@ function handleLoginResponse(response) {
     if (response && response.status === "success") {
         currentLoggedUser = response.staffName || "Staff Admin"; 
         
-        // 🌟 तुमच्या मूळ ओळ ५९ आणि ६० नुसार अचूक स्क्रीन बदलणे
+        // ओळ ५९ आणि ६० मधील तुमचे मूळ आयडी
         const loginBox = document.getElementById('login-box');
         if (loginBox) loginBox.classList.add('hidden');
         
         const mainContent = document.getElementById('main-content');
         if (mainContent) mainContent.classList.remove('hidden');
         
-        // 🌟 तुमच्या ओळ ३६५ मधील मूळ आयडी 'active_operator_name' नुसार नाव दाखवणे
+        // ओळ ३६५ मधील तुमचा मूळ आयडी
         const opNameLabel = document.getElementById('active_operator_name');
         if (opNameLabel) {
             opNameLabel.innerText = currentLoggedUser;
@@ -618,8 +618,7 @@ function handleLoginResponse(response) {
             loginBtn.disabled = false;
         }
     }
-}    
-    function logout() {
+}    function logout() {
     currentLoggedUser = "";
     document.getElementById('loginSection').classList.remove('hidden');
     document.getElementById('staffControls').classList.add('hidden');
