@@ -552,7 +552,7 @@ function calculateFees() {
     }
 }
 
-/* 🔐 फायनल सुरक्षित आणि अचूक लॉगिन व्यवस्था (CORS आणि 400 एरर मुक्त) */
+/* 🔐 तुमच्या मूळ HTML आयडीनुसार अचूक लॉगिन व्यवस्था */
 function staffLogin() {
     const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value.trim();
@@ -562,7 +562,8 @@ function staffLogin() {
         return; 
     }
 
-    const loginBtn = document.querySelector("#loginSection button");
+    // 🌟 तुमच्या मूळ आयडीनुसार बटण लॉक करणे (#login-box च्या आतले बटण)
+    const loginBtn = document.querySelector("#login-box button");
     const originalText = loginBtn.innerHTML;
     loginBtn.innerHTML = "⏳ सर्व्हरशी संपर्क होत आहे...";
     loginBtn.disabled = true;
@@ -571,10 +572,9 @@ function staffLogin() {
     const oldScript = document.getElementById('login-script-trigger');
     if(oldScript) oldScript.remove();
 
-    // 🌟 JSONP (Script Tag) पद्धतीचा वापर - ही कधीही ब्लॉक होत नाही
+    // शुद्ध JSONP रिक्वेस्ट - ही कधीही ब्लॉक होत नाही
     const script = document.createElement('script');
     script.id = 'login-script-trigger';
-    // इथे शेवटी callback=handleLoginResponse असणे अत्यंत महत्वाचे आहे
     script.src = googleScriptUrl + "?action=login&username=" + encodeURIComponent(user) + "&password=" + encodeURIComponent(pass) + "&callback=handleLoginResponse&_ts=" + Date.now();
     
     script.onerror = function() {
@@ -586,28 +586,29 @@ function staffLogin() {
     document.body.appendChild(script);
 }
 
-/* 🎯 सर्व्हरकडून आलेल्या उत्तराची अंतिम तपासणी */
+/* 🎯 सर्व्हरकडून आलेल्या उत्तराची तुमच्या HTML नुसार पडताळणी */
 function handleLoginResponse(response) {
-    const loginBtn = document.querySelector("#loginSection button");
+    const loginBtn = document.querySelector("#login-box button");
     
     if (response && response.status === "success") {
         currentLoggedUser = response.staffName || "Staff Admin"; 
         
-        // लॉगिन यशस्वी झाल्यावर स्क्रीन बदलणे
-        document.getElementById('loginSection').classList.add('hidden');
-        document.getElementById('staffControls').classList.remove('hidden');
-        document.getElementById('welcomeMsg').innerText = "👤 ऑपरेटर: " + currentLoggedUser; 
+        // 🌟 तुमच्या मूळ आयडीनुसार स्क्रीन बदलणे (#login-box आणि #main-content)
+        document.getElementById('login-box').classList.add('hidden');
+        document.getElementById('main-content').classList.remove('hidden');
+        
+        // ऑपरेटरचे नाव स्क्रीनवर दाखवणे
+        document.getElementById('active_operator_name').innerText = currentLoggedUser; 
         
         alert("लॉगिन यशस्वी! स्वागत आहे, " + currentLoggedUser);
     } else {
         alert("🚨 चुकीचा युझरनेम किंवा पासवर्ड! कृपया गुगल शीटमधील 'Staff' टॅब तपासा.");
         if(loginBtn) {
-            loginBtn.innerHTML = "Login";
+            loginBtn.innerHTML = "🔑 Login to System";
             loginBtn.disabled = false;
         }
     }
-}
-    function logout() {
+}    function logout() {
     currentLoggedUser = "";
     document.getElementById('loginSection').classList.remove('hidden');
     document.getElementById('staffControls').classList.add('hidden');
