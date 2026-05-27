@@ -680,33 +680,12 @@ function saveToSheet() {
 params.append('photo_base64',
 document.getElementById('photo_base64').value);
     
-    fetch(googleScriptUrl, {
-    method: "POST",
-    body: params
-})
-.then(res => res.json())
-.then(response => {
+const script = document.createElement('script');
 
-    console.log("Save Response:", response);
+script.src =
+`${googleScriptUrl}?${params.toString()}&callback=handleSaveResponse`;
 
-    if (response.status === "success" || response.regNo) {
-
-        handleSaveResponse(response);
-
-    } else {
-
-        alert("Data save failed!");
-
-    }
-
-})
-.catch(err => {
-
-    console.error(err);
-    alert("Server connection failed!");
-
-});
-}
+document.body.appendChild(script);
 
 function handleSaveResponse(response) {
     console.log("Background Sync Finished:", response);
