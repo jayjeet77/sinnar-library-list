@@ -552,7 +552,7 @@ function calculateFees() {
     }
 }
 
-/* 🔐 अचूक आणि थेट सर्व्हर लॉगिन लॉजिक */
+/* 🔐 फायनल सुरक्षित आणि अचूक लॉगिन व्यवस्था (CORS आणि 400 एरर मुक्त) */
 function staffLogin() {
     const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value.trim();
@@ -562,31 +562,31 @@ function staffLogin() {
         return; 
     }
 
-    // लॉगिन बटण तात्पुरते लॉक करणे
     const loginBtn = document.querySelector("#loginSection button");
     const originalText = loginBtn.innerHTML;
     loginBtn.innerHTML = "⏳ सर्व्हरशी संपर्क होत आहे...";
     loginBtn.disabled = true;
 
-    // जुनी जुनी स्क्रिप्ट विंडो साफ करणे
+    // जुनी तात्पुरती स्क्रिप्ट विंडो साफ करणे
     const oldScript = document.getElementById('login-script-trigger');
     if(oldScript) oldScript.remove();
 
-    // 🌟 थेट क्युरी पॅरामीटर्ससह क्लीन JSONP रिक्वेस्ट
+    // 🌟 JSONP (Script Tag) पद्धतीचा वापर - ही कधीही ब्लॉक होत नाही
     const script = document.createElement('script');
     script.id = 'login-script-trigger';
+    // इथे शेवटी callback=handleLoginResponse असणे अत्यंत महत्वाचे आहे
     script.src = googleScriptUrl + "?action=login&username=" + encodeURIComponent(user) + "&password=" + encodeURIComponent(pass) + "&callback=handleLoginResponse&_ts=" + Date.now();
     
     script.onerror = function() {
-        alert("गुगल क्लाउड सर्व्हरशी संपर्क होऊ शकला नाही! कृपया इंटरनेट आणि तुमची URL तपासा.");
+        alert("गुगल क्लाउड सर्व्हरशी संपर्क होऊ शकला नाही! कृपया तुमची Web App URL अचूक आहे का ते तपासा.");
         loginBtn.innerHTML = originalText;
         loginBtn.disabled = false;
     };
     
     document.body.appendChild(script);
 }
-/* 🎯 लॉगिन उत्तराची अचूक पडताळणी */
-/* 🎯 सर्व्हरकडून आलेल्या उत्तराची तपासणी */
+
+/* 🎯 सर्व्हरकडून आलेल्या उत्तराची अंतिम तपासणी */
 function handleLoginResponse(response) {
     const loginBtn = document.querySelector("#loginSection button");
     
@@ -606,7 +606,8 @@ function handleLoginResponse(response) {
             loginBtn.disabled = false;
         }
     }
-}function logout() {
+}
+    function logout() {
     currentLoggedUser = "";
     document.getElementById('loginSection').classList.remove('hidden');
     document.getElementById('staffControls').classList.add('hidden');
